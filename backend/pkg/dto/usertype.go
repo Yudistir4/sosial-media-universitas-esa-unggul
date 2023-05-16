@@ -1,8 +1,5 @@
 package dto
 
-import "github.com/google/uuid"
-
 type UserType struct {
-	ID   uuid.UUID
-	Name string
+	Name string `gorm:"primary_key;type:varchar(255)"`
 }

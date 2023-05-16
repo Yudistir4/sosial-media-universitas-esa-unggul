@@ -7,7 +7,7 @@ import (
 )
 
 type User struct {
-	ID            uuid.UUID
+	ID            uuid.UUID `gorm:"type:char(36);primary_key"`
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	Name          string `json:"name"`
@@ -20,10 +20,10 @@ type User struct {
 	Linkedin      string
 	Whatsapp      string
 
-	StudentID  uuid.UUID
-	Student    Student `gorm:"ForeignKey:StudentID"`
-	UserTypeID uuid.UUID
-	UserType   UserType `gorm:"ForeignKey:UserTypeID"`
+	StudentID    uuid.UUID
+	Student      Student `gorm:"ForeignKey:StudentID"`
+	UserTypeName string
+	UserType     UserType `gorm:"ForeignKey:UserTypeName"`
 }
 
 type CreateUserReq struct {
@@ -31,7 +31,7 @@ type CreateUserReq struct {
 	ProfilePicURL string `json:"profile_pic_url"`
 	Email         string `json:"email"`
 
-	UserTypeID     string `json:"user_type"`
+	UserType       string `json:"user_type"`
 	NIM            string `json:"nim"`
 	Angkatan       int    `json:"angkatan"`
 	NIDN           int    `json:"nidn"`

@@ -33,7 +33,19 @@ func initDatabase(params *Database) error {
 		return err
 	}
 
-	db.AutoMigrate(&dto.User{})
+	db.AutoMigrate(&dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.UserType{}, &dto.User{})
+
+	// ADD userTypes
+	var count int64
+	db.Model(&dto.UserType{}).Count(&count)
+	if count == 0 {
+		userTypes := []dto.UserType{{Name: "student"}, {Name: "lecturer"}}
+		result := db.Create(&userTypes)
+		if result.Error != nil {
+			fmt.Println("[Error] add userTypes:", result.Error)
+		}
+		fmt.Println("Success Add UserTypes")
+	}
 
 	log.Println("[INFO] Successfully establishing database connection")
 	return nil

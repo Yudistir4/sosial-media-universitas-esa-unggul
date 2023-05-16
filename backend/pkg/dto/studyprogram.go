@@ -7,7 +7,7 @@ import (
 )
 
 type StudyProgram struct {
-	ID        uuid.UUID
+	ID        uuid.UUID `gorm:"type:char(36);primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	FacultyID uuid.UUID
