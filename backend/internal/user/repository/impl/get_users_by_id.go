@@ -2,8 +2,10 @@ package impl
 
 import (
 	"backend/pkg/dto"
+	customerrors "backend/pkg/errors"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 func (r *userRepository) GetUserByID(ID uuid.UUID) (dto.User, error) {
@@ -12,6 +14,9 @@ func (r *userRepository) GetUserByID(ID uuid.UUID) (dto.User, error) {
 		Preload("Lecturer").Preload("Lecturer.Faculty").Preload("Lecturer.StudyProgram").
 		First(&users, ID).Error
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return dto.User{}, customerrors.ErrUserNotFound
+		}
 		return dto.User{}, err
 	}
 

@@ -32,7 +32,7 @@ func (h *userHandler) GetUserByID(service service.UserService) echo.HandlerFunc 
 
 		if err != nil {
 			return httputils.ErrorResponse(c, httputils.ErrorResponseParams{
-				Err: customerrors.ErrRecordNotFound,
+				Err: err,
 			})
 		}
 		return httputils.SuccessResponse(c, httputils.SuccessResponseParams{
