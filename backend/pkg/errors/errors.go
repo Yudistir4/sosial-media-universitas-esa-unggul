@@ -12,6 +12,8 @@ import (
 
 var (
 	ErrDuplicatedNIM                          = errors.New("NIM already exists")
+	ErrDuplicatedFacultyName                  = errors.New("Faculty name already exists")
+	ErrDuplicatedStudyProgramName             = errors.New("Study program name already exists")
 	ErrDuplicatedNIDN                         = errors.New("NIDN already exists")
 	ErrDuplicatedEmail                        = errors.New("Email already exists")
 	ErrInternalServer                         = errors.New("internal server error")
@@ -26,6 +28,7 @@ var (
 	ErrRecordNotFound                         = errors.New("record not found")
 	ErrAccountNotFound                        = errors.New("The entered account does not exist")
 	ErrNotFound                               = errors.New("not found")
+	ErrUserNotFound                           = errors.New("User not found")
 	ErrUnauthorized                           = errors.New("unauthorized")
 	ErrAccessTokenExpired                     = errors.New("Access token has expired")
 	ErrRefreshTokenExpired                    = errors.New("Refresh token has expired")
@@ -50,6 +53,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrRecordNotFound:                         {HTTPErrorCode: http.StatusNotFound, Message: ErrRecordNotFound.Error()},
 	ErrAccountNotFound:                        {HTTPErrorCode: http.StatusNotFound, Message: ErrAccountNotFound.Error()},
 	ErrNotFound:                               {HTTPErrorCode: http.StatusNotFound, Message: ErrNotFound.Error()},
+	ErrUserNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrUserNotFound.Error()},
 	ErrUnauthorized:                           {HTTPErrorCode: http.StatusUnauthorized, Message: ErrUnauthorized.Error()},
 	ErrAccessTokenExpired:                     {HTTPErrorCode: http.StatusUnauthorized, Message: ErrAccessTokenExpired.Error()},
 	ErrRefreshTokenExpired:                    {HTTPErrorCode: http.StatusUnauthorized, Message: ErrRefreshTokenExpired.Error()},
@@ -57,6 +61,8 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrInvalidAccessToken:                     {HTTPErrorCode: http.StatusUnauthorized, Message: ErrInvalidAccessToken.Error()},
 	ErrDuplicatedEmail:                        {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedEmail.Error()},
 	ErrDuplicatedNIM:                          {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedNIM.Error()},
+	ErrDuplicatedFacultyName:                  {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedFacultyName.Error()},
+	ErrDuplicatedStudyProgramName:             {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedStudyProgramName.Error()},
 	ErrDuplicatedNIDN:                         {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedNIDN.Error()},
 	ErrAccountDuplicated:                      {HTTPErrorCode: http.StatusBadRequest, Message: ErrAccountDuplicated.Error()},
 	ErrUniqueRecord:                           {HTTPErrorCode: http.StatusBadRequest, Message: ErrUniqueRecord.Error()},

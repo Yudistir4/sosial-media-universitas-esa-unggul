@@ -2,6 +2,7 @@ package impl
 
 import (
 	"backend/pkg/dto"
+	customerrors "backend/pkg/errors"
 	"backend/pkg/utils/passwordutils"
 	"backend/pkg/utils/randomutils"
 )
@@ -42,6 +43,15 @@ func (s *userService) CreateUser(req dto.CreateUserReq) (userResponse dto.UserRe
 		user, err = s.repo.CreateUserLecturer(req, lecturer.ID, tx)
 
 	} else if req.UserType == "faculty" {
+		_, err = s.repo.GetUserByName(req.Name, req.UserType)
+		if err != nil {
+			if err != customerrors.ErrUserNotFound {
+				return dto.UserResponse{}, err
+			}
+		} else if err == nil {
+			return dto.UserResponse{}, customerrors.ErrDuplicatedFacultyName
+		}
+
 		var faculty dto.Faculty
 		faculty, err = s.repoFaculty.CreateFaculty(req.Name, tx)
 		if err != nil {
