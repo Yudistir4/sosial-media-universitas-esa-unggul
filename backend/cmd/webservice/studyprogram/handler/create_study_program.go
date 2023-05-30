@@ -5,8 +5,6 @@ import (
 	"backend/pkg/dto"
 	"backend/pkg/utils/httputils"
 
-	customerrors "backend/pkg/errors"
-
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,7 +15,7 @@ func CreateStudyProgram(service service.StudyProgramService) echo.HandlerFunc {
 		studyProgram, err := service.CreateStudyProgram(req)
 		if err != nil {
 			return httputils.ErrorResponse(c, httputils.ErrorResponseParams{
-				Err: customerrors.ErrRecordNotFound,
+				Err: err,
 			})
 		}
 		return httputils.SuccessResponse(c, httputils.SuccessResponseParams{

@@ -29,6 +29,7 @@ var (
 	ErrAccountNotFound                        = errors.New("The entered account does not exist")
 	ErrNotFound                               = errors.New("not found")
 	ErrUserNotFound                           = errors.New("User not found")
+	ErrStudyProgramNotFound                   = errors.New("Study program not found")
 	ErrUnauthorized                           = errors.New("unauthorized")
 	ErrAccessTokenExpired                     = errors.New("Access token has expired")
 	ErrRefreshTokenExpired                    = errors.New("Refresh token has expired")
@@ -54,6 +55,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrAccountNotFound:                        {HTTPErrorCode: http.StatusNotFound, Message: ErrAccountNotFound.Error()},
 	ErrNotFound:                               {HTTPErrorCode: http.StatusNotFound, Message: ErrNotFound.Error()},
 	ErrUserNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrUserNotFound.Error()},
+	ErrStudyProgramNotFound:                   {HTTPErrorCode: http.StatusNotFound, Message: ErrStudyProgramNotFound.Error()},
 	ErrUnauthorized:                           {HTTPErrorCode: http.StatusUnauthorized, Message: ErrUnauthorized.Error()},
 	ErrAccessTokenExpired:                     {HTTPErrorCode: http.StatusUnauthorized, Message: ErrAccessTokenExpired.Error()},
 	ErrRefreshTokenExpired:                    {HTTPErrorCode: http.StatusUnauthorized, Message: ErrRefreshTokenExpired.Error()},
