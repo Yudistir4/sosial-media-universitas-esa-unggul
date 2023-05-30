@@ -6,8 +6,8 @@ import (
 )
 
 var (
-	allowedProfilePicType = []string{".jpg", ".jpeg", ".png"}
-	allowedPostType       = []string{".jpg", ".jpeg", ".png", ".mp4", ".avi", ".mov"}
+	allowedImageFileType = []string{".jpg", ".jpeg", ".png"}
+	allowedPostFileType  = []string{".jpg", ".jpeg", ".png", ".mp4", ".avi", ".mov"}
 )
 
 func checkFileType(file *multipart.FileHeader, allowFileType []string) bool {
@@ -22,8 +22,18 @@ func checkFileType(file *multipart.FileHeader, allowFileType []string) bool {
 }
 
 func CheckProfilePicFileType(file *multipart.FileHeader) bool {
-	return checkFileType(file, allowedProfilePicType)
+	return checkFileType(file, allowedImageFileType)
 }
 func CheckPostFileType(file *multipart.FileHeader) bool {
-	return checkFileType(file, allowedPostType)
+	return checkFileType(file, allowedPostFileType)
+}
+func GetContentType(file *multipart.FileHeader) string {
+	ext := filepath.Ext(file.Filename)
+
+	for _, t := range allowedImageFileType {
+		if t == ext {
+			return "image"
+		}
+	}
+	return "video"
 }

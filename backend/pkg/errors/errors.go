@@ -18,6 +18,7 @@ var (
 	ErrDuplicatedEmail                        = errors.New("Email already exists")
 	ErrInternalServer                         = errors.New("internal server error")
 	ErrBadRequest                             = errors.New("bad request")
+	ErrInvalidPostCategory                    = errors.New("Invalid post category")
 	ErrEmailRelatedToAnotherAccount           = errors.New("The email address provided is already associated with another account. Please enter a different email address to proceed.")
 	ErrNewEmailSameAsCurrentEmail             = errors.New("The new email address provided is the same as the current email address associated with your account. Please enter a different email address to update your email.")
 	ErrOldPasswordInvalid                     = errors.New("Invalid old password. Please enter the correct old password.")
@@ -26,6 +27,7 @@ var (
 	ErrInvalidResetPasswordCode               = errors.New("Invalid reset password link. Please request a new password reset link.")
 	ErrBadRequestFileType                     = errors.New("Invalid file type")
 	ErrRecordNotFound                         = errors.New("record not found")
+	ErrPostNotFound                           = errors.New("Post not found")
 	ErrAccountNotFound                        = errors.New("The entered account does not exist")
 	ErrNotFound                               = errors.New("not found")
 	ErrUserNotFound                           = errors.New("User not found")
@@ -44,6 +46,7 @@ var (
 var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrInternalServer:                         {HTTPErrorCode: http.StatusInternalServerError, Message: ErrInternalServer.Error()},
 	ErrBadRequest:                             {HTTPErrorCode: http.StatusBadRequest, Message: ErrBadRequest.Error()},
+	ErrInvalidPostCategory:                    {HTTPErrorCode: http.StatusBadRequest, Message: ErrInvalidPostCategory.Error()},
 	ErrEmailRelatedToAnotherAccount:           {HTTPErrorCode: http.StatusBadRequest, Message: ErrEmailRelatedToAnotherAccount.Error()},
 	ErrNewEmailSameAsCurrentEmail:             {HTTPErrorCode: http.StatusBadRequest, Message: ErrNewEmailSameAsCurrentEmail.Error()},
 	ErrOldPasswordInvalid:                     {HTTPErrorCode: http.StatusBadRequest, Message: ErrOldPasswordInvalid.Error()},
@@ -54,6 +57,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrRecordNotFound:                         {HTTPErrorCode: http.StatusNotFound, Message: ErrRecordNotFound.Error()},
 	ErrAccountNotFound:                        {HTTPErrorCode: http.StatusNotFound, Message: ErrAccountNotFound.Error()},
 	ErrNotFound:                               {HTTPErrorCode: http.StatusNotFound, Message: ErrNotFound.Error()},
+	ErrPostNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrPostNotFound.Error()},
 	ErrUserNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrUserNotFound.Error()},
 	ErrStudyProgramNotFound:                   {HTTPErrorCode: http.StatusNotFound, Message: ErrStudyProgramNotFound.Error()},
 	ErrUnauthorized:                           {HTTPErrorCode: http.StatusUnauthorized, Message: ErrUnauthorized.Error()},

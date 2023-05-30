@@ -35,7 +35,7 @@ func initDatabase(params *Database) error {
 		return err
 	}
 
-	db.AutoMigrate(&dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{})
+	db.AutoMigrate(&dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{}, &dto.Post{})
 
 	err = InitDefaultData(db)
 	if err != nil {

@@ -7,13 +7,16 @@ import (
 	"backend/config"
 	"fmt"
 
+	postrouter "backend/cmd/webservice/post/router"
 	studyprogramrouter "backend/cmd/webservice/studyprogram/router"
+	postrepository "backend/internal/post/repository/impl"
 	authrepository "backend/internal/auth/repository/impl"
 	lecturerrepository "backend/internal/lecturer/repository/impl"
 	studentrepository "backend/internal/student/repository/impl"
 	studyprogramrepository "backend/internal/studyprogram/repository/impl"
 	studyprogramservice "backend/internal/studyprogram/service/impl"
 
+	postservice "backend/internal/post/service/impl"
 	authservice "backend/internal/auth/service/impl"
 	facultyrepository "backend/internal/faculty/repository/impl"
 	pingservice "backend/internal/ping/service/impl"
@@ -195,6 +198,36 @@ func InitWebservice(params *WebserviceParams) error {
 			"domain": "lecturer",
 			"layer":  "repository",
 		}),
+	})
+
+	// Post
+	postRepository := postrepository.NewPostRepository(&postrepository.PostRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "post",
+			"layer":  "repository",
+		}),
+	})
+
+	postService := postservice.NewPostService(&postservice.PostServiceParams{
+		Repo:         postRepository,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "post",
+			"layer":  "service",
+		}),
+		Config:     params.Config,
+		Claudinary: cloudinary,
+		DB:         db,
+	})
+	postrouter.InitPostRouter(postrouter.RouterParams{
+		E:         e,
+		Service:   postService,
+		Validator: validator,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "post",
+			"layer":  "handler",
+		}),
+		Middleware: middleware,
 	})
 
 	// User
