@@ -2,10 +2,12 @@ package config
 
 import (
 	"backend/pkg/dto"
+	"backend/pkg/utils/passwordutils"
 	"fmt"
 	"log"
 	"strconv"
 
+	"github.com/google/uuid"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -33,20 +35,13 @@ func initDatabase(params *Database) error {
 		return err
 	}
 
-	db.AutoMigrate(&dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.UserType{}, &dto.User{})
+	db.AutoMigrate(&dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{})
 
-	// ADD userTypes
-	var count int64
-	db.Model(&dto.UserType{}).Count(&count)
-	if count == 0 {
-		userTypes := []dto.UserType{{Name: "student"}, {Name: "lecturer"}}
-		result := db.Create(&userTypes)
-		if result.Error != nil {
-			fmt.Println("[Error] add userTypes:", result.Error)
-		}
-		fmt.Println("Success Add UserTypes")
+	err = InitDefaultData(db)
+	if err != nil {
+		log.Println("[ERROR] Failed Init Default Data")
+		return err
 	}
-
 	log.Println("[INFO] Successfully establishing database connection")
 	return nil
 }
@@ -61,4 +56,39 @@ func GetDatabaseConn(params *Database) (*gorm.DB, error) {
 	}
 
 	return db, nil
+}
+
+func InitDefaultData(db *gorm.DB) error {
+	// ADD userTypes
+	var count int64
+	db.Model(&dto.UserType{}).Count(&count)
+	if count == 0 {
+		userTypes := []dto.UserType{{Name: "student"}, {Name: "lecturer"}, {Name: "faculty"}, {Name: "university"}}
+		result := db.Create(&userTypes)
+		if result.Error != nil {
+			fmt.Println("[Error] add userTypes:", result.Error)
+		}
+		fmt.Println("Success Add UserTypes")
+	}
+
+	// Check dulu
+	email := "esaunggul@mail.com"
+	var user dto.User
+	db.Where("email = ?", email).First(&user)
+	if user.ID != uuid.Nil {
+		return nil
+	}
+	// ADD Default User
+	user = dto.User{
+		ID:           uuid.New(),
+		Name:         "Universitas Esa Unggul",
+		Email:        email,
+		Password:     passwordutils.HashPassword("123456"),
+		UserTypeName: "university",
+	}
+	result := db.Create(&user)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }

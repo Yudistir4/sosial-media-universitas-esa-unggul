@@ -4,6 +4,7 @@ import (
 	"backend/pkg/utils/validatorutils"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -28,6 +29,16 @@ func initConfig(path string) error {
 		log.Println("[INFO] The .env file doesn't exist")
 		log.Println("[INFO] Program will load environment variable value")
 	}
+	expiredAccessSecretKey, err := strconv.Atoi(os.Getenv("EXPIRED_ACCESS_SECRET_KEY"))
+	if err != nil {
+		log.Println("[ERROR] While convert Expired Secret Key ")
+		return err
+	}
+	expiredRefreshSecretKey, err := strconv.Atoi(os.Getenv("EXPIRED_REFRESH_SECRET_KEY"))
+	if err != nil {
+		log.Println("[ERROR] While convert Expired Secret Key ")
+		return err
+	}
 
 	config = &Config{
 		Database: Database{
@@ -39,7 +50,10 @@ func initConfig(path string) error {
 			RelationalDatabaseDriverName: os.Getenv("DB_DRIVER_NAME"),
 		},
 		JWTConfig: JWTConfig{
-			JWTSecretKey: os.Getenv("JWT_SECRET_KEY"),
+			AccessSecretKey:         os.Getenv("ACCESS_SECRET_KEY"),
+			RefreshSecretKey:        os.Getenv("REFRESH_SECRET_KEY"),
+			ExpiredAccessSecretKey:  expiredAccessSecretKey,
+			ExpiredRefreshSecretKey: expiredRefreshSecretKey,
 		},
 		Server: Server{
 			Port:                 os.Getenv("APP_PORT"),

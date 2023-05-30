@@ -1,5 +1,8 @@
 package config
 
 type JWTConfig struct {
-	JWTSecretKey string `validate:"required"`
+	AccessSecretKey         string `validate:"required"`
+	RefreshSecretKey        string `validate:"required"`
+	ExpiredAccessSecretKey  int    `validate:"required"`
+	ExpiredRefreshSecretKey int    `validate:"required"`
 }

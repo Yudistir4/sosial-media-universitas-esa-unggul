@@ -8,8 +8,9 @@ import (
 )
 
 type SuccessResponseParams struct {
-	Code int
-	Data interface{}
+	Code    int
+	Message string
+	Data    interface{}
 }
 
 type ErrorResponseParams struct {
@@ -17,17 +18,18 @@ type ErrorResponseParams struct {
 	Detail interface{}
 }
 
-func WriteResponse(c echo.Context, data SuccessResponseParams) error {
+func SuccessResponse(c echo.Context, data SuccessResponseParams) error {
 	if data.Code == 0 {
 		data.Code = 200
 	}
 	return c.JSON(data.Code, dto.BaseResponse{
-		Error: nil,
-		Data:  data.Data,
+		Error:   nil,
+		Message: data.Message,
+		Data:    data.Data,
 	})
 }
 
-func WriteErrorResponse(c echo.Context, params ErrorResponseParams) error {
+func ErrorResponse(c echo.Context, params ErrorResponseParams) error {
 	e := customerrors.GetErr(params.Err)
 	return c.JSON(e.HTTPErrorCode, dto.BaseResponse{
 		Error: &dto.ErrorBaseResponse{

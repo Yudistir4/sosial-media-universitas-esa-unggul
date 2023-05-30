@@ -1,8 +1,9 @@
 package dto
 
 type BaseResponse struct {
-	Error *ErrorBaseResponse `json:"error"`
-	Data  interface{}        `json:"data"`
+	Error   *ErrorBaseResponse `json:"error"`
+	Message string             `json:"message"`
+	Data    interface{}        `json:"data"`
 }
 
 type ErrorBaseResponse struct {

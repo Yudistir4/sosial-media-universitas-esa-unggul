@@ -10,7 +10,7 @@ import (
 func PingHandler(service service.PingService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pingResponse := service.Ping()
-		return httputils.WriteResponse(c, httputils.SuccessResponseParams{
+		return httputils.SuccessResponse(c, httputils.SuccessResponseParams{
 			Data: pingResponse,
 		})
 	}

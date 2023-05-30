@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Fakultas Desain & Industri",
+    "email": "fdi@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Ekonomi & Bisnis",
+    "email": "feb@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Fisioterapi",
+    "email": "ff@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Hukum",
+    "email": "fh@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Ilmu-Ilmu Kesehatan",
+    "email": "fiik@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Ilmu Komputer",
+    "email": "fasilkom@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Ilmu Komunikasi",
+    "email": "fik@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Keguruan & Ilmu Pendidikan",
+    "email": "fkip@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Psikologi",
+    "email": "fp@mail.com",
+    "user_type": "faculty"
+  },
+  {
+    "name": "Fakultas Teknik",
+    "email": "ft@mail.com",
+    "user_type": "faculty"
+  }
+]
