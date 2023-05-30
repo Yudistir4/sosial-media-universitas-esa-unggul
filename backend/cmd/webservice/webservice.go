@@ -9,17 +9,20 @@ import (
 
 	postrouter "backend/cmd/webservice/post/router"
 	studyprogramrouter "backend/cmd/webservice/studyprogram/router"
-	postrepository "backend/internal/post/repository/impl"
+	commentrepository "backend/internal/comment/repository/impl"
 	authrepository "backend/internal/auth/repository/impl"
 	lecturerrepository "backend/internal/lecturer/repository/impl"
+	likerepository "backend/internal/like/repository/impl"
+	postrepository "backend/internal/post/repository/impl"
+	saverepository "backend/internal/save/repository/impl"
 	studentrepository "backend/internal/student/repository/impl"
 	studyprogramrepository "backend/internal/studyprogram/repository/impl"
 	studyprogramservice "backend/internal/studyprogram/service/impl"
 
-	postservice "backend/internal/post/service/impl"
 	authservice "backend/internal/auth/service/impl"
 	facultyrepository "backend/internal/faculty/repository/impl"
 	pingservice "backend/internal/ping/service/impl"
+	postservice "backend/internal/post/service/impl"
 	userrepository "backend/internal/user/repository/impl"
 	userservice "backend/internal/user/service/impl"
 	customservicemiddleware "backend/pkg/middleware/service/impl"
@@ -200,6 +203,31 @@ func InitWebservice(params *WebserviceParams) error {
 		}),
 	})
 
+	// Comment
+	commentRepository := commentrepository.NewCommentRepository(&commentrepository.CommentRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "comment",
+			"layer":  "repository",
+		}),
+	})
+	// Save
+	saveRepository := saverepository.NewSaveRepository(&saverepository.SaveRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "save",
+			"layer":  "repository",
+		}),
+	})
+	// Like
+	likeRepository := likerepository.NewLikeRepository(&likerepository.LikeRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "like",
+			"layer":  "repository",
+		}),
+	})
+
 	// Post
 	postRepository := postrepository.NewPostRepository(&postrepository.PostRepositoryParams{
 		DB: db,
@@ -210,7 +238,10 @@ func InitWebservice(params *WebserviceParams) error {
 	})
 
 	postService := postservice.NewPostService(&postservice.PostServiceParams{
-		Repo:         postRepository,
+		Repo:     postRepository,
+		RepoLike: likeRepository,
+		RepoSave: saveRepository,
+		RepoComment: commentRepository,
 		Log: params.Log.WithFields(logrus.Fields{
 			"domain": "post",
 			"layer":  "service",

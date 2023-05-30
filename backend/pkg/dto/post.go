@@ -15,7 +15,7 @@ func CheckPostCategory(cat string) bool {
 	for _, v := range PostCategory {
 		if v == cat {
 			return true
-		} 
+		}
 	}
 	return false
 }
@@ -43,6 +43,10 @@ type CreatePostReq struct {
 	ContentFilePublicID string
 	PostCategory        string `form:"post_category"`
 }
+type GetPostByIDReq struct {
+	PostID uuid.UUID `param:"id"`
+	UserID uuid.UUID
+}
 
 type PostResponse struct {
 	ID             uuid.UUID        `json:"id"`
@@ -54,6 +58,8 @@ type PostResponse struct {
 	PostCategory   string           `json:"post_category"`
 	IsSaved        bool             `json:"is_saved"`
 	IsLiked        bool             `json:"is_liked"`
+	TotalLikes     int64            `json:"total_likes"`
+	TotalComments  int64            `json:"total_comments"`
 	User           PostUserResponse `json:"user"`
 }
 
@@ -61,4 +67,23 @@ type PostUserResponse struct {
 	ID            uuid.UUID `json:"id"`
 	Name          string    `json:"name"`
 	ProfilePicURL string    `json:"profile_pic_url"`
+}
+
+
+
+func ConvertPostToPostResponse(post Post) PostResponse {
+	return PostResponse{
+		ID:             post.ID,
+		CreatedAt:      post.CreatedAt,
+		UpdatedAt:      post.UpdatedAt,
+		Caption:        post.Caption,
+		ContentFileURL: post.ContentFileURL,
+		ContentType:    post.ContentType,
+		PostCategory:   post.PostCategory,
+		User: PostUserResponse{
+			ID:            post.User.ID,
+			Name:          post.User.Name,
+			ProfilePicURL: post.User.ProfilePicURL,
+		},
+	}
 }
