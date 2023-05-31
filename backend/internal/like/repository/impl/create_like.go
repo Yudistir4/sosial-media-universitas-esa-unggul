@@ -2,16 +2,24 @@ package impl
 
 import (
 	"backend/pkg/dto"
+	customerrors "backend/pkg/errors"
 
 	"github.com/google/uuid"
 )
 
-func (r *likeRepository) CreateLike(PostID uuid.UUID, UserID uuid.UUID) error {
+func (r *likeRepository) CreateLike(req dto.PostAction) error {
 
+	ok, err := r.CheckIsLiked(req.PostID, req.UserID)
+	if err != nil {
+		return err
+	}
+	if ok {
+		return customerrors.ErrPostHasBeenLiked
+	}
 	like := dto.Like{
 		ID:     uuid.New(),
-		PostID: PostID,
-		UserID: UserID,
+		PostID: req.PostID,
+		UserID: req.UserID,
 	}
 
 	result := r.db.Create(&like)

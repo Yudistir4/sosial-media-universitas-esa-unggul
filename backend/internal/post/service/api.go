@@ -9,4 +9,6 @@ type PostService interface {
 	GetPostByID(req dto.GetPostByIDReq) (dto.PostResponse, error)
 	GetPosts(req dto.GetPostsReq) ([]dto.PostResponse, error)
 	UpdatePost(req dto.UpdatePostByIDReq) (dto.PostResponse, error)
+	LikePost(req dto.PostAction) error
+	UnlikePost(req dto.PostAction) error
 }

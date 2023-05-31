@@ -50,6 +50,11 @@ type GetPostsReq struct {
 	UserID       uuid.UUID `query:"user_id"`
 	Caption      string    `query:"caption"`
 }
+
+type PostAction struct {
+	PostID uuid.UUID `param:"id" validate:"required"`
+	UserID uuid.UUID
+}
 type GetPostByIDReq struct {
 	PostID uuid.UUID `param:"id"`
 	UserID uuid.UUID

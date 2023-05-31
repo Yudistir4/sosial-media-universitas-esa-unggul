@@ -14,3 +14,11 @@ type Save struct {
 	User      User `gorm:"ForeignKey:UserID"`
 	CreatedAt time.Time
 }
+
+type SavePost struct {
+	PostAction
+}
+
+type UnsavePost struct {
+	PostAction
+}

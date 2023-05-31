@@ -9,3 +9,13 @@ type Like struct {
 	UserID uuid.UUID
 	User   User `gorm:"ForeignKey:UserID"`
 }
+
+
+type LikePost struct {
+	PostAction
+}
+
+type UnlikePost struct {
+	PostAction
+}
+
