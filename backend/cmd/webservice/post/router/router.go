@@ -29,4 +29,5 @@ func InitPostRouter(params RouterParams) {
 	postV1Group := params.E.Group(apiversioning.APIVersion1 + "/posts")
 	postV1Group.POST("", postHandler.CreatePost(params.Service), params.Middleware.UserMustAuthorized())
 	postV1Group.GET("/:id", postHandler.GetPostByID(params.Service), params.Middleware.UserMustAuthorized())
+	postV1Group.GET("", postHandler.GetPosts(params.Service), params.Middleware.UserMustAuthorized())
 }

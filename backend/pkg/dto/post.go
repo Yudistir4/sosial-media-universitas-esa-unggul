@@ -43,6 +43,13 @@ type CreatePostReq struct {
 	ContentFilePublicID string
 	PostCategory        string `form:"post_category"`
 }
+type GetPostsReq struct {
+	Page         int       `query:"page"`
+	Limit        int       `query:"limit"`
+	PostCategory string    `query:"post_category"`
+	UserID       uuid.UUID `query:"user_id"`
+	Caption      string    `query:"caption"`
+}
 type GetPostByIDReq struct {
 	PostID uuid.UUID `param:"id"`
 	UserID uuid.UUID
@@ -68,8 +75,6 @@ type PostUserResponse struct {
 	Name          string    `json:"name"`
 	ProfilePicURL string    `json:"profile_pic_url"`
 }
-
-
 
 func ConvertPostToPostResponse(post Post) PostResponse {
 	return PostResponse{
