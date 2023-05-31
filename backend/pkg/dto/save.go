@@ -15,10 +15,4 @@ type Save struct {
 	CreatedAt time.Time
 }
 
-type SavePost struct {
-	PostAction
-}
-
-type UnsavePost struct {
-	PostAction
-}
+ 
