@@ -4,6 +4,7 @@ import (
 	"backend/pkg/dto"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type CommentRepository interface {
@@ -12,4 +13,5 @@ type CommentRepository interface {
 	GetTotalComments(PostID uuid.UUID) (int64, error)
 	DeleteCommentByID(CommentID uuid.UUID) error
 	CreateComment(req dto.CreateCommentReq) (dto.Comment, error)
+	DeleteComments(PostID uuid.UUID, tx *gorm.DB) error
 }

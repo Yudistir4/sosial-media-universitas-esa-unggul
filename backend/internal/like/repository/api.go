@@ -4,6 +4,7 @@ import (
 	"backend/pkg/dto"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type LikeRepository interface {
@@ -11,4 +12,5 @@ type LikeRepository interface {
 	GetTotalLikes(PostID uuid.UUID) (int64, error)
 	CreateLike(req dto.PostAction) error
 	DeleteLike(req dto.PostAction) error
+	DeleteLikes(PostID uuid.UUID, tx *gorm.DB) error
 }

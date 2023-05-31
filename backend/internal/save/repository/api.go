@@ -4,6 +4,7 @@ import (
 	"backend/pkg/dto"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type SaveRepository interface {
@@ -11,5 +12,5 @@ type SaveRepository interface {
 	GetTotalSaves(PostID uuid.UUID) (int64, error)
 	CreateSave(req dto.PostAction) error
 	DeleteSave(req dto.PostAction) error
+	DeleteSaves(PostID uuid.UUID, tx *gorm.DB) error
 }
-	
