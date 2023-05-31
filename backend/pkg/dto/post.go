@@ -54,6 +54,11 @@ type GetPostByIDReq struct {
 	PostID uuid.UUID `param:"id"`
 	UserID uuid.UUID
 }
+type UpdatePostByIDReq struct {
+	PostID  uuid.UUID `param:"id"`
+	UserID  uuid.UUID
+	Caption string `json:"caption" validate:"required"`
+}
 
 type PostResponse struct {
 	ID             uuid.UUID        `json:"id"`
