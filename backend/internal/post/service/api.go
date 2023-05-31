@@ -11,4 +11,6 @@ type PostService interface {
 	UpdatePost(req dto.UpdatePostByIDReq) (dto.PostResponse, error)
 	LikePost(req dto.PostAction) error
 	UnlikePost(req dto.PostAction) error
+	SavePost(req dto.PostAction) error
+	UnsavePost(req dto.PostAction) error
 }
