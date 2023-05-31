@@ -35,4 +35,7 @@ func InitPostRouter(params RouterParams) {
 	postV1Group.DELETE("/:id/like", postHandler.UnlikePost(params.Service), params.Middleware.UserMustAuthorized())
 	postV1Group.POST("/:id/save", postHandler.SavePost(params.Service), params.Middleware.UserMustAuthorized())
 	postV1Group.DELETE("/:id/save", postHandler.UnsavePost(params.Service), params.Middleware.UserMustAuthorized())
+	postV1Group.POST("/:id/comments", postHandler.CreateComment(params.Service), params.Middleware.UserMustAuthorized())
+	postV1Group.GET("/:id/comments", postHandler.GetComments(params.Service), params.Middleware.UserMustAuthorized())
+	postV1Group.DELETE("/:post_id/comments/:comment_id", postHandler.DeleteComment(params.Service), params.Middleware.UserMustAuthorized())
 }

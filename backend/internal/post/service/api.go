@@ -13,4 +13,7 @@ type PostService interface {
 	UnlikePost(req dto.PostAction) error
 	SavePost(req dto.PostAction) error
 	UnsavePost(req dto.PostAction) error
+	CreateComment(req dto.CreateCommentReq) (dto.CommentResponse, error)
+	GetComments(req dto.GetCommentsReq) ([]dto.CommentResponse, error)
+	DeleteComment(req dto.DeleteCommentReq) error
 }

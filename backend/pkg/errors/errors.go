@@ -20,7 +20,7 @@ var (
 	ErrBadRequest                             = errors.New("bad request")
 	ErrPostHasBeenLiked                       = errors.New("The post has already been liked.")
 	ErrPostHasBeenUnliked                     = errors.New("The post has already been unliked.")
-	ErrPostHasBeenSave                       = errors.New("The post has already been save.")
+	ErrPostHasBeenSave                        = errors.New("The post has already been save.")
 	ErrPostHasBeenUnsaved                     = errors.New("The post has already been unsaved.")
 	ErrInvalidPostCategory                    = errors.New("Invalid post category")
 	ErrEmailRelatedToAnotherAccount           = errors.New("The email address provided is already associated with another account. Please enter a different email address to proceed.")
@@ -32,10 +32,14 @@ var (
 	ErrBadRequestFileType                     = errors.New("Invalid file type")
 	ErrRecordNotFound                         = errors.New("record not found")
 	ErrPostNotFound                           = errors.New("Post not found")
+	ErrPostHasBeenDeleted                     = errors.New("The post has already been deleted.")
+	ErrCommentHasBeenDeleted                  = errors.New("The comment has already been deleted.")
 	ErrAccountNotFound                        = errors.New("The entered account does not exist")
 	ErrNotFound                               = errors.New("not found")
 	ErrUserNotFound                           = errors.New("User not found")
+	ErrCommentNotFound                        = errors.New("Comment not found")
 	ErrStudyProgramNotFound                   = errors.New("Study program not found")
+	ErrUnauthorizedUserAction                 = errors.New("Sorry, you are not authorized to perform this action.")
 	ErrUnauthorized                           = errors.New("unauthorized")
 	ErrAccessTokenExpired                     = errors.New("Access token has expired")
 	ErrRefreshTokenExpired                    = errors.New("Refresh token has expired")
@@ -51,8 +55,8 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrInternalServer:                         {HTTPErrorCode: http.StatusInternalServerError, Message: ErrInternalServer.Error()},
 	ErrBadRequest:                             {HTTPErrorCode: http.StatusBadRequest, Message: ErrBadRequest.Error()},
 	ErrPostHasBeenLiked:                       {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenLiked.Error()},
-	ErrPostHasBeenSave:                       {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenSave.Error()},
-	ErrPostHasBeenUnsaved:                       {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenUnsaved.Error()},
+	ErrPostHasBeenSave:                        {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenSave.Error()},
+	ErrPostHasBeenUnsaved:                     {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenUnsaved.Error()},
 	ErrPostHasBeenUnliked:                     {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenUnliked.Error()},
 	ErrInvalidPostCategory:                    {HTTPErrorCode: http.StatusBadRequest, Message: ErrInvalidPostCategory.Error()},
 	ErrEmailRelatedToAnotherAccount:           {HTTPErrorCode: http.StatusBadRequest, Message: ErrEmailRelatedToAnotherAccount.Error()},
@@ -66,9 +70,13 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrAccountNotFound:                        {HTTPErrorCode: http.StatusNotFound, Message: ErrAccountNotFound.Error()},
 	ErrNotFound:                               {HTTPErrorCode: http.StatusNotFound, Message: ErrNotFound.Error()},
 	ErrPostNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrPostNotFound.Error()},
+	ErrPostHasBeenDeleted:                     {HTTPErrorCode: http.StatusNotFound, Message: ErrPostHasBeenDeleted.Error()},
+	ErrCommentHasBeenDeleted:                  {HTTPErrorCode: http.StatusNotFound, Message: ErrCommentHasBeenDeleted.Error()},
 	ErrUserNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrUserNotFound.Error()},
+	ErrCommentNotFound:                        {HTTPErrorCode: http.StatusNotFound, Message: ErrCommentNotFound.Error()},
 	ErrStudyProgramNotFound:                   {HTTPErrorCode: http.StatusNotFound, Message: ErrStudyProgramNotFound.Error()},
 	ErrUnauthorized:                           {HTTPErrorCode: http.StatusUnauthorized, Message: ErrUnauthorized.Error()},
+	ErrUnauthorizedUserAction:                 {HTTPErrorCode: http.StatusUnauthorized, Message: ErrUnauthorizedUserAction.Error()},
 	ErrAccessTokenExpired:                     {HTTPErrorCode: http.StatusUnauthorized, Message: ErrAccessTokenExpired.Error()},
 	ErrRefreshTokenExpired:                    {HTTPErrorCode: http.StatusUnauthorized, Message: ErrRefreshTokenExpired.Error()},
 	ErrUnauthorizedRole:                       {HTTPErrorCode: http.StatusUnauthorized, Message: ErrUnauthorizedRole.Error()},
