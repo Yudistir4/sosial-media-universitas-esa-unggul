@@ -77,6 +77,7 @@ type PostResponse struct {
 	IsLiked        bool             `json:"is_liked"`
 	TotalLikes     int64            `json:"total_likes"`
 	TotalComments  int64            `json:"total_comments"`
+	TotalSaves     int64            `json:"total_saves"`
 	User           PostUserResponse `json:"user"`
 }
 

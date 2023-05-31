@@ -30,6 +30,9 @@ func (s *postService) GetPostByID(req dto.GetPostByIDReq) (dto.PostResponse, err
 	if postResponse.IsSaved, err = s.repoSave.CheckIsSaved(req.PostID, req.UserID); err != nil {
 		return dto.PostResponse{}, err
 	}
-
+	// Get total save
+	if postResponse.TotalSaves, err = s.repoSave.GetTotalSaves(post.ID); err != nil {
+		return dto.PostResponse{}, err
+	}
 	return postResponse, nil
 }

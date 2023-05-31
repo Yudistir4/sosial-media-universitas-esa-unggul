@@ -33,6 +33,10 @@ func (s *postService) GetPosts(req dto.GetPostsReq) ([]dto.PostResponse, error) 
 		if postResponse.IsSaved, err = s.repoSave.CheckIsSaved(post.ID, req.UserID); err != nil {
 			return []dto.PostResponse{}, err
 		}
+		// Get total save
+		if postResponse.TotalSaves, err = s.repoSave.GetTotalSaves(post.ID); err != nil {
+			return []dto.PostResponse{}, err
+		}
 
 		postsResponse = append(postsResponse, postResponse)
 	}
