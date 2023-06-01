@@ -17,6 +17,8 @@ func (r *postRepository) GetPosts(req dto.GetPostsReq) ([]dto.Post, error) {
 		query = query.Where("caption LIKE ? AND post_category = ? AND user_id = ?", "%"+req.Caption+"%", req.PostCategory, req.UserID)
 	} else if req.Caption != "" && req.PostCategory != "" {
 		query = query.Where("caption LIKE ? AND post_category = ?", "%"+req.Caption+"%", req.PostCategory)
+	} else if req.Caption != "" && req.UserID != uuid.Nil {
+		query = query.Where("caption LIKE ? AND user_id = ?", "%"+req.Caption+"%", req.UserID)
 	} else if req.Caption != "" {
 		query = query.Where("caption LIKE ?", "%"+req.Caption+"%")
 	} else if req.PostCategory != "" {
