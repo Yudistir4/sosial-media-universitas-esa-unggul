@@ -3,18 +3,22 @@ package impl
 import (
 	"backend/pkg/dto"
 	customerrors "backend/pkg/errors"
+	"errors"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
-func (r *likeRepository) CreateLike(req dto.PostAction) error {
-
+func (r *likeRepository) CreateLike(req dto.PostAction, tx *gorm.DB) (dto.Like, error) {
+	if tx == nil {
+		return dto.Like{}, errors.New("transaction not started")
+	}
 	ok, err := r.CheckIsLiked(req.PostID, req.UserID)
 	if err != nil {
-		return err
+		return dto.Like{}, err
 	}
 	if ok {
-		return customerrors.ErrPostHasBeenLiked
+		return dto.Like{}, customerrors.ErrPostHasBeenLiked
 	}
 	like := dto.Like{
 		ID:     uuid.New(),
@@ -22,9 +26,9 @@ func (r *likeRepository) CreateLike(req dto.PostAction) error {
 		UserID: req.UserID,
 	}
 
-	result := r.db.Create(&like)
+	result := tx.Create(&like)
 	if result.Error != nil {
-		return result.Error
+		return dto.Like{}, result.Error
 	}
-	return nil
+	return like, nil
 }

@@ -7,12 +7,14 @@ import (
 	"backend/config"
 	"fmt"
 
+	notificationrouter "backend/cmd/webservice/notification/router"
 	postrouter "backend/cmd/webservice/post/router"
 	studyprogramrouter "backend/cmd/webservice/studyprogram/router"
-	commentrepository "backend/internal/comment/repository/impl"
 	authrepository "backend/internal/auth/repository/impl"
+	commentrepository "backend/internal/comment/repository/impl"
 	lecturerrepository "backend/internal/lecturer/repository/impl"
 	likerepository "backend/internal/like/repository/impl"
+	notificationrepository "backend/internal/notification/repository/impl"
 	postrepository "backend/internal/post/repository/impl"
 	saverepository "backend/internal/save/repository/impl"
 	studentrepository "backend/internal/student/repository/impl"
@@ -20,6 +22,8 @@ import (
 	studyprogramservice "backend/internal/studyprogram/service/impl"
 
 	authservice "backend/internal/auth/service/impl"
+	notificationservice "backend/internal/notification/service/impl"
+
 	facultyrepository "backend/internal/faculty/repository/impl"
 	pingservice "backend/internal/ping/service/impl"
 	postservice "backend/internal/post/service/impl"
@@ -228,6 +232,33 @@ func InitWebservice(params *WebserviceParams) error {
 		}),
 	})
 
+	// Notification
+	notificationRepository := notificationrepository.NewNotificationRepository(&notificationrepository.NotificationRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "notification",
+			"layer":  "repository",
+		}),
+	})
+
+	notificationService := notificationservice.NewNotificationService(&notificationservice.NotificationServiceParams{
+		Repo: notificationRepository,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "notification",
+			"layer":  "service",
+		}),
+		Config: params.Config,
+	})
+	notificationrouter.InitNotificationRouter(notificationrouter.RouterParams{
+		E:         e,
+		Service:   notificationService,
+		Validator: validator,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "notification",
+			"layer":  "handler",
+		}),
+		Middleware: middleware,
+	})
 	// Post
 	postRepository := postrepository.NewPostRepository(&postrepository.PostRepositoryParams{
 		DB: db,
@@ -238,10 +269,11 @@ func InitWebservice(params *WebserviceParams) error {
 	})
 
 	postService := postservice.NewPostService(&postservice.PostServiceParams{
-		Repo:     postRepository,
-		RepoLike: likeRepository,
-		RepoSave: saveRepository,
-		RepoComment: commentRepository,
+		Repo:             postRepository,
+		RepoLike:         likeRepository,
+		RepoSave:         saveRepository,
+		RepoComment:      commentRepository,
+		RepoNotification: notificationRepository,
 		Log: params.Log.WithFields(logrus.Fields{
 			"domain": "post",
 			"layer":  "service",

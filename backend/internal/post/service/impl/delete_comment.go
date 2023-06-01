@@ -25,9 +25,17 @@ func (s *postService) DeleteComment(req dto.DeleteCommentReq) error {
 		return customerrors.ErrUnauthorizedUserAction
 	}
 
-	if err = s.repoComment.DeleteCommentByID(req.CommentID); err != nil {
+	// begin transaction
+	tx := s.db.Begin()
+	if err = s.repoNotification.DeleteNotification(dto.DeleteNotificationReq{CommentID: req.CommentID}, tx); err != nil {
+		tx.Rollback()
 		return err
 	}
+	if err = s.repoComment.DeleteCommentByID(req.CommentID, tx); err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
 
 	return nil
 }

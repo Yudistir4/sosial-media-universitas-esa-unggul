@@ -6,17 +6,40 @@ import (
 )
 
 func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentResponse, error) {
-	if _, err := s.repo.GetPostByID(req.PostID); err != nil {
+	post, err := s.repo.GetPostByID(req.PostID)
+	if err != nil {
 		if err == customerrors.ErrPostNotFound {
 			return dto.CommentResponse{}, customerrors.ErrPostHasBeenDeleted
 		}
 		return dto.CommentResponse{}, err
 	}
 
-	comment, err := s.repoComment.CreateComment(req)
+	// begin tx
+	tx := s.db.Begin()
+
+	// Create Comment with tx
+	comment, err := s.repoComment.CreateComment(req,tx)
 	if err != nil {
+		tx.Rollback()
 		return dto.CommentResponse{}, err
 	}
+
+	// Create Notification
+	if req.UserID != post.UserID {
+		createNotif := dto.CreateNotificationReq{
+			FromUserID: req.UserID,
+			ToUserID:   post.UserID,
+			PostID:     req.PostID,
+			CommentID:  &comment.ID,
+		}
+		if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {
+			tx.Rollback()
+			return dto.CommentResponse{}, err
+		}
+	}
+
+	tx.Commit()
+	
 	if comment, err = s.repoComment.GetCommentByID(comment.ID); err != nil {
 		return dto.CommentResponse{}, err
 	}
