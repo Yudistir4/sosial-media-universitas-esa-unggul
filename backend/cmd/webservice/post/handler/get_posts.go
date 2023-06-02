@@ -24,7 +24,7 @@ func (h *postHandler) GetPosts(service service.PostService) echo.HandlerFunc {
 		// Binding data and assign userID
 		var req dto.GetPostsReq
 		err := c.Bind(&req)
-		req.UserID = loggedInUser.UserID
+		req.LoggedInUserID = loggedInUser.UserID
 		if err != nil {
 			return httputils.ErrorResponse(c, httputils.ErrorResponseParams{
 				Err: customerrors.ErrBadRequest,

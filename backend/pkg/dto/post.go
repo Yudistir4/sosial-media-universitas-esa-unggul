@@ -44,11 +44,13 @@ type CreatePostReq struct {
 	PostCategory        string `form:"post_category"`
 }
 type GetPostsReq struct {
-	Page         int       `query:"page"`
-	Limit        int       `query:"limit"`
-	PostCategory string    `query:"post_category"`
-	UserID       uuid.UUID `query:"user_id"`
-	Caption      string    `query:"caption"`
+	Page           int       `query:"page"`
+	Limit          int       `query:"limit"`
+	PostCategory   string    `query:"post_category"`
+	UserID         uuid.UUID `query:"user_id"`
+	LoggedInUserID uuid.UUID
+	Caption        string `query:"caption"`
+	Saved           bool   `query:"saved"`
 }
 
 type PostAction struct {

@@ -16,7 +16,7 @@ func (s *postService) GetPosts(req dto.GetPostsReq) ([]dto.PostResponse, error) 
 		postResponse := dto.ConvertPostToPostResponse(post)
 
 		// Check is_liked
-		if postResponse.IsLiked, err = s.repoLike.CheckIsLiked(post.ID, req.UserID); err != nil {
+		if postResponse.IsLiked, err = s.repoLike.CheckIsLiked(post.ID, req.LoggedInUserID); err != nil {
 			return []dto.PostResponse{}, err
 		}
 		// get total likes
@@ -30,7 +30,7 @@ func (s *postService) GetPosts(req dto.GetPostsReq) ([]dto.PostResponse, error) 
 		}
 
 		// Check is_saved
-		if postResponse.IsSaved, err = s.repoSave.CheckIsSaved(post.ID, req.UserID); err != nil {
+		if postResponse.IsSaved, err = s.repoSave.CheckIsSaved(post.ID, req.LoggedInUserID); err != nil {
 			return []dto.PostResponse{}, err
 		}
 		// Get total save
