@@ -14,7 +14,7 @@ func (r *saveRepository) CreateSave(req dto.PostAction) error {
 		return err
 	}
 	if ok {
-		return customerrors.ErrPostHasBeenSave
+		return customerrors.ErrPostHasBeenSaved
 	}
 	save := dto.Save{
 		ID:     uuid.New(),

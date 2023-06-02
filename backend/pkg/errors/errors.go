@@ -20,7 +20,7 @@ var (
 	ErrBadRequest                             = errors.New("bad request")
 	ErrPostHasBeenLiked                       = errors.New("The post has already been liked.")
 	ErrPostHasBeenUnliked                     = errors.New("The post has already been unliked.")
-	ErrPostHasBeenSave                        = errors.New("The post has already been save.")
+	ErrPostHasBeenSaved                       = errors.New("The post has already been saved.")
 	ErrPostHasBeenUnsaved                     = errors.New("The post has already been unsaved.")
 	ErrInvalidPostCategory                    = errors.New("Invalid post category")
 	ErrEmailRelatedToAnotherAccount           = errors.New("The email address provided is already associated with another account. Please enter a different email address to proceed.")
@@ -55,7 +55,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrInternalServer:                         {HTTPErrorCode: http.StatusInternalServerError, Message: ErrInternalServer.Error()},
 	ErrBadRequest:                             {HTTPErrorCode: http.StatusBadRequest, Message: ErrBadRequest.Error()},
 	ErrPostHasBeenLiked:                       {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenLiked.Error()},
-	ErrPostHasBeenSave:                        {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenSave.Error()},
+	ErrPostHasBeenSaved:                       {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenSaved.Error()},
 	ErrPostHasBeenUnsaved:                     {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenUnsaved.Error()},
 	ErrPostHasBeenUnliked:                     {HTTPErrorCode: http.StatusConflict, Message: ErrPostHasBeenUnliked.Error()},
 	ErrInvalidPostCategory:                    {HTTPErrorCode: http.StatusBadRequest, Message: ErrInvalidPostCategory.Error()},
