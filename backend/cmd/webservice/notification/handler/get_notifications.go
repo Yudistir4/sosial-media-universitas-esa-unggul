@@ -40,6 +40,13 @@ func (h *notificationHandler) GetNotifications(service service.NotificationServi
 				Detail: errStr,
 			})
 		}
+		if req.Page == 0 {
+			req.Page = 1
+		}
+
+		if req.Limit == 0 {
+			req.Limit = 20
+		}
 
 		notifications, err := service.GetNotifications(req)
 		if err != nil {
