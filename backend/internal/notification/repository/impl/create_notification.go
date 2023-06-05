@@ -14,9 +14,9 @@ func (r *notificationRepository) CreateNotification(req dto.CreateNotificationRe
 	}
 
 	var activity string
-	if req.CommentID != &uuid.Nil {
+	if req.CommentID != nil {
 		activity = "comment"
-	} else if req.LikeID != &uuid.Nil {
+	} else if req.LikeID != nil {
 		activity = "like"
 	}
 
