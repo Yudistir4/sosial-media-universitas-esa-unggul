@@ -18,7 +18,7 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 	tx := s.db.Begin()
 
 	// Create Comment with tx
-	comment, err := s.repoComment.CreateComment(req,tx)
+	comment, err := s.repoComment.CreateComment(req, tx)
 	if err != nil {
 		tx.Rollback()
 		return dto.CommentResponse{}, err
@@ -39,7 +39,7 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 	}
 
 	tx.Commit()
-	
+
 	if comment, err = s.repoComment.GetCommentByID(comment.ID); err != nil {
 		return dto.CommentResponse{}, err
 	}

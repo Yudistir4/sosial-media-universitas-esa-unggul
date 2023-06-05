@@ -3,9 +3,11 @@ package impl
 import (
 	"backend/pkg/dto"
 	customerrors "backend/pkg/errors"
+
+	"gorm.io/gorm"
 )
 
-func (r *likeRepository) DeleteLike(req dto.PostAction) error {
+func (r *likeRepository) DeleteLike(req dto.PostAction, tx *gorm.DB) error {
 	ok, err := r.CheckIsLiked(req.PostID, req.UserID)
 	if err != nil {
 		return err
@@ -13,7 +15,7 @@ func (r *likeRepository) DeleteLike(req dto.PostAction) error {
 	if !ok {
 		return customerrors.ErrPostHasBeenUnliked
 	}
-	result := r.db.Where("post_id = ? AND user_id = ?", req.PostID, req.UserID).Delete(&dto.Like{})
+	result := tx.Where("post_id = ? AND user_id = ?", req.PostID, req.UserID).Delete(&dto.Like{})
 	if result.Error != nil {
 		return result.Error
 	}

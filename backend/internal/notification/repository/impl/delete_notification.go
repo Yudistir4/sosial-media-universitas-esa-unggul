@@ -12,7 +12,7 @@ func (r *notificationRepository) DeleteNotification(req dto.DeleteNotificationRe
 	if tx == nil {
 		return errors.New("transaction not started")
 	}
-	
+
 	var query *gorm.DB
 	if req.CommentID != uuid.Nil {
 		query = tx.Where("comment_id = ?", req.CommentID)

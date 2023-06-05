@@ -24,6 +24,11 @@ func (s *postService) DeletePost(req dto.PostAction) error {
 
 	// initiate tx
 	tx := s.db.Begin()
+	// delete all notification related to this post
+	if err = s.repoNotification.DeleteNotifications(req.PostID, tx); err != nil {
+		tx.Rollback()
+		return err
+	}
 	// delete likes tx
 	if err = s.repoLike.DeleteLikes(req.PostID, tx); err != nil {
 		tx.Rollback()
