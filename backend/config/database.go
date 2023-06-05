@@ -63,7 +63,7 @@ func InitDefaultData(db *gorm.DB) error {
 	var count int64
 	db.Model(&dto.UserType{}).Count(&count)
 	if count == 0 {
-		userTypes := []dto.UserType{{Name: "student"}, {Name: "lecturer"}, {Name: "faculty"}, {Name: "university"}}
+		userTypes := []dto.UserType{{Name: "student"}, {Name: "lecturer"}, {Name: "faculty"}, {Name: "university"},{Name: "organization"}}
 		result := db.Create(&userTypes)
 		if result.Error != nil {
 			fmt.Println("[Error] add userTypes:", result.Error)

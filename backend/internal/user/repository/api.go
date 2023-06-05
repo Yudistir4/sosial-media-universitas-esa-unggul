@@ -15,6 +15,7 @@ type UserRepository interface {
 	CreateUserStudent(req dto.CreateUserReq, studentID uuid.UUID, tx *gorm.DB) (dto.User, error)
 	CreateUserLecturer(req dto.CreateUserReq, lecturerID uuid.UUID, tx *gorm.DB) (dto.User, error)
 	CreateUserUniversity(req dto.CreateUserReq, tx *gorm.DB) (dto.User, error)
+	CreateUserOrganization(req dto.CreateUserReq, tx *gorm.DB) (dto.User, error)
 	UpdateUser(user *dto.User, tx *gorm.DB) error
 	UpdateUserProfile(req *dto.UpdateUserProfileReq) (dto.User, error)
 	UpdateUserProfilePic(user *dto.User) error

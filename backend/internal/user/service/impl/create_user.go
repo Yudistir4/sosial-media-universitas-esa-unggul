@@ -60,6 +60,8 @@ func (s *userService) CreateUser(req dto.CreateUserReq) (userResponse dto.UserRe
 		}
 		user, err = s.repo.CreateUserFaculty(req, faculty.ID, tx)
 
+	} else if req.UserType == "organization" {
+		user, err = s.repo.CreateUserOrganization(req, tx)
 	} else if req.UserType == "university" {
 		user, err = s.repo.CreateUserUniversity(req, tx)
 	}
