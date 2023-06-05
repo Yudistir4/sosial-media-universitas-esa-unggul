@@ -12,4 +12,5 @@ type NotificationRepository interface {
 	DeleteNotification(req dto.DeleteNotificationReq, tx *gorm.DB) error
 	DeleteNotifications(PostID uuid.UUID, tx *gorm.DB) error
 	GetNotifications(req dto.GetNotificationsReq) ([]dto.Notification, error)
+	MarkNotificationsAsRead(UserID uuid.UUID) error
 }
