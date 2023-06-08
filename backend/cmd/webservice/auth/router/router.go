@@ -27,7 +27,7 @@ func InitAuthRouter(params RouterParams) {
 	})
 
 	authV1Group := params.E.Group(apiversioning.APIVersion1 + "/auths")
-	authV1Group.POST("", authHandler.Login(params.Service))
+	authV1Group.POST("/login", authHandler.Login(params.Service))
 	authV1Group.POST("/forgot-password", authHandler.ForgotPasasword(params.Service))
 	authV1Group.POST("/reset-password/validate-code", authHandler.ValidateResetPasswordCode(params.Service))
 	authV1Group.POST("/reset-password", authHandler.ResetPasswordAfterForgot(params.Service))
