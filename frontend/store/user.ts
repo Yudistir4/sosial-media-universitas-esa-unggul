@@ -20,7 +20,7 @@ export const useAuth = create<AuthState>()(
       logout: () =>
         set({ user: null, access_token: null, refresh_token: null }),
     }),
-    { name: 'user-storage', getStorage: () => localStorage }
+    { name: 'user-storage' }
   )
 );
 
