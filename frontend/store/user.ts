@@ -1,6 +1,7 @@
 import { LoginData, User } from '@/typing';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import useGetFromStore from './store';
 type AuthState = {
   access_token: string | null;
   refresh_token: string | null;
