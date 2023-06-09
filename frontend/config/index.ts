@@ -3,6 +3,7 @@ export const config = {
 };
 
 export const api = {
-  auths: { login: '/auths/login' },
+  auths: '/auths',
   users: '/users',
+  posts: '/posts',
 };

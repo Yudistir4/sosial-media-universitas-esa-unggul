@@ -2,7 +2,12 @@ import { LoginData } from '@/typing';
 import { api, config } from '../config';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { getAccessToken, getRefreshToken, setAccessToken } from '@/store/user';
+import {
+  getAccessToken,
+  getRefreshToken,
+  logout,
+  setAccessToken,
+} from '@/store/user';
 
 export const convertToQueryStr = (query: any) => {
   let result = '';
@@ -17,11 +22,23 @@ export const client = axios.create({
 });
 
 const refresh = async () => {
-  const response = await client.post(api.auths + '/refresh', {
-    refresh_token: getRefreshToken(),
-  });
-  const accessToken = response.data.data.access_token;
-  setAccessToken(accessToken);
+  let accessToken = '';
+  try {
+    const response = await axios.post(
+      config.serverURL + api.auths + '/refresh',
+      {
+        refresh_token: getRefreshToken(),
+      }
+    );
+    accessToken = response.data.data.access_token;
+    setAccessToken(accessToken);
+  } catch (error: any) {
+    console.log('error while refresh', error);
+    if (error?.response.data.error.message === 'Refresh token has expired') {
+      console.log('logout')
+      logout();
+    }
+  }
   // client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
   return accessToken;
 };
@@ -30,6 +47,9 @@ client.interceptors.request.use(
     let currentDate = new Date();
 
     let accessToken = getAccessToken();
+    console.log(accessToken);
+    setAccessToken(accessToken);
+
     if (!accessToken) {
       return config;
     }

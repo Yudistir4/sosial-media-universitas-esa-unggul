@@ -1,5 +1,5 @@
 import { types } from 'util';
-import { Faculty } from './typing.d';
+import { Faculty, Response } from './typing.d';
 
 export interface LoginResponse {
   error: any;
@@ -7,10 +7,16 @@ export interface LoginResponse {
   data: LoginData;
 }
 
+export interface Response<T = null> {
+  error: ErrorResponse;
+  message: string;
+  data: T;
+}
+
 export interface ErrorResponse {
   error: {
     message: string;
-    details: [string];
+    details?: [string];
   };
 }
 
@@ -65,7 +71,7 @@ export interface StudyProgram {
   updated_at: Date;
 }
 
-export interface Post {
+export interface PostDoc {
   id: string;
   created_at: Date;
   updated_at: Date;

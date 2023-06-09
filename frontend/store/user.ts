@@ -16,7 +16,8 @@ export const useAuth = create<AuthState>()(
       refresh_token: null,
       user: null,
       login: (data: LoginData) => set({ ...data }),
-      logout: () => set({ user: null }),
+      logout: () =>
+        set({ user: null, access_token: null, refresh_token: null }),
     }),
     { name: 'user-storage', getStorage: () => localStorage }
   )
@@ -24,6 +25,10 @@ export const useAuth = create<AuthState>()(
 
 export const setAccessToken = (token: string | null) => {
   useAuth.setState({ access_token: token });
+};
+
+export const logout = () => {
+  useAuth.getState().logout();
 };
 
 export const getAccessToken = () => {

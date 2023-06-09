@@ -46,7 +46,7 @@ const LoginForm: React.FunctionComponent<ILoginFormProps> = ({
     Login
   >({
     mutationFn: async (data) => {
-      const res = await client.post(api.auths.login, data);
+      const res = await client.post(api.auths + '/login', data);
       return res.data;
     },
     onSuccess: (res) => {
@@ -59,7 +59,6 @@ const LoginForm: React.FunctionComponent<ILoginFormProps> = ({
     mutate(data);
   };
 
-  console.log(error?.response?.data.error.message);
   return (
     <form
       onSubmit={handleSubmit(submit)}
