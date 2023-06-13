@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	PostCategory = []string{"seminar", "beasiswa", "magang", "lomba"}
+	PostCategory = []string{"seminar", "scholarship", "internship", "competition"}
 )
 
 func CheckPostCategory(cat string) bool {
