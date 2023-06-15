@@ -25,6 +25,10 @@ type DeleteStudyProgramReq struct {
 type GetStudyProgramsReq struct {
 	FacultyID uuid.UUID `query:"faculty_id"`
 }
+type UpdateStudyProgramNameReq struct {
+	ID   uuid.UUID `param:"id" validate:"required"`
+	Name string    `json:"name" validate:"required"`
+}
 
 type StudyProgramResponse struct {
 	ID        uuid.UUID `json:"id"`

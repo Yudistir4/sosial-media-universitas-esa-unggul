@@ -12,4 +12,5 @@ type StudyProgramRepository interface {
 	GetStudyPrograms(req dto.GetStudyProgramsReq) (*[]dto.StudyProgram, error)
 	GetStudyProgramByName(Name string) (dto.StudyProgram, error)
 	DeleteStudyProgramByID(ID uuid.UUID) error
+	UpdateStudyProgramName(req dto.UpdateStudyProgramNameReq) (dto.StudyProgram, error)
 }

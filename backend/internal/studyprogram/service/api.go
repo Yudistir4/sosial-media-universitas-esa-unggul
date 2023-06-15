@@ -10,4 +10,5 @@ type StudyProgramService interface {
 	GetStudyPrograms(req dto.GetStudyProgramsReq) (*[]dto.StudyProgramResponse, error)
 	CreateStudyProgram(req dto.CreateStudyProgramReq) (dto.StudyProgramResponse, error)
 	DeleteStudyProgram(ID uuid.UUID) error
+	UpdateStudyProgramName(req dto.UpdateStudyProgramNameReq) (dto.StudyProgramResponse, error)
 }

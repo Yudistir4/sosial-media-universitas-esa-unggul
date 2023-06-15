@@ -28,5 +28,6 @@ func InitStudyProgramRouter(params RouterParams) {
 	studyprogramV1Group := params.E.Group(apiversioning.APIVersion1 + "/studyprograms")
 	studyprogramV1Group.GET("", studyProgramHandler.GetStudyPrograms(params.Service), params.Middleware.UserMustAuthorized())
 	studyprogramV1Group.POST("", studyProgramHandler.CreateStudyProgram(params.Service), params.Middleware.UserMustAuthorized())
+	studyprogramV1Group.PUT("/:id", studyProgramHandler.UpdateStudyProgramName(params.Service), params.Middleware.UserMustAuthorized())
 	studyprogramV1Group.DELETE("/:id", studyProgramHandler.DeleteStudyProgram(params.Service), params.Middleware.UserMustAuthorized())
 }
