@@ -18,6 +18,10 @@ func (r *userRepository) GetUsers(req dto.GetUsersReq) ([]dto.User, error) {
 
 	if req.Query != "" {
 		query = query.Where("users.name LIKE ? OR Student.nim LIKE ? OR Lecturer.nidn LIKE ?", "%"+req.Query+"%", "%"+req.Query+"%", "%"+req.Query+"%")
+	} else if req.UserType != "" && req.Name != "" && req.FacultyID != uuid.Nil {
+		query = query.Where("users.user_type_name = ? AND users.name LIKE ? AND (Student.faculty_id = ? OR Lecturer.faculty_id = ?)", req.UserType, "%"+req.Name+"%", req.FacultyID, req.FacultyID)
+	} else if req.UserType != "" && req.FacultyID != uuid.Nil {
+		query = query.Where("users.user_type_name = ? AND (Student.faculty_id = ? OR Lecturer.faculty_id = ?)", req.UserType, req.FacultyID, req.FacultyID)
 	} else if req.UserType != "" && req.Name != "" {
 		query = query.Where("users.user_type_name = ? AND users.name LIKE ?", req.UserType, "%"+req.Name+"%")
 	} else if req.UserType != "" {
