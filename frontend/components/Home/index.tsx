@@ -7,7 +7,7 @@ interface IHomeProps {}
 
 const Home: React.FunctionComponent<IHomeProps> = (props) => {
   return (
-    <Box className="h-[100vh] relative" bg="gray.50" m="auto">
+    <Box className="h-[100vh] relative" m="auto">
       <NavbarTop />
       <Main />
       <NavbarBottom />
