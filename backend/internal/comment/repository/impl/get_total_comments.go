@@ -9,7 +9,7 @@ import (
 func (r *commentRepository) GetTotalComments(PostID uuid.UUID) (int64, error) {
 
 	var commentCount int64
-	result := r.db.Model(&dto.Comment{}).Count(&commentCount)
+	result := r.db.Model(&dto.Comment{}).Where("post_id = ?", PostID).Count(&commentCount)
 	if result.Error != nil {
 		return 0, result.Error
 	}

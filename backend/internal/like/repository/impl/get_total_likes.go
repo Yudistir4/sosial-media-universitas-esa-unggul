@@ -9,7 +9,7 @@ import (
 func (r *likeRepository) GetTotalLikes(PostID uuid.UUID) (int64, error) {
 
 	var likeCount int64
-	result := r.db.Model(&dto.Like{}).Count(&likeCount)
+	result := r.db.Model(&dto.Like{}).Where("post_id = ?", PostID).Count(&likeCount)
 	if result.Error != nil {
 		return 0, result.Error
 	}
