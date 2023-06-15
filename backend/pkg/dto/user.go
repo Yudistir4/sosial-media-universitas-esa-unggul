@@ -121,6 +121,7 @@ type DeleteUserByIDReq struct {
 }
 type GetUsersReq struct {
 	Query          string    `query:"query"`
+	Name           string    `query:"name"`
 	Limit          int       `query:"limit"`
 	Page           int       `query:"page"`
 	UserType       string    `query:"user_type"`
