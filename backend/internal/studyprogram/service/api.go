@@ -7,7 +7,7 @@ import (
 )
 
 type StudyProgramService interface {
-	GetStudyPrograms() (*[]dto.StudyProgram, error)
+	GetStudyPrograms(req dto.GetStudyProgramsReq) (*[]dto.StudyProgramResponse, error)
 	CreateStudyProgram(req dto.CreateStudyProgramReq) (dto.StudyProgramResponse, error)
 	DeleteStudyProgram(ID uuid.UUID) error
 }

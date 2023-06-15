@@ -22,6 +22,10 @@ type DeleteStudyProgramReq struct {
 	ID uuid.UUID `param:"id"`
 }
 
+type GetStudyProgramsReq struct {
+	FacultyID uuid.UUID `query:"faculty_id"`
+}
+
 type StudyProgramResponse struct {
 	ID        uuid.UUID `json:"id"`
 	CreatedAt time.Time `json:"created_at"`

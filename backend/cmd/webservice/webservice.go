@@ -188,6 +188,7 @@ func InitWebservice(params *WebserviceParams) error {
 			"domain": "studyProgram",
 			"layer":  "handler",
 		}),
+		Middleware: middleware,
 	})
 
 	// Student
