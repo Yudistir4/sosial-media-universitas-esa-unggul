@@ -12,7 +12,9 @@ import {
 export const convertToQueryStr = (query: any) => {
   let result = '';
   for (const key in query) {
-    result += `&${key}=${query[key]}`;
+    if (query[key]) {
+      result += `&${key}=${query[key]}`;
+    }
   }
   return result.replace('&', '?');
 };
@@ -35,7 +37,7 @@ const refresh = async () => {
   } catch (error: any) {
     console.log('error while refresh', error);
     if (error?.response.data.error.message === 'Refresh token has expired') {
-      console.log('logout')
+      console.log('logout');
       logout();
     }
   }
@@ -47,7 +49,7 @@ client.interceptors.request.use(
     let currentDate = new Date();
 
     let accessToken = getAccessToken();
-    console.log(accessToken);
+
     setAccessToken(accessToken);
 
     if (!accessToken) {

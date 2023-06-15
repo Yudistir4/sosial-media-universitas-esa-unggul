@@ -1,6 +1,11 @@
 import { types } from 'util';
 import { Faculty, Response } from './typing.d';
-
+type UserType =
+  | 'student'
+  | 'lecturer'
+  | 'university'
+  | 'organization'
+  | 'faculty';
 export interface LoginResponse {
   error: any;
   message: string;
@@ -40,7 +45,7 @@ export interface User {
   whatsapp: string;
   student: Student;
   lecturer: Lecturer;
-  user_type: string;
+  user_type: UserType;
 }
 
 export interface Student {
@@ -59,13 +64,13 @@ export interface Lecturer {
 
 export interface Faculty {
   id: string;
-  Name: string;
+  name: string;
   created_at: Date;
   updated_at: Date;
 }
 export interface StudyProgram {
   id: string;
-  Name: string;
+  name: string;
   faculty: Faculty;
   created_at: Date;
   updated_at: Date;
@@ -85,4 +90,17 @@ export interface PostDoc {
   total_comments: number;
   total_saves: number;
   user: User;
+}
+
+interface UserLittle {
+  id: string;
+  name: string;
+  profile_pic_url: string;
+}
+export interface CommentDoc {
+  id: string;
+  created_at: Date;
+  updated_at: Date;
+  comment: string;
+  user: UserLittle;
 }

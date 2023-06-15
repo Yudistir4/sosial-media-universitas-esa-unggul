@@ -6,4 +6,6 @@ export const api = {
   auths: '/auths',
   users: '/users',
   posts: '/posts',
+  comments: '/comments',
+  studyprograms: '/studyprograms',
 };

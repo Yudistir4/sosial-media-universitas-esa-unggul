@@ -13,10 +13,12 @@ import { BsFillBookmarkFill } from 'react-icons/bs';
 import { GrAdd } from 'react-icons/gr';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCreatePostModal } from '@/store/createPostModal';
 
 interface INavbarBottomProps {}
 
 const NavbarBottom: React.FunctionComponent<INavbarBottomProps> = (props) => {
+  const onOpen = useCreatePostModal((state) => state.onOpen);
   return (
     <Flex
       display={{ sm: 'flex', lg: 'none' }}
@@ -26,7 +28,7 @@ const NavbarBottom: React.FunctionComponent<INavbarBottomProps> = (props) => {
       <Link href="/" className="h-full p-3">
         <AiFillHome />
       </Link>
-      <Link href="/" className="h-full p-3">
+      <Link onClick={onOpen} href="/" className="h-full p-3">
         <GrAdd />
       </Link>
       <Link href="/" className="h-full p-3">
