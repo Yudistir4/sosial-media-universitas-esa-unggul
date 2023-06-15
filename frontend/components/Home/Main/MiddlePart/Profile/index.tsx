@@ -115,7 +115,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
       )}
 
       <Tabs className="w-full mt-4">
-        <TabList className="font-[600]  overflow-auto">
+        <TabList className="font-[600]  overflow-auto scrollbar-hide">
           <Tab>Post</Tab>
           <Tab>Q&A</Tab>
           {['university', 'faculty'].includes(user?.user_type as string) && (
