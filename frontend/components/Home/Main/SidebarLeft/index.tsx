@@ -45,14 +45,16 @@ const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
         <Flex className="flex-col gap-2">
           {navLinksData.map((link, i) => (
             <NavLink key={i} href={link.href}>
-              <Button
-                bg="transparent"
-                leftIcon={link.icon}
-                justifyContent="start"
-                className="w-full"
-              >
-                {link.text}
-              </Button>
+              {({ isActive }) => (
+                <Button
+                  bg={isActive ? 'gray.100' : ''}
+                  leftIcon={link.icon}
+                  justifyContent="start"
+                  className="w-full"
+                >
+                  {link.text}
+                </Button>
+              )}
             </NavLink>
           ))}
         </Flex>
@@ -66,8 +68,8 @@ const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
             Setting
           </Button>
           <Button
-            onClick={logout}
             bg="transparent"
+            onClick={logout}
             leftIcon={<FiLogOut className="text-xl" />}
             justifyContent="start"
             className="w-full"
