@@ -7,6 +7,11 @@ import {
   InputRightElement,
   InputLeftElement,
   Text,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
   Avatar,
   IconButton,
 } from '@chakra-ui/react';
@@ -19,8 +24,9 @@ import { GrAdd } from 'react-icons/gr';
 import { useCreatePostModal } from '@/store/createPostModal';
 import { useAuth } from '@/store/user';
 // import Link from 'next/link';
-import NavLink from '../Navlink';
+import NavLink from '../../Navlink';
 import { Link } from '@chakra-ui/next-js';
+import Search from './Search';
 // import Link from 'next/link';
 
 interface INavbarTopProps {}
@@ -52,17 +58,7 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
           </Text> */}
           </Flex>
           {/* search */}
-          <InputGroup width={{ sm: 'full', lg: '70%', xl: '50%' }}>
-            <Input
-              onFocus={() => console.log('asik')}
-              onBlur={() => console.log('wkwk')}
-              placeholder="Search name, NIM, NIDN or content"
-              borderRadius={999}
-            />
-            <InputLeftElement className="cursor-pointer">
-              <IoSearchOutline />
-            </InputLeftElement>
-          </InputGroup>
+         <Search />
 
           <Flex
             width={{ lg: '30%', xl: '30%' }}
