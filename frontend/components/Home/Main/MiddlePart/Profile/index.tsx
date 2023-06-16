@@ -74,7 +74,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
                 variant="solid"
                 borderRadius="full"
                 px={3}
-                colorScheme="blue"
+                colorScheme={user?.user_type === 'student' ? 'blue' : 'gray'}
               >
                 {user?.user_type}
               </Badge>

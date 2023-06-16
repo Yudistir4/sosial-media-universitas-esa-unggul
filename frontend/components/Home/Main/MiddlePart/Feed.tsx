@@ -11,9 +11,10 @@ import Post from './Post';
 
 interface IFeedProps {
   user_id?: string;
+  caption?: string;
 }
 
-const Feed: React.FunctionComponent<IFeedProps> = ({ user_id }) => {
+const Feed: React.FunctionComponent<IFeedProps> = ({ user_id, caption }) => {
   // Fetch posts
   const {
     data: posts,
@@ -21,11 +22,12 @@ const Feed: React.FunctionComponent<IFeedProps> = ({ user_id }) => {
     hasNextPage,
     isLoading,
   } = useInfiniteQuery<Response<[PostDoc]>, AxiosError<Response>>({
-    queryKey: ['posts', user_id],
+    queryKey: ['posts', user_id, caption],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await client.get(
         `${api.posts}${convertToQueryStr({
           user_id,
+          caption,
           page: pageParam,
           limit: 5,
         })}`
@@ -45,8 +47,6 @@ const Feed: React.FunctionComponent<IFeedProps> = ({ user_id }) => {
       itemLength += page.data.length;
     }
   });
-
-  console.log(itemLength);
 
   isLoading && <div>Loading...</div>;
   return (
