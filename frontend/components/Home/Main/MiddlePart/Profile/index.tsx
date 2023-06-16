@@ -61,6 +61,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
           {loggedInUser?.id === user?.id && (
             <Button
               onClick={onOpen}
+              borderRadius="full"
               colorScheme="blue"
               leftIcon={<MdOutlineModeEditOutline className="text-xl" />}
             >
@@ -134,7 +135,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
         </TabList>
 
         <TabPanels>
-          <TabPanel>{user && <Feed user_id={user.id} />}</TabPanel>
+          <TabPanel px={0}>{user && <Feed user_id={user.id} />}</TabPanel>
           <TabPanel>
             <p>Q & A!</p>
           </TabPanel>

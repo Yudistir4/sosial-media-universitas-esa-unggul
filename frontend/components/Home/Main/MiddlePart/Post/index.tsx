@@ -2,11 +2,7 @@ import { useCreatePostModal } from '@/store/createPostModal';
 import { useAuth } from '@/store/user';
 import { useVideoSetting } from '@/store/videoSetting';
 import { PostDoc } from '@/typing';
-import {
-  Flex,
-  Image,
-  Text
-} from '@chakra-ui/react';
+import { Flex, Image, Text } from '@chakra-ui/react';
 import * as React from 'react';
 import Actions from './Actions';
 import Caption from './Caption';
@@ -63,7 +59,7 @@ const Post: React.FunctionComponent<IPostProps> = ({ post }) => {
   }, [isOpen]);
 
   return (
-    <Flex bg="white" shadow="lg" className="flex-col gap-3 py-3">
+    <Flex className="flex-col gap-3 py-3 bg-white  rounded-xl border-2">
       {/* Top */}
       <Flex className="justify-between items-center px-4">
         <User post={post} />

@@ -50,10 +50,16 @@ const Feed: React.FunctionComponent<IFeedProps> = ({ user_id, caption }) => {
 
   isLoading && <div>Loading...</div>;
   return (
-    <Flex direction="column" gap={2} zIndex={0} className="  h-full z-0  mb-20">
+    <Flex
+      paddingX={{ sm: 2, xl: 0 }}
+      direction="column"
+      gap={2}
+      zIndex={0}
+      className="  h-full z-0  mb-20"
+    >
       <CreatePost />
       <InfiniteScroll
-        className="flex flex-col gap-5 !overflow-visible"
+        className="flex flex-col gap-4 !overflow-visible"
         dataLength={itemLength} //This is important field to render the next data
         next={fetchNextPage}
         hasMore={!!hasNextPage}

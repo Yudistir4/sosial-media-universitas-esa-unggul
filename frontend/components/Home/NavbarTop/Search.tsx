@@ -91,7 +91,7 @@ const Search: React.FunctionComponent<ISearchProps> = (props) => {
             <TabPanel p={0}>
               <UserList search={search} closeDropDown={closeDropDown} />
             </TabPanel>
-            <TabPanel p={0}>{search && <Feed caption={search} />}</TabPanel>
+            <TabPanel px={1}>{search && <Feed caption={search} />}</TabPanel>
           </TabPanels>
         </Tabs>
       </div>
