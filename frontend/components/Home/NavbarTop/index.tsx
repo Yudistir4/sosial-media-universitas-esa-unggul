@@ -1,33 +1,14 @@
-import * as React from 'react';
-import {
-  Box,
-  Input,
-  Flex,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
-  Text,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Avatar,
-  IconButton,
-} from '@chakra-ui/react';
-import { IoIosNotificationsOutline } from 'react-icons/io';
-import { IoSearchOutline } from 'react-icons/io5';
-import { LuSettings2 } from 'react-icons/lu';
-import { BsFillBookmarkFill } from 'react-icons/bs';
-import Image from 'next/image';
-import { GrAdd } from 'react-icons/gr';
 import { useCreatePostModal } from '@/store/createPostModal';
 import { useAuth } from '@/store/user';
-// import Link from 'next/link';
-import NavLink from '../../Navlink';
+import { Avatar, Box, Flex, IconButton } from '@chakra-ui/react';
+import Image from 'next/image';
+import * as React from 'react';
+import { BsFillBookmarkFill } from 'react-icons/bs';
+import { GrAdd } from 'react-icons/gr';
+import { IoIosNotificationsOutline } from 'react-icons/io';
 import { Link } from '@chakra-ui/next-js';
+import NavLink from '../../Navlink';
 import Search from './Search';
-// import Link from 'next/link';
 
 interface INavbarTopProps {}
 
@@ -52,13 +33,9 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
                 alt="logo"
               />
             </Link>
-
-            {/* <Text as="b" fontSize="md">
-            Esa Unggul University
-          </Text> */}
           </Flex>
-          {/* search */}
-         <Search />
+
+          <Search />
 
           <Flex
             width={{ lg: '30%', xl: '30%' }}

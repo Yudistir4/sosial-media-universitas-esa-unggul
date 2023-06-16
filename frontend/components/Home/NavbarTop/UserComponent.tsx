@@ -1,34 +1,15 @@
 import { User } from '@/typing';
-import {
-  Avatar,
-  Badge,
-  Flex,
-  IconButton,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Avatar, Badge, Flex, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import * as React from 'react';
-import { MdOutlineDelete, MdOutlineModeEditOutline } from 'react-icons/md';
 
-import { useAuth } from '@/store/user';
-import { useRouter } from 'next/router';
 interface IUserProps {
   user: User;
 }
 
 const UserComponent: React.FunctionComponent<IUserProps> = ({ user }) => {
-  const loggedInUser = useAuth((state) => state.user);
-  const router = useRouter();
-  const { query } = router;
-  const userID = query.user_id;
-
   return (
     <Link href={`/?user_id=${user.id}`} className="">
-      {/* <Flex
-        key={user.id}
-        className="items-center gap-2 justify-between"
-      > */}
       <Flex className="items-center gap-2  hover:bg-gray-100 transition-all cursor-pointer px-4 py-2">
         <Avatar src={user.profile_pic_url} />
         <Flex className="flex-col justify-center">
@@ -53,7 +34,6 @@ const UserComponent: React.FunctionComponent<IUserProps> = ({ user }) => {
             </Text>
           </Flex>
         </Flex>
-        {/* </Flex> */}
       </Flex>
     </Link>
   );
