@@ -34,7 +34,7 @@ const Search: React.FunctionComponent<ISearchProps> = (props) => {
         onFocus={() => setIsFocus(true)}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search name, NIM, NIDN or content"
+        placeholder="Search name, NIM, NIDN or post..."
         borderRadius="full"
       />
       <InputLeftElement className="cursor-pointer">
@@ -65,7 +65,9 @@ const Search: React.FunctionComponent<ISearchProps> = (props) => {
             <TabPanel p={0}>
               <UserList search={search} closeDropDown={closeDropDown} />
             </TabPanel>
-            <TabPanel px={1}>{search && <Feed caption={search} />}</TabPanel>
+            <TabPanel px={{ sm: 1, xl: 3 }}>
+              {search && <Feed caption={search} />}
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </div>

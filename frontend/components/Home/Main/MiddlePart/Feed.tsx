@@ -1,13 +1,14 @@
 import { api } from '@/config';
 import { client, convertToQueryStr } from '@/services';
 import { PostDoc, Response } from '@/typing';
-import { Flex } from '@chakra-ui/react';
+import { Button, Flex, Spinner } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CreatePost from './CreatePost';
 import Post from './Post';
+import { AiOutlineWarning } from 'react-icons/ai';
 
 interface IFeedProps {
   user_id?: string;
@@ -64,7 +65,7 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
       direction="column"
       gap={2}
       zIndex={0}
-      className="  h-full z-0  mb-20"
+      className="  h-full z-0"
     >
       <CreatePost />
       <InfiniteScroll
@@ -72,16 +73,27 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
         dataLength={itemLength} //This is important field to render the next data
         next={fetchNextPage}
         hasMore={!!hasNextPage}
-        loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
+        loader={
+          <div className="flex justify-center">
+            <Spinner size="md" />
+          </div>
         }
       >
         {posts?.pages.map((page) => {
           return page.data?.map((post) => <Post key={post.id} post={post} />);
         })}
+        {itemLength === 0 && !isLoading && caption && (
+          <Flex className="justify-center min-h-[200px] items-center">
+            <Button
+              size="sm"
+              borderRadius="full"
+              leftIcon={<AiOutlineWarning />}
+              colorScheme="yellow"
+            >
+              Post Not Found
+            </Button>
+          </Flex>
+        )}
       </InfiniteScroll>
     </Flex>
   );
