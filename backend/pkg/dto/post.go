@@ -50,7 +50,8 @@ type GetPostsReq struct {
 	UserID         uuid.UUID `query:"user_id"`
 	LoggedInUserID uuid.UUID
 	Caption        string `query:"caption"`
-	Saved           bool   `query:"saved"`
+	Saved          bool   `query:"saved"`
+	Random         bool   `query:"random"`
 }
 
 type PostAction struct {

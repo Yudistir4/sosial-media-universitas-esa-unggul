@@ -127,6 +127,7 @@ type GetUsersReq struct {
 	UserType       string    `query:"user_type"`
 	FacultyID      uuid.UUID `query:"faculty_id"`
 	StudyProgramID uuid.UUID `query:"study_program_id"`
+	Random         bool      `query:"random"`
 }
 
 func ConvertUserToUserResponse(user User) (userResponse UserResponse) {

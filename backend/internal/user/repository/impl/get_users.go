@@ -3,6 +3,7 @@ package impl
 import (
 	"backend/pkg/dto"
 	customerrors "backend/pkg/errors"
+	"math/rand"
 
 	"github.com/google/uuid"
 )
@@ -10,6 +11,17 @@ import (
 func (r *userRepository) GetUsers(req dto.GetUsersReq) ([]dto.User, error) {
 
 	offset := (req.Page - 1) * req.Limit
+
+	if req.Random == true {
+		var count int64
+		r.db.Model(&dto.User{}).Count(&count)
+		offset = rand.Intn(int(count))
+		if offset > 3 {
+			offset -= 3
+		}
+
+	}
+
 	var users []dto.User
 	query := r.db.
 		Joins("Student").Joins("Student.Faculty").Joins("Student.StudyProgram").

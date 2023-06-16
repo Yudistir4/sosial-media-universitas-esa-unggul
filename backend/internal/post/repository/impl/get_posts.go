@@ -3,6 +3,7 @@ package impl
 import (
 	"backend/pkg/dto"
 	customerrors "backend/pkg/errors"
+	"math/rand"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -28,10 +29,20 @@ func (r *postRepository) GetPosts(req dto.GetPostsReq) ([]dto.Post, error) {
 			posts = append(posts, save.Post)
 		}
 	} else {
+		if req.Random == true {
+			var count int64
+			r.db.Model(&dto.Post{}).Not("content_file_url", "").Count(&count)
+			offset = rand.Intn(int(count))
+			if offset > 3 {
+				offset -= 3
+			}
+
+		}
 
 		query := r.db.Preload("User").Limit(req.Limit).Offset(offset).Order("created_at desc")
-
-		if req.Caption != "" && req.PostCategory != "" && req.UserID != uuid.Nil {
+		if req.Random == true {
+			query = query.Not("content_file_url", "")
+		} else if req.Caption != "" && req.PostCategory != "" && req.UserID != uuid.Nil {
 			query = query.Where("caption LIKE ? AND post_category = ? AND user_id = ?", "%"+req.Caption+"%", req.PostCategory, req.UserID)
 		} else if req.Caption != "" && req.PostCategory != "" {
 			query = query.Where("caption LIKE ? AND post_category = ?", "%"+req.Caption+"%", req.PostCategory)
