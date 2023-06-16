@@ -3,12 +3,7 @@ import * as React from 'react';
 import { api } from '@/config';
 import { client } from '@/services';
 import { useAuth } from '@/store/user';
-import {
-  CommentDoc,
-  ErrorResponse,
-  PostDoc,
-  Response
-} from '@/typing';
+import { CommentDoc, ErrorResponse, PostDoc, Response } from '@/typing';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -25,7 +20,7 @@ import {
   Input,
   Text,
   useDisclosure,
-  useToast
+  useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -39,6 +34,7 @@ import { useForm } from 'react-hook-form';
 import { MdOutlineDelete } from 'react-icons/md';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import * as yup from 'yup';
+import Link from 'next/link';
 interface ICommentProps {
   post: PostDoc;
 }
@@ -53,31 +49,29 @@ const Comment: React.FunctionComponent<ICommentProps> = ({ post }) => {
   const queryClient = useQueryClient();
   const user = useAuth((state) => state.user);
   const toast = useToast();
-const { handleSubmit, register, reset } = useForm<Comment>({
+  const { handleSubmit, register, reset } = useForm<Comment>({
     resolver: yupResolver(validationSchema),
   });
 
-  const { mutate } = useMutation(   
-    {
-      mutationFn: async (comment: Comment) => {
-        const res = await client.post(
-          `${api.posts}/${post.id}/comments`,
-          comment
-        );
-        return res.data;
-      },
-      onError: (err: AxiosError<ErrorResponse>) => {
-        toast({
-          title: 'Create comment failed',
-          description: err.response?.data.error.message,
-          status: 'error',
-        });
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['comments', post.id] });
-      },
-    }
-  );
+  const { mutate } = useMutation({
+    mutationFn: async (comment: Comment) => {
+      const res = await client.post(
+        `${api.posts}/${post.id}/comments`,
+        comment
+      );
+      return res.data;
+    },
+    onError: (err: AxiosError<ErrorResponse>) => {
+      toast({
+        title: 'Create comment failed',
+        description: err.response?.data.error.message,
+        status: 'error',
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments', post.id] });
+    },
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const onSubmit = (data: Comment) => {
@@ -162,14 +156,20 @@ const { handleSubmit, register, reset } = useForm<Comment>({
                 key={comment.id}
               >
                 <Flex className="gap-2 max-w-[calc(100%-100px)]">
-                  <Avatar
-                    height="40px"
-                    width="40px"
-                    src={comment.user.profile_pic_url}
-                  />
+                  <Link href={`/?user_id=${comment.user.id}`}>
+                    <Avatar
+                      height="40px"
+                      width="40px"
+                      src={comment.user.profile_pic_url}
+                    />
+                  </Link>
                   <Flex className="flex-col w-full">
                     <Flex className="gap-2">
-                      <Text className="font-semibold">{comment.user.name}</Text>
+                      <Link href={`/?user_id=${comment.user.id}`}>
+                        <Text className="font-semibold">
+                          {comment.user.name}
+                        </Text>
+                      </Link>
                       <Text>{moment(comment.created_at).fromNow(true)}</Text>
                     </Flex>
                     <Text className=" ">{comment.comment}</Text>

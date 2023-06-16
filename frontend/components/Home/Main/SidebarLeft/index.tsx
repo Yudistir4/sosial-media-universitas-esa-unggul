@@ -41,43 +41,45 @@ const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
       display={{ sm: 'none', xl: 'block' }}
       position="relative"
     >
-      <Flex className="flex-col gap-2 pl-4 sticky top-[73px] h-[87vh] justify-between w-full ">
-        <Flex className="flex-col gap-2">
-          {navLinksData.map((link, i) => (
-            <NavLink key={i} href={link.href}>
-              {({ isActive }) => (
-                <Button
-                  bg={isActive ? 'gray.100' : ''}
-                  leftIcon={link.icon}
-                  justifyContent="start"
-                  className="w-full"
-                >
-                  {link.text}
-                </Button>
-              )}
-            </NavLink>
-          ))}
+      <Box className="fixed top-[73px] max-w-[248px] w-[calc(100%-80%)]   ">
+        <Flex className="flex-col gap-2 pl-4  h-[87vh] justify-between   ">
+          <Flex className="flex-col gap-2">
+            {navLinksData.map((link, i) => (
+              <NavLink key={i} href={link.href}>
+                {({ isActive }) => (
+                  <Button
+                    bg={isActive ? 'gray.100' : ''}
+                    leftIcon={link.icon}
+                    justifyContent="start"
+                    className="w-full"
+                  >
+                    {link.text}
+                  </Button>
+                )}
+              </NavLink>
+            ))}
+          </Flex>
+          <Flex className="flex-col gap-2">
+            <Button
+              bg="transparent"
+              leftIcon={<AiFillSetting className="text-xl" />}
+              justifyContent="start"
+              className="w-full"
+            >
+              Setting
+            </Button>
+            <Button
+              bg="transparent"
+              onClick={logout}
+              leftIcon={<FiLogOut className="text-xl" />}
+              justifyContent="start"
+              className="w-full"
+            >
+              Logout
+            </Button>
+          </Flex>
         </Flex>
-        <Flex className="flex-col gap-2">
-          <Button
-            bg="transparent"
-            leftIcon={<AiFillSetting className="text-xl" />}
-            justifyContent="start"
-            className="w-full"
-          >
-            Setting
-          </Button>
-          <Button
-            bg="transparent"
-            onClick={logout}
-            leftIcon={<FiLogOut className="text-xl" />}
-            justifyContent="start"
-            className="w-full"
-          >
-            Logout
-          </Button>
-        </Flex>
-      </Flex>
+      </Box>
     </Box>
   );
 };

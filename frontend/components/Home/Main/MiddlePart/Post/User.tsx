@@ -7,12 +7,17 @@ interface IUserProps {
 
 import { PostDoc } from '@/typing';
 import { Avatar, Flex, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 const User: React.FunctionComponent<IUserProps> = ({ post }) => {
   return (
     <Flex gap={2} className="">
-      <Avatar src={post.user.profile_pic_url} />
+      <Link href={`/?user_id=${post.user.id}`}>
+        <Avatar src={post.user.profile_pic_url} />
+      </Link>
       <Flex className="flex-col justify-center">
-        <Text className="font-semibold">{post.user.name}</Text>
+        <Link href={`/?user_id=${post.user.id}`}>
+          <Text className="font-semibold">{post.user.name}</Text>
+        </Link>
         <Text fontSize="sm">{moment(post.created_at).fromNow()}</Text>
       </Flex>
     </Flex>
