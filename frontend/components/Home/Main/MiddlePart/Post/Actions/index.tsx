@@ -1,13 +1,23 @@
-import { api } from '@/config';
+import { api, config } from '@/config';
 import { client } from '@/services';
-import { ErrorResponse, PostDoc, Response } from '@/typing';
-import { Box, Flex, Text, useToast } from '@chakra-ui/react';
+import { ErrorResponse, PostDoc } from '@/typing';
+import {
+  Box,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Portal,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import * as React from 'react';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart, AiOutlineLink } from 'react-icons/ai';
 import { BsBookmark, BsFillBookmarkFill } from 'react-icons/bs';
-import { FaRegComment, FaRegPaperPlane } from 'react-icons/fa';
+import { FaRegComment } from 'react-icons/fa';
 import { TbShare3 } from 'react-icons/tb';
 interface IActionsProps {
   post: PostDoc;
@@ -138,6 +148,19 @@ const Actions: React.FunctionComponent<IActionsProps> = ({
     };
   }, [isSaved, savePost, unsavePost]);
 
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `${config.frontendURL}/?post_id=${post.id}`
+      );
+      toast({
+        title: 'Link copied',
+        status: 'success',
+      });
+    } catch (error) {
+      console.error('Failed to copy text:', error);
+    }
+  };
   return (
     <Flex className="flex-col gap-1">
       {/* Actions */}
@@ -155,7 +178,22 @@ const Actions: React.FunctionComponent<IActionsProps> = ({
           <button onClick={toggleComment}>
             <FaRegComment />
           </button>
-          <TbShare3 />
+
+          <Menu>
+            <MenuButton>
+              <TbShare3 />
+            </MenuButton>
+            <Portal>
+              <MenuList>
+                <MenuItem
+                  icon={<AiOutlineLink className="text-2xl" />}
+                  onClick={copyLink}
+                >
+                  Copy Link
+                </MenuItem>
+              </MenuList>
+            </Portal>
+          </Menu>
         </Flex>
         <button className="flex items-center" onClick={handleSave}>
           {isSaved ? <BsFillBookmarkFill /> : <BsBookmark />}
