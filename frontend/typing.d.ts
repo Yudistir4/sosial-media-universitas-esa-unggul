@@ -1,5 +1,12 @@
 import { types } from 'util';
 import { Faculty, Response } from './typing.d';
+
+interface QueryParams {
+  user_id: string;
+  post_id: string;
+  post_category: string;
+  saved: boolean;
+}
 type UserType =
   | 'student'
   | 'lecturer'

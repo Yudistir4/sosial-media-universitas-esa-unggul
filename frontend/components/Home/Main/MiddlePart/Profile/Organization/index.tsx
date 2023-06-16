@@ -29,12 +29,18 @@ import CreateUser from './CreateUser';
 import UserComponent from './UserComponent';
 import { BiInfoCircle } from 'react-icons/bi';
 import { AiOutlineWarning } from 'react-icons/ai';
+import { useAuth } from '@/store/user';
 
-interface IOrganizationProps {}
+interface IOrganizationProps {
+  user_id: string;
+}
 
-const Organization: React.FunctionComponent<IOrganizationProps> = (props) => {
+const Organization: React.FunctionComponent<IOrganizationProps> = ({
+  user_id,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = React.useState('');
+  const loggedInUser = useAuth((state) => state.user);
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery<
     Response<[User]>,
     AxiosError<Response>
@@ -67,15 +73,18 @@ const Organization: React.FunctionComponent<IOrganizationProps> = (props) => {
 
   return (
     <Flex className="flex-col gap-4 mb-10">
-      <Button
-        onClick={onOpen}
-        colorScheme="blue"
-        className="self-start"
-        borderRadius={999}
-        leftIcon={<IoMdAdd className="text-3xl" />}
-      >
-        Add Organization
-      </Button>
+      {user_id === loggedInUser?.id &&
+        loggedInUser?.user_type === 'university' && (
+          <Button
+            onClick={onOpen}
+            colorScheme="blue"
+            className="self-start"
+            borderRadius={999}
+            leftIcon={<IoMdAdd className="text-3xl" />}
+          >
+            Add Organization
+          </Button>
+        )}
       <InputGroup>
         <Input
           value={search}

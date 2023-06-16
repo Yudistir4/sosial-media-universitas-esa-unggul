@@ -22,14 +22,20 @@ import { IoCloseOutline, IoSearchOutline } from 'react-icons/io5';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CreateUser from './CreateUser';
 import UserComponent from './UserComponent';
+import { useAuth } from '@/store/user';
 
 interface IStudentsProps {
   faculty_id?: string;
+  user_id: string;
 }
 
-const Students: React.FunctionComponent<IStudentsProps> = ({ faculty_id }) => {
+const Students: React.FunctionComponent<IStudentsProps> = ({
+  faculty_id,
+  user_id,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = React.useState('');
+  const loggedInUser = useAuth((state) => state.user);
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery<
     Response<[User]>,
     AxiosError<Response>
@@ -63,15 +69,18 @@ const Students: React.FunctionComponent<IStudentsProps> = ({ faculty_id }) => {
 
   return (
     <Flex className="flex-col gap-4 mb-10">
-      <Button
-        onClick={onOpen}
-        colorScheme="blue"
-        className="self-start"
-        borderRadius={999}
-        leftIcon={<IoMdAdd className="text-3xl" />}
-      >
-        Add Student
-      </Button>
+      {user_id === loggedInUser?.id &&
+        loggedInUser?.user_type === 'university' && (
+          <Button
+            onClick={onOpen}
+            colorScheme="blue"
+            className="self-start"
+            borderRadius={999}
+            leftIcon={<IoMdAdd className="text-3xl" />}
+          >
+            Add Student
+          </Button>
+        )}
       <InputGroup>
         <Input
           value={search}

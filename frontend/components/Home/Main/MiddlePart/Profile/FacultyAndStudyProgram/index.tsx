@@ -23,12 +23,16 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import CreateUser from './CreateUser';
 import UserComponent from './UserComponent';
 import { AiOutlineWarning } from 'react-icons/ai';
+import { useAuth } from '@/store/user';
 
-interface IFacultyProps {}
+interface IFacultyProps {
+  user_id: string;
+}
 
-const Faculty: React.FunctionComponent<IFacultyProps> = (props) => {
+const Faculty: React.FunctionComponent<IFacultyProps> = ({ user_id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = React.useState('');
+  const loggedInUser = useAuth((state) => state.user);
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery<
     Response<[User]>,
     AxiosError<Response>
@@ -61,15 +65,19 @@ const Faculty: React.FunctionComponent<IFacultyProps> = (props) => {
 
   return (
     <Flex className="flex-col gap-4 mb-10">
-      <Button
-        onClick={onOpen}
-        colorScheme="blue"
-        className="self-start"
-        borderRadius={999}
-        leftIcon={<IoMdAdd className="text-3xl" />}
-      >
-        Add Faculty
-      </Button>
+      {user_id === loggedInUser?.id &&
+        loggedInUser?.user_type === 'university' && (
+          <Button
+            onClick={onOpen}
+            colorScheme="blue"
+            className="self-start"
+            borderRadius={999}
+            leftIcon={<IoMdAdd className="text-3xl" />}
+          >
+            Add Faculty
+          </Button>
+        )}
+
       <InputGroup>
         <Input
           value={search}
