@@ -8,10 +8,15 @@ interface IMiddlePartProps {}
 const MiddlePart: React.FunctionComponent<IMiddlePartProps> = (props) => {
   const router = useRouter();
   const { query } = router;
-  const userID = query.user_id;
+  const { user_id, post_category, saved } = query;
+
   return (
     <Box width={{ sm: '100%', lg: '75%', xl: '50%' }} className="">
-      {userID ? <Profile /> : <Feed />}
+      {user_id ? (
+        <Profile />
+      ) : (
+        <Feed post_category={post_category as string} saved={!!saved} />
+      )}
     </Box>
   );
 };

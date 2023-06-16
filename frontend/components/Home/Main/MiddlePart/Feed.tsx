@@ -12,9 +12,16 @@ import Post from './Post';
 interface IFeedProps {
   user_id?: string;
   caption?: string;
+  post_category?: string;
+  saved?: boolean;
 }
 
-const Feed: React.FunctionComponent<IFeedProps> = ({ user_id, caption }) => {
+const Feed: React.FunctionComponent<IFeedProps> = ({
+  user_id,
+  caption,
+  post_category,
+  saved,
+}) => {
   // Fetch posts
   const {
     data: posts,
@@ -22,7 +29,7 @@ const Feed: React.FunctionComponent<IFeedProps> = ({ user_id, caption }) => {
     hasNextPage,
     isLoading,
   } = useInfiniteQuery<Response<[PostDoc]>, AxiosError<Response>>({
-    queryKey: ['posts', user_id, caption],
+    queryKey: ['posts', user_id, caption, post_category, saved],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await client.get(
         `${api.posts}${convertToQueryStr({
@@ -30,6 +37,8 @@ const Feed: React.FunctionComponent<IFeedProps> = ({ user_id, caption }) => {
           caption,
           page: pageParam,
           limit: 5,
+          post_category,
+          saved,
         })}`
       );
       return res.data;
