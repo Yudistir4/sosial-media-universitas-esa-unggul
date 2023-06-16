@@ -1,16 +1,7 @@
 import { api } from '@/config';
 import { client, convertToQueryStr } from '@/services';
-import { PostDoc, Response, User } from '@/typing';
-import {
-  Avatar,
-  Badge,
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import { Response, User } from '@/typing';
+import { Avatar, Badge, Flex, Heading, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
@@ -18,11 +9,7 @@ import * as React from 'react';
 interface IRandomUserProps {}
 
 const RandomUser: React.FunctionComponent<IRandomUserProps> = (props) => {
-  const {
-    data: users,
-
-    isLoading,
-  } = useQuery<Response<[User]>, AxiosError<Response>>({
+  const { data: users } = useQuery<Response<[User]>, AxiosError<Response>>({
     queryKey: ['users', 'random'],
     queryFn: async () => {
       const res = await client.get(
@@ -35,7 +22,7 @@ const RandomUser: React.FunctionComponent<IRandomUserProps> = (props) => {
     },
     refetchInterval: 120000,
   });
-  console.log(users);
+   
   return (
     <Flex className="flex-col gap-2">
       <Heading size="sm">Suggested User</Heading>
