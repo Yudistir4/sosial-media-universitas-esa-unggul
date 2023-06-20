@@ -1,13 +1,27 @@
 import NavLink from '@/components/Navlink';
+import { useChangePasswordModal } from '@/store/changePasswordModal';
 import { useAuth } from '@/store/user';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react';
 import * as React from 'react';
-import { AiFillHome, AiFillSetting } from 'react-icons/ai';
+import { AiFillHome, AiFillSetting, AiOutlineMail } from 'react-icons/ai';
 import { FaTrophy } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiAchievement } from 'react-icons/gi';
 import { GrWorkshop } from 'react-icons/gr';
 import { MdWork } from 'react-icons/md';
+import { RiLockPasswordLine } from 'react-icons/ri';
 
 interface ISidebarLeftProps {}
 const navLinksData = [
@@ -35,6 +49,7 @@ const navLinksData = [
 ];
 const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
   const logout = useAuth((state) => state.logout);
+  const openChangePassword = useChangePasswordModal((state) => state.onOpen);
   return (
     <Box
       width={{ sm: '0', xl: '20%' }}
@@ -60,14 +75,36 @@ const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
             ))}
           </Flex>
           <Flex className="flex-col gap-2">
-            <Button
+            {/* <Button
               bg="transparent"
               leftIcon={<AiFillSetting className="text-xl" />}
               justifyContent="start"
               className="w-full"
             >
               Setting
-            </Button>
+            </Button> */}
+            <Menu>
+              <MenuButton
+                as={Button}
+                bg="transparent"
+                leftIcon={<AiFillSetting className="text-xl" />}
+                justifyContent="start"
+                className="w-full text-left"
+              >
+                Setting
+              </MenuButton>
+              <MenuList zIndex={999}>
+                <MenuItem
+                  onClick={openChangePassword}
+                  icon={<RiLockPasswordLine className="text-xl" />}
+                >
+                  Change Password
+                </MenuItem>
+                <MenuItem icon={<AiOutlineMail className="text-xl" />}>
+                  Change Email
+                </MenuItem>
+              </MenuList>
+            </Menu>
             <Button
               bg="transparent"
               onClick={logout}
