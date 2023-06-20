@@ -6,6 +6,7 @@ import Main from './Main';
 import CreatePost from './Main/MiddlePart/CreatePost';
 import UpdateQuestion from './Main/MiddlePart/UpdateQuestion';
 import ChangePassword from './ChangePassword';
+import ChangeEmail from './ChangeEmail';
 interface IHomeProps {}
 
 let i = 0;
@@ -18,6 +19,7 @@ const Home: React.FunctionComponent<IHomeProps> = (props) => {
       <CreatePost />
       <UpdateQuestion />
       <ChangePassword />
+      <ChangeEmail />
     </Box>
   );
 };

@@ -1,21 +1,28 @@
 import { LoginData, User } from '@/typing';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import useGetFromStore from './store';
+
 type AuthState = {
   access_token: string | null;
   refresh_token: string | null;
   user: User | null;
+  setUser: (user: User) => void;
+  setEmail: (email: string) => void;
   login: (data: LoginData) => void;
   logout: () => void;
 };
 
 export const useAuth = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       access_token: null,
       refresh_token: null,
       user: null,
+      setUser: (user: User) => set({ user }),
+      setEmail: (email: string) => {
+        const user = get().user;
+        user && set({ user: { ...user, email } });
+      },
       login: (data: LoginData) => set({ ...data }),
       logout: () =>
         set({ user: null, access_token: null, refresh_token: null }),

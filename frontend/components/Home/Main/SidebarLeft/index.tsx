@@ -1,4 +1,5 @@
 import NavLink from '@/components/Navlink';
+import { useChangeEmailModal } from '@/store/changeEmailModal';
 import { useChangePasswordModal } from '@/store/changePasswordModal';
 import { useAuth } from '@/store/user';
 import {
@@ -7,12 +8,8 @@ import {
   Flex,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
+  MenuList,
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { AiFillHome, AiFillSetting, AiOutlineMail } from 'react-icons/ai';
@@ -50,6 +47,7 @@ const navLinksData = [
 const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
   const logout = useAuth((state) => state.logout);
   const openChangePassword = useChangePasswordModal((state) => state.onOpen);
+  const openChangeEmail = useChangeEmailModal((state) => state.onOpen);
   return (
     <Box
       width={{ sm: '0', xl: '20%' }}
@@ -75,14 +73,6 @@ const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
             ))}
           </Flex>
           <Flex className="flex-col gap-2">
-            {/* <Button
-              bg="transparent"
-              leftIcon={<AiFillSetting className="text-xl" />}
-              justifyContent="start"
-              className="w-full"
-            >
-              Setting
-            </Button> */}
             <Menu>
               <MenuButton
                 as={Button}
@@ -100,7 +90,10 @@ const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
                 >
                   Change Password
                 </MenuItem>
-                <MenuItem icon={<AiOutlineMail className="text-xl" />}>
+                <MenuItem
+                  onClick={openChangeEmail}
+                  icon={<AiOutlineMail className="text-xl" />}
+                >
                   Change Email
                 </MenuItem>
               </MenuList>
