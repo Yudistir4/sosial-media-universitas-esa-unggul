@@ -1,9 +1,8 @@
+import { Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import Feed from './Feed';
-import { Box } from '@chakra-ui/react';
 import Profile from './Profile';
-import { useRouter } from 'next/router';
-import Post from './Post';
 import SinglePost from './SinglePost';
 interface IMiddlePartProps {}
 
@@ -17,7 +16,11 @@ const MiddlePart: React.FunctionComponent<IMiddlePartProps> = (props) => {
       {post_id && <SinglePost post_id={post_id as string} />}
       {user_id && <Profile />}
       {!user_id && !post_id && (
-        <Feed post_category={post_category as string} saved={!!saved} />
+        <Feed
+          post_category={post_category as string}
+          saved={!!saved}
+          showRecipient={true}
+        />
       )}
     </Box>
   );

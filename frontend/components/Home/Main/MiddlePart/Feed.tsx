@@ -5,23 +5,31 @@ import { Button, Flex, Spinner } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import * as React from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import CreatePost from './CreatePost';
-import Post from './Post';
 import { AiOutlineWarning } from 'react-icons/ai';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Post from './Post';
+import Question from './Question';
 
 interface IFeedProps {
   user_id?: string;
+  to_user_id?: string;
   caption?: string;
   post_category?: string;
   saved?: boolean;
+  not_answered?: boolean;
+  popular?: boolean;
+  showRecipient?: boolean;
 }
 
 const Feed: React.FunctionComponent<IFeedProps> = ({
   user_id,
+  to_user_id,
   caption,
   post_category,
   saved,
+  not_answered,
+  popular,
+  showRecipient,
 }) => {
   // Fetch posts
   const {
@@ -30,16 +38,28 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
     hasNextPage,
     isLoading,
   } = useInfiniteQuery<Response<[PostDoc]>, AxiosError<Response>>({
-    queryKey: ['posts', user_id, caption, post_category, saved],
+    queryKey: [
+      'posts',
+      user_id,
+      caption,
+      post_category,
+      saved,
+      to_user_id,
+      not_answered,
+      popular,
+    ],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await client.get(
         `${api.posts}${convertToQueryStr({
-          user_id,
-          caption,
           page: pageParam,
           limit: 5,
+          user_id,
+          caption,
           post_category,
           saved,
+          to_user_id,
+          not_answered,
+          popular,
         })}`
       );
       return res.data;
@@ -67,7 +87,6 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
       zIndex={0}
       className="  h-full z-0"
     >
-      <CreatePost />
       <InfiniteScroll
         className="flex flex-col gap-4 !overflow-visible"
         dataLength={itemLength} //This is important field to render the next data
@@ -80,7 +99,17 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
         }
       >
         {posts?.pages.map((page) => {
-          return page.data?.map((post) => <Post key={post.id} post={post} />);
+          return page.data?.map((post) =>
+            post.post_category === 'question' ? (
+              <Question
+                key={post.id}
+                post={post}
+                showRecipient={showRecipient ? showRecipient : false}
+              />
+            ) : (
+              <Post key={post.id} post={post} />
+            )
+          );
         })}
         {itemLength === 0 && !isLoading && caption && (
           <Flex className="justify-center min-h-[200px] items-center">

@@ -18,7 +18,9 @@ const User: React.FunctionComponent<IUserProps> = ({ post }) => {
         <Link href={`/?user_id=${post.user.id}`}>
           <Text className="font-semibold">{post.user.name}</Text>
         </Link>
-        <Text fontSize="sm">{moment(post.created_at).fromNow()}</Text>
+        <Text className="text-sm font-light">
+          {moment(post.created_at).fromNow()}
+        </Text>
       </Flex>
     </Flex>
   );

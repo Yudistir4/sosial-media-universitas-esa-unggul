@@ -51,7 +51,7 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
             />
             <Flex display={{ sm: 'none', lg: 'flex' }} gap={2}>
               <IconButton
-                onClick={onOpen}
+                onClick={() => onOpen()}
                 borderRadius="full"
                 colorScheme="gray"
                 aria-label="expand"

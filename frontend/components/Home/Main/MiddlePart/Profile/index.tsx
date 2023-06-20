@@ -29,6 +29,7 @@ import UpdateProfile from './UpdateProfile';
 import StudyProgram from './StudyProgram';
 import Students from './Students';
 import Lecturers from './Lecturers';
+import Questions from './Questions';
 
 interface IProfileProps {}
 
@@ -138,8 +139,8 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
 
           <TabPanels>
             <TabPanel px={0}>{user && <Feed user_id={user_id} />}</TabPanel>
-            <TabPanel>
-              <p>Q & A!</p>
+            <TabPanel px={2}>
+              {user && <Questions user_id={user_id} user={user} />}
             </TabPanel>
             {['university', 'faculty'].includes(user.user_type) && (
               <TabPanel>
@@ -173,7 +174,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
             )}
             {user.user_type === 'university' && (
               <TabPanel>
-                <FacultyAndStudyProgram   user_id={user_id} />
+                <FacultyAndStudyProgram user_id={user_id} />
               </TabPanel>
             )}
           </TabPanels>

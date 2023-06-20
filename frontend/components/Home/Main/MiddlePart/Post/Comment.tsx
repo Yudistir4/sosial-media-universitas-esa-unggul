@@ -164,13 +164,15 @@ const Comment: React.FunctionComponent<ICommentProps> = ({ post }) => {
                     />
                   </Link>
                   <Flex className="flex-col w-full">
-                    <Flex className="gap-2">
+                    <Flex className="gap-2 items-center">
                       <Link href={`/?user_id=${comment.user.id}`}>
                         <Text className="font-semibold">
                           {comment.user.name}
                         </Text>
                       </Link>
-                      <Text>{moment(comment.created_at).fromNow(true)}</Text>
+                      <Text className="text-sm font-light">
+                        {moment(comment.created_at).fromNow(true)}
+                      </Text>
                     </Flex>
                     <Text className=" ">{comment.comment}</Text>
                   </Flex>

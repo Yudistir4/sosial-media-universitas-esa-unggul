@@ -1,22 +1,12 @@
+import { useCreatePostModal } from '@/store/createPostModal';
+import { useAuth } from '@/store/user';
+import { Avatar, Flex } from '@chakra-ui/react';
+import Link from 'next/link';
 import * as React from 'react';
-import {
-  Box,
-  Input,
-  Flex,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
-  Avatar,
-  IconButton,
-} from '@chakra-ui/react';
 import { AiFillHome } from 'react-icons/ai';
 import { BsFillBookmarkFill } from 'react-icons/bs';
 import { GrAdd } from 'react-icons/gr';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useCreatePostModal } from '@/store/createPostModal';
 import NavLink from '../Navlink';
-import { useAuth } from '@/store/user';
 
 interface INavbarBottomProps {}
 
@@ -32,7 +22,7 @@ const NavbarBottom: React.FunctionComponent<INavbarBottomProps> = (props) => {
       <NavLink href="/" className="h-full p-3 ">
         <AiFillHome />
       </NavLink>
-      <Link onClick={onOpen} href="/" className="h-full p-3">
+      <Link onClick={() => onOpen()} href="/" className="h-full p-3">
         <GrAdd />
       </Link>
 

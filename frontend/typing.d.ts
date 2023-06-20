@@ -97,6 +97,7 @@ export interface PostDoc {
   total_comments: number;
   total_saves: number;
   user: User;
+  to_user: User;
 }
 
 interface UserLittle {
