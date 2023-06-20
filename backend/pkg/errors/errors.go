@@ -29,6 +29,7 @@ var (
 	ErrResetPasswordLinkExpiredOrNotExist     = errors.New("Reset password link has expired or not exist. Please request a new password reset link.")
 	ErrEmailVerificationCodeExpiredOrNotExist = errors.New("Email verification code has expired or not exist. Please request a new email verification code.")
 	ErrInvalidResetPasswordCode               = errors.New("Invalid reset password link. Please request a new password reset link.")
+	ErrInvalidVerifyCode                      = errors.New("Invalid verification code.")
 	ErrBadRequestFileType                     = errors.New("Invalid file type")
 	ErrRecordNotFound                         = errors.New("record not found")
 	ErrPostNotFound                           = errors.New("Post not found")
@@ -65,6 +66,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrResetPasswordLinkExpiredOrNotExist:     {HTTPErrorCode: http.StatusBadRequest, Message: ErrResetPasswordLinkExpiredOrNotExist.Error()},
 	ErrEmailVerificationCodeExpiredOrNotExist: {HTTPErrorCode: http.StatusBadRequest, Message: ErrEmailVerificationCodeExpiredOrNotExist.Error()},
 	ErrInvalidResetPasswordCode:               {HTTPErrorCode: http.StatusBadRequest, Message: ErrInvalidResetPasswordCode.Error()},
+	ErrInvalidVerifyCode:                      {HTTPErrorCode: http.StatusBadRequest, Message: ErrInvalidVerifyCode.Error()},
 	ErrBadRequestFileType:                     {HTTPErrorCode: http.StatusBadRequest, Message: ErrBadRequestFileType.Error()},
 	ErrRecordNotFound:                         {HTTPErrorCode: http.StatusNotFound, Message: ErrRecordNotFound.Error()},
 	ErrAccountNotFound:                        {HTTPErrorCode: http.StatusNotFound, Message: ErrAccountNotFound.Error()},

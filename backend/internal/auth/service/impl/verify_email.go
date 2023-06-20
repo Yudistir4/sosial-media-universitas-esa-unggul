@@ -21,7 +21,7 @@ func (s *authService) VerifyEmail(req dto.VerifyEmailReq) error {
 	}
 
 	if code != req.VerificationCode {
-		return customerrors.ErrInvalidResetPasswordCode
+		return customerrors.ErrInvalidVerifyCode
 	}
 
 	// Replace and save
