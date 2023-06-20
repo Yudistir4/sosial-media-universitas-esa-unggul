@@ -17,6 +17,9 @@ func (r *postRepository) CreatePost(req dto.CreatePostReq) (dto.Post, error) {
 		PostCategory:        req.PostCategory,
 		ContentFilePublicID: req.ContentFilePublicID,
 	}
+	if req.ToUserID != uuid.Nil {
+		post.ToUserID = &req.ToUserID
+	}
 
 	result := r.db.Create(&post)
 	if result.Error != nil {

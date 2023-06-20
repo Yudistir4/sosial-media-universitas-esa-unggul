@@ -11,7 +11,7 @@ import (
 func (r *postRepository) GetPostByID(ID uuid.UUID) (dto.Post, error) {
 
 	var post dto.Post
-	result := r.db.Preload("User").First(&post, ID)
+	result := r.db.Preload("User").Preload("ToUser").First(&post, ID)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
 			return dto.Post{}, customerrors.ErrPostNotFound

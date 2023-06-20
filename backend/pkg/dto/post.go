@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	PostCategory = []string{"seminar", "scholarship", "internship", "competition"}
+	PostCategory = []string{"seminar", "scholarship", "internship", "competition", "question"}
 )
 
 func CheckPostCategory(cat string) bool {
@@ -30,7 +30,10 @@ type Post struct {
 	ContentType         string `gorm:"type:varchar(10);enum:video,image"`
 	PostCategory        string
 	UserID              uuid.UUID
-	User                User `gorm:"ForeignKey:UserID"`
+	User                User       `gorm:"ForeignKey:UserID"`
+	ToUserID            *uuid.UUID `gorm:"type:char(36)"`
+	ToUser              User       `gorm:"ForeignKey:ToUserID"`
+	Likes               []Like     `gorm:"foreignKey:PostID"`
 }
 
 type CreatePostReq struct {
@@ -38,6 +41,7 @@ type CreatePostReq struct {
 	ContentFile         *multipart.FileHeader
 	ContentFileSrc      string
 	UserID              uuid.UUID `validate:"required"`
+	ToUserID            uuid.UUID `form:"to_user_id"`
 	ContentType         string
 	ContentFileURL      string
 	ContentFilePublicID string
@@ -48,10 +52,13 @@ type GetPostsReq struct {
 	Limit          int       `query:"limit"`
 	PostCategory   string    `query:"post_category"`
 	UserID         uuid.UUID `query:"user_id"`
+	ToUserID       uuid.UUID `query:"to_user_id"`
 	LoggedInUserID uuid.UUID
 	Caption        string `query:"caption"`
 	Saved          bool   `query:"saved"`
 	Random         bool   `query:"random"`
+	Popular        bool   `query:"popular"`
+	NotAnswered    bool   `query:"not_answered"`
 }
 
 type PostAction struct {
@@ -82,6 +89,7 @@ type PostResponse struct {
 	TotalComments  int64            `json:"total_comments"`
 	TotalSaves     int64            `json:"total_saves"`
 	User           PostUserResponse `json:"user"`
+	ToUser         PostUserResponse `json:"to_user"`
 }
 
 type PostUserResponse struct {
@@ -103,6 +111,11 @@ func ConvertPostToPostResponse(post Post) PostResponse {
 			ID:            post.User.ID,
 			Name:          post.User.Name,
 			ProfilePicURL: post.User.ProfilePicURL,
+		},
+		ToUser: PostUserResponse{
+			ID:            post.ToUser.ID,
+			Name:          post.ToUser.Name,
+			ProfilePicURL: post.ToUser.ProfilePicURL,
 		},
 	}
 }
