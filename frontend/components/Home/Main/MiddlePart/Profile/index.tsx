@@ -121,24 +121,29 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
       )}
       {user_id && user && (
         <Tabs className="w-full mt-4">
-          <TabList className="font-[600]  overflow-auto scrollbar-hide">
-            <Tab>Post</Tab>
-            <Tab>Q&A</Tab>
-            {['university', 'faculty'].includes(user.user_type) && (
-              <>
-                <Tab>Students</Tab>
-                <Tab>Lecturers</Tab>
-              </>
-            )}
-            {user.user_type === 'faculty' && <Tab>Study Program</Tab>}
-            {user.user_type === 'university' && (
-              <>
-                <Tab>Organizations</Tab>
-                <Tab flexShrink={0}>Faculty & Program Study</Tab>
-              </>
-            )}
-          </TabList>
-
+          <div className="overflow-x-auto scrollbar-hide ">
+            <TabList className="font-[600]  w-full">
+              <Tab>Post</Tab>
+              <Tab>Q&A</Tab>
+              {['university', 'faculty'].includes(user.user_type) && (
+                <>
+                  <Tab>Students</Tab>
+                  <Tab>Lecturers</Tab>
+                </>
+              )}
+              {user.user_type === 'faculty' && (
+                <Tab borderColor="gray.200">Study Program</Tab>
+              )}
+              {user.user_type === 'university' && (
+                <>
+                  <Tab borderColor="gray.200">Organizations</Tab>
+                  <Tab borderColor="gray.200" flexShrink={0}>
+                    Faculty & Program Study
+                  </Tab>
+                </>
+              )}
+            </TabList>
+          </div>
           <TabPanels>
             <TabPanel px={0}>{user && <Feed user_id={user_id} />}</TabPanel>
             <TabPanel px={2}>
