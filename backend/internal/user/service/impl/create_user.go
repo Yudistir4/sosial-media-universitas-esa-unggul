@@ -8,9 +8,9 @@ import (
 )
 
 func (s *userService) CreateUser(req dto.CreateUserReq) (userResponse dto.UserResponse, err error) {
-	password := randomutils.GenerateRandomString(6)
+	password := randomutils.GenerateRandomString(8)
 	if s.config.Server.Environment == "dev" {
-		password = "123456"
+		password = "12345678"
 	}
 	req.Password = passwordutils.HashPassword(password)
 
