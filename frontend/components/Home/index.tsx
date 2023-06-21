@@ -5,6 +5,7 @@ import NavbarBottom from './NavbarBottom';
 import Main from './Main';
 import CreatePost from './Main/MiddlePart/CreatePost';
 import UpdateQuestion from './Main/MiddlePart/UpdateQuestion';
+import UpdatePost from './Main/MiddlePart/UpdatePost';
 import ChangePassword from './ChangePassword';
 import ChangeEmail from './ChangeEmail';
 interface IHomeProps {}
@@ -17,6 +18,7 @@ const Home: React.FunctionComponent<IHomeProps> = (props) => {
       <Main />
       <NavbarBottom />
       <CreatePost />
+      <UpdatePost />
       <UpdateQuestion />
       <ChangePassword />
       <ChangeEmail />

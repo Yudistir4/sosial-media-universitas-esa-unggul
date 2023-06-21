@@ -1,5 +1,6 @@
 import { api } from '@/config';
 import { client } from '@/services';
+import { useEditPostModal } from '@/store/editPostModal';
 import { PostDoc } from '@/typing';
 import {
   AlertDialog,
@@ -29,6 +30,7 @@ interface IMenuPostProps {
 const MenuPost: React.FunctionComponent<IMenuPostProps> = ({ post }) => {
   const queryClient = useQueryClient();
   const toast = useToast();
+  const editPost = useEditPostModal((state) => state.onOpen);
   const { mutate: deletePost, isLoading } = useMutation({
     mutationFn: async () => {
       const res = await client.delete(api.posts + '/' + post.id);
@@ -51,8 +53,11 @@ const MenuPost: React.FunctionComponent<IMenuPostProps> = ({ post }) => {
         </MenuButton>
         <Portal>
           <MenuList>
-            <MenuItem icon={<MdOutlineModeEditOutline className="text-2xl" />}>
-            {' '}
+            <MenuItem
+              onClick={() => editPost(post)}
+              icon={<MdOutlineModeEditOutline className="text-2xl" />}
+            >
+              {' '}
               Edit
             </MenuItem>
             <MenuItem

@@ -1,12 +1,27 @@
+import { useChangeEmailModal } from '@/store/changeEmailModal';
+import { useChangePasswordModal } from '@/store/changePasswordModal';
 import { useCreatePostModal } from '@/store/createPostModal';
 import { useAuth } from '@/store/user';
-import { Avatar, Box, Flex, IconButton } from '@chakra-ui/react';
+import { Link } from '@chakra-ui/next-js';
+import {
+  Avatar,
+  Box,
+  Flex,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react';
 import Image from 'next/image';
 import * as React from 'react';
+import { AiOutlineMail } from 'react-icons/ai';
 import { BsFillBookmarkFill } from 'react-icons/bs';
+import { FiLogOut } from 'react-icons/fi';
 import { GrAdd } from 'react-icons/gr';
 import { IoIosNotificationsOutline } from 'react-icons/io';
-import { Link } from '@chakra-ui/next-js';
+import { RiLockPasswordLine } from 'react-icons/ri';
+import { RxHamburgerMenu } from 'react-icons/rx';
 import NavLink from '../../Navlink';
 import Search from './Search';
 
@@ -14,7 +29,10 @@ interface INavbarTopProps {}
 
 const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
   const onOpen = useCreatePostModal((state) => state.onOpen);
+  const openChangePassword = useChangePasswordModal((state) => state.onOpen);
+  const openChangeEmail = useChangeEmailModal((state) => state.onOpen);
   const user = useAuth((state) => state.user);
+  const logout = useAuth((state) => state.logout);
   return (
     <Flex className="justify-center z-50 fixed top-0  w-full  bg-white shadow-md shadow-black/20 ">
       <Flex className="p-2 gap-4 w-full  max-w-[1280px]  " direction="column">
@@ -49,6 +67,7 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
               aria-label="expand"
               icon={<IoIosNotificationsOutline className="text-2xl" />}
             />
+
             <Flex display={{ sm: 'none', lg: 'flex' }} gap={2}>
               <IconButton
                 onClick={() => onOpen()}
@@ -68,7 +87,38 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
                   />
                 )}
               </NavLink>
+            </Flex>
+            <Menu>
+              <MenuButton
+                display={{ sm: 'flex', xl: 'none' }}
+                borderRadius="full"
+                as={IconButton}
+                aria-label="Options"
+                icon={<RxHamburgerMenu className="text-xl" />}
+              />
+              <MenuList>
+                <MenuItem
+                  onClick={openChangePassword}
+                  icon={<RiLockPasswordLine className="text-xl" />}
+                >
+                  Change Password
+                </MenuItem>
+                <MenuItem
+                  onClick={openChangeEmail}
+                  icon={<AiOutlineMail className="text-xl" />}
+                >
+                  Change Email
+                </MenuItem>
+                <MenuItem
+                  onClick={logout}
+                  icon={<FiLogOut className="text-xl" />}
+                >
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
 
+            <Flex display={{ sm: 'none', lg: 'flex' }} gap={2}>
               <Link href={`/?user_id=${user?.id}`} className="h-full">
                 <Avatar height="40px" width="40px" />
               </Link>
