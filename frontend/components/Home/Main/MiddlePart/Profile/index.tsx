@@ -81,7 +81,9 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
                   {user.user_type}
                 </Badge>
               )}
-              <Text className="font-semibold text-xl my-2">{user.name}</Text>
+              <Text className="font-semibold text-xl my-2 text-center mx-10">
+                {user.name}
+              </Text>
               {data &&
                 ['student', 'lecturer'].includes(data.data.user_type) && (
                   <>
