@@ -170,7 +170,7 @@ const UpdateProfile: React.FunctionComponent<IUpdateProfileProps> = ({
           title: 'Delete profile pic success',
           status: 'success',
         });
-        setProfilePic('');
+        setProfilePic('http://localhost:3000');
       },
     });
   const onSubmit = (data: UpdateOrganizationForm) => mutate(data);
@@ -215,7 +215,7 @@ const UpdateProfile: React.FunctionComponent<IUpdateProfileProps> = ({
                 onChange={handleFileChange}
                 id="profile-pic"
               />
-              <Avatar src={user.profile_pic_url} size="2xl" />
+              <Avatar src={user.profile_pic_url} size="2xl" bg="gray.400" />
 
               <Popover placement="right">
                 <PopoverTrigger>

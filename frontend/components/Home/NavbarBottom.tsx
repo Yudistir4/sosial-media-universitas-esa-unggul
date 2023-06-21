@@ -30,7 +30,7 @@ const NavbarBottom: React.FunctionComponent<INavbarBottomProps> = (props) => {
         <BsFillBookmarkFill />
       </NavLink>
       <Link href={`/?user_id=${user?.id}`} className="h-full p-2">
-        <Avatar src={user?.profile_pic_url} size="sm" />
+        <Avatar src={user?.profile_pic_url} size="sm" bg="gray.400" />
       </Link>
     </Flex>
   );

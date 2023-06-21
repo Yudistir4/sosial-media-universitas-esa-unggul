@@ -114,7 +114,12 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
 
             <Flex display={{ sm: 'none', lg: 'flex' }} gap={2}>
               <Link href={`/?user_id=${user?.id}`} className="h-full">
-                <Avatar height="40px" width="40px" />
+                <Avatar
+                  src={user?.profile_pic_url}
+                  height="40px"
+                  width="40px"
+                  bg="gray.400"
+                />
               </Link>
             </Flex>
           </Flex>
