@@ -11,21 +11,10 @@ import {
   AlertIcon,
   AlertTitle,
   Avatar,
-  AvatarBadge,
   Button,
   Flex,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
   FormControl,
   FormErrorMessage,
-  FormHelperText,
   FormLabel,
   IconButton,
   Input,
@@ -37,6 +26,11 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -45,15 +39,16 @@ import { api } from '@/config';
 import { client } from '@/services';
 import { ErrorResponse, Response, User } from '@/typing';
 
+import { useAuth } from '@/store/user';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { AiOutlinePicture } from 'react-icons/ai';
 import { BsFillCameraFill } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
-import { AiOutlinePicture } from 'react-icons/ai';
+import * as yup from 'yup';
 interface IUpdateProfileProps {
   isOpen: boolean;
   onClose: () => void;
@@ -90,6 +85,7 @@ const UpdateProfile: React.FunctionComponent<IUpdateProfileProps> = ({
   onClose,
   user,
 }) => {
+  const setProfilePic = useAuth((state) => state.setProfilePic);
   const toast = useToast();
   const {
     isOpen: isOpenAlert,
@@ -156,6 +152,7 @@ const UpdateProfile: React.FunctionComponent<IUpdateProfileProps> = ({
           title: 'Update profile pic success',
           status: 'success',
         });
+        setProfilePic(data.data.profile_pic_url);
       },
     });
   const { mutate: deleteProfilePic, isLoading: isLoadingDeleteProfilePic } =
@@ -173,6 +170,7 @@ const UpdateProfile: React.FunctionComponent<IUpdateProfileProps> = ({
           title: 'Delete profile pic success',
           status: 'success',
         });
+        setProfilePic('');
       },
     });
   const onSubmit = (data: UpdateOrganizationForm) => mutate(data);

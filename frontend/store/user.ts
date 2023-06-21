@@ -8,6 +8,7 @@ type AuthState = {
   user: User | null;
   setUser: (user: User) => void;
   setEmail: (email: string) => void;
+  setProfilePic: (profile_pic_url: string) => void;
   login: (data: LoginData) => void;
   logout: () => void;
 };
@@ -22,6 +23,10 @@ export const useAuth = create<AuthState>()(
       setEmail: (email: string) => {
         const user = get().user;
         user && set({ user: { ...user, email } });
+      },
+      setProfilePic: (profile_pic_url: string) => {
+        const user = get().user;
+        user && set({ user: { ...user, profile_pic_url } });
       },
       login: (data: LoginData) => set({ ...data }),
       logout: () =>
