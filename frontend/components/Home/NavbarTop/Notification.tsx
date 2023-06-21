@@ -42,7 +42,7 @@ const Notification: React.FunctionComponent<INotificationProps> = ({
             <div className="w-8 h-8 shrink-0"></div>
             <Flex className="flex-col">
               <Text noOfLines={2} className="text-sm">
-                <Text as="span" className="font-semibold">
+                <Text as="span" className="font-semibold opacity-0">
                   {notif.from_user.name}
                 </Text>{' '}
                 {notif.message}
