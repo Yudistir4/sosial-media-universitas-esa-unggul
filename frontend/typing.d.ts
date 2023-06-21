@@ -112,3 +112,29 @@ export interface CommentDoc {
   comment: string;
   user: UserLittle;
 }
+export interface NotificationDoc {
+  id: string;
+  created_at: Date;
+  updated_at: Date;
+  activity: string;
+  is_read: boolean;
+  from_user: UserLittle;
+  post: NotifPost;
+  comment: NotifComment;
+  message: string;
+
+}
+
+interface NotifPost {
+  id: string;
+  caption: string;
+  content_file_url: string;
+  content_type: string;
+  post_category: string;
+  user: UserLittle;
+  to_user: UserLittle;
+}
+interface NotifComment {
+  id: string;
+  comment: string;
+}

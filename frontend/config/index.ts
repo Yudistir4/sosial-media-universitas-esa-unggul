@@ -7,6 +7,7 @@ export const api = {
   auths: '/auths',
   users: '/users',
   posts: '/posts',
+  notifications: '/notifications',
   comments: '/comments',
   studyprograms: '/studyprograms',
 };

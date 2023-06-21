@@ -19,10 +19,10 @@ import { AiOutlineMail } from 'react-icons/ai';
 import { BsFillBookmarkFill } from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
 import { GrAdd } from 'react-icons/gr';
-import { IoIosNotificationsOutline } from 'react-icons/io';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import NavLink from '../../Navlink';
+import Notifications from './Notifications';
 import Search from './Search';
 
 interface INavbarTopProps {}
@@ -61,13 +61,7 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
             justifyContent={{ lg: 'right' }}
           >
             {/* notif */}
-            <IconButton
-              borderRadius="full"
-              colorScheme="gray"
-              aria-label="expand"
-              icon={<IoIosNotificationsOutline className="text-2xl" />}
-            />
-
+            <Notifications />
             <Flex display={{ sm: 'none', lg: 'flex' }} gap={2}>
               <IconButton
                 onClick={() => onOpen()}
