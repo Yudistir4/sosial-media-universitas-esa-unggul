@@ -17,11 +17,28 @@ func (s *postService) CreatePost(req dto.CreatePostReq) (dto.PostResponse, error
 		req.ContentFileURL = result.FileURL
 		req.ContentFilePublicID = result.PublicID
 	}
-	post, err := s.repo.CreatePost(req)
+	tx := s.db.Begin()
+	post, err := s.repo.CreatePost(req,tx)
 
 	if err != nil {
+		tx.Rollback()
 		return dto.PostResponse{}, err
 	}
+
+	if req.PostCategory == "question" {
+		createNotif := dto.CreateNotificationReq{
+			FromUserID: req.UserID,
+			ToUserID:   req.ToUserID,
+			PostID:     post.ID,
+			Activity:   "ask",
+		}
+		if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {
+			tx.Rollback()
+			return dto.PostResponse{}, err
+		}
+	}
+
+	tx.Commit()
 
 	post, err = s.repo.GetPostByID(post.ID)
 	if err != nil {

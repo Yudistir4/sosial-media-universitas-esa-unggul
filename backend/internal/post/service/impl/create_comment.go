@@ -36,6 +36,17 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 			tx.Rollback()
 			return dto.CommentResponse{}, err
 		}
+	} else if req.UserID == post.UserID && post.PostCategory == "question"{
+		createNotif := dto.CreateNotificationReq{
+			FromUserID: req.UserID,
+			ToUserID:   *post.ToUserID,
+			PostID:     req.PostID,
+			CommentID:  &comment.ID,
+		}
+		if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {
+			tx.Rollback()
+			return dto.CommentResponse{}, err
+		}
 	}
 
 	tx.Commit()

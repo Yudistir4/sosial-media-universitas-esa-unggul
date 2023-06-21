@@ -1,6 +1,9 @@
 package impl
 
-import "backend/pkg/dto"
+import (
+	"backend/pkg/dto"
+	"fmt"
+)
 
 func (s *notificationService) GetNotifications(req dto.GetNotificationsReq) ([]dto.NotificationResponse, error) {
 	notifications, err := s.repo.GetNotifications(req)
@@ -10,6 +13,29 @@ func (s *notificationService) GetNotifications(req dto.GetNotificationsReq) ([]d
 
 	var notificationsResponse []dto.NotificationResponse
 	for _, notification := range notifications {
+
+		message := ""
+		if notification.Activity == "ask" {
+			message = "ask to you about"
+		} else if notification.Activity == "like" && notification.Post.PostCategory == "question" {
+			message = "like your question about"
+
+		} else if notification.Activity == "like" && notification.Post.PostCategory != "question" {
+			message = "like your post about"
+
+		} else if notification.Activity == "comment" && notification.Post.PostCategory == "question" {
+			if notification.Post.UserID == notification.Comment.UserID {
+				message = fmt.Sprintf("response \"%s\" in question about", notification.Comment.Comment)
+			} else {
+				message = fmt.Sprintf("answer \"%s\" in your question about", notification.Comment.Comment)
+			}
+
+		} else if notification.Activity == "comment" && notification.Post.PostCategory != "question" {
+			message = fmt.Sprintf("comment \"%s\" in your post about", notification.Comment.Comment)
+
+		}
+		message = fmt.Sprintf("%s \"%s\"", message, notification.Post.Caption)
+
 		notificationResponse := dto.NotificationResponse{
 			ID:        notification.ID,
 			Activity:  notification.Activity,
@@ -26,13 +52,15 @@ func (s *notificationService) GetNotifications(req dto.GetNotificationsReq) ([]d
 				Caption:        notification.Post.Caption,
 				ContentFileURL: notification.Post.ContentFileURL,
 				ContentType:    notification.Post.ContentType,
+				PostCategory:   notification.Post.PostCategory,
 			},
 			Comment: dto.NotificationCommentResponse{
 				ID:      notification.Comment.ID,
 				Comment: notification.Comment.Comment,
 			},
+			Message: message,
 		}
-		
+
 		notificationsResponse = append(notificationsResponse, notificationResponse)
 
 	}

@@ -5,9 +5,10 @@ import (
 	customerrors "backend/pkg/errors"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
-func (r *postRepository) CreatePost(req dto.CreatePostReq) (dto.Post, error) {
+func (r *postRepository) CreatePost(req dto.CreatePostReq, tx *gorm.DB) (dto.Post, error) {
 	post := dto.Post{
 		ID:                  uuid.New(),
 		UserID:              req.UserID,
@@ -21,7 +22,7 @@ func (r *postRepository) CreatePost(req dto.CreatePostReq) (dto.Post, error) {
 		post.ToUserID = &req.ToUserID
 	}
 
-	result := r.db.Create(&post)
+	result := tx.Create(&post)
 	if result.Error != nil {
 		r.log.Errorln("[ERROR] Create Post Error:", result.Error)
 		return dto.Post{}, customerrors.GetErrorType(result.Error)

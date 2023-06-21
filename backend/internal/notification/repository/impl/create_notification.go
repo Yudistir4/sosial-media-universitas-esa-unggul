@@ -13,7 +13,7 @@ func (r *notificationRepository) CreateNotification(req dto.CreateNotificationRe
 		return errors.New("transaction not started")
 	}
 
-	var activity string
+	var activity = req.Activity
 	if req.CommentID != nil {
 		activity = "comment"
 	} else if req.LikeID != nil {

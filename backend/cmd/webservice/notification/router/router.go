@@ -28,5 +28,6 @@ func InitNotificationRouter(params RouterParams) {
 
 	notificationV1Group := params.E.Group(apiversioning.APIVersion1 + "/notifications")
 	notificationV1Group.GET("", notificationHandler.GetNotifications(params.Service), params.Middleware.UserMustAuthorized())
+	notificationV1Group.GET("/total", notificationHandler.GetTotalUnreadNotifications(params.Service), params.Middleware.UserMustAuthorized())
 	notificationV1Group.PATCH("/read", notificationHandler.MarkNotificationsAsRead(params.Service), params.Middleware.UserMustAuthorized())
 }
