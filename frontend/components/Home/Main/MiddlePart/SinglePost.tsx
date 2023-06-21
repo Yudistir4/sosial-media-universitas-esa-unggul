@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Post from './Post';
+import Question from './Question';
 import { PostDoc, Response } from '@/typing';
 import { AxiosError } from 'axios';
 import { api } from '@/config';
 import { client } from '@/services';
 import { useQuery } from '@tanstack/react-query';
-import { Spinner } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 
 interface ISinglePostProps {
   post_id: string;
@@ -28,7 +29,19 @@ const SinglePost: React.FunctionComponent<ISinglePostProps> = ({ post_id }) => {
         <Spinner />
       </div>
     );
-  return <>{post && <Post post={post} />};</>;
+  return (
+    <Box mx={{ sm: 2, xl: 0 }}>
+      {post && (
+        <>
+          {post.post_category === 'question' ? (
+            <Question post={post} showRecipient={true} />
+          ) : (
+            <Post post={post} />
+          )}
+        </>
+      )}
+    </Box>
+  );
 };
 
 export default SinglePost;
