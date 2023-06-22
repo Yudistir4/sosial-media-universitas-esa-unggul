@@ -1,6 +1,7 @@
 package impl
 
 import (
+	customerrors "backend/pkg/errors"
 	"backend/pkg/utils/emailutils"
 	"backend/pkg/utils/randomutils"
 	"context"
@@ -12,6 +13,9 @@ func (s *authService) ForgotPassword(email string) error {
 
 	user, err := s.repo.GetUserByEmail(email)
 	if err != nil {
+		if err == customerrors.ErrAccountNotFound {
+			return customerrors.ErrEmailNotFound
+		}
 		return err
 	}
 	// Generate code
@@ -19,7 +23,7 @@ func (s *authService) ForgotPassword(email string) error {
 
 	// Send email
 	body, err := emailutils.SendResetPasswordBody(emailutils.SendResetPasswordParams{
-		Link: fmt.Sprintf("%s/auth/reset_password?code=%s&email=%s", s.config.FrontEndURL, code, email),
+		Link: fmt.Sprintf("%s/?reset_password=true&code=%s&email=%s", s.config.FrontEndURL, code, email),
 		Name: user.Name,
 	})
 	if err != nil {
