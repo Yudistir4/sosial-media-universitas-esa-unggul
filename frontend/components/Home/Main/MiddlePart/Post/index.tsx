@@ -9,14 +9,23 @@ import Caption from './Caption';
 import Comment from './Comment';
 import MenuPost from './MenuPost';
 import User from './User';
+import { useRouter } from 'next/router';
 interface IPostProps {
   post: PostDoc;
+  caption?: string;
+  isSearchMode?: boolean;
+  customCallback?: () => void;
 }
 
-const Post: React.FunctionComponent<IPostProps> = ({ post }) => {
+const Post: React.FunctionComponent<IPostProps> = ({
+  post,
+  caption,
+  isSearchMode,
+  customCallback,
+}) => {
   const user = useAuth((state) => state.user);
   const [showComment, setShowComment] = React.useState(false);
-
+  const router = useRouter();
   const { isMuted, isPlay, pauseVideo, muteVideo, unmuteVideo } =
     useVideoSetting((state) => ({
       isMuted: state.isMuted,
@@ -59,7 +68,16 @@ const Post: React.FunctionComponent<IPostProps> = ({ post }) => {
   }, [isOpen]);
 
   return (
-    <Flex className="flex-col gap-3 py-3 bg-white  rounded-xl border-2">
+    <Flex
+      onClick={() => {
+        customCallback && customCallback();
+        if (!isSearchMode) return;
+        router.push(`/?post_id=${post.id}`);
+      }}
+      className={`${
+        isSearchMode ? 'cursor-pointer' : ''
+      } flex-col gap-3 py-3 bg-white  rounded-xl border-2`}
+    >
       {/* Top */}
       <Flex className="justify-between items-center px-4">
         <User post={post} />
@@ -82,11 +100,12 @@ const Post: React.FunctionComponent<IPostProps> = ({ post }) => {
           src={post.content_file_url}
           controls
           loop
-          autoPlay={true}
         ></video>
       )}
       {/* render caption */}
-      {!post.content_file_url && <Caption text={post.caption} />}
+      {!post.content_file_url && (
+        <Caption text={post.caption} caption={caption} />
+      )}
 
       {/* render Actions */}
       <Actions
@@ -95,7 +114,9 @@ const Post: React.FunctionComponent<IPostProps> = ({ post }) => {
       />
 
       {/* render Caption */}
-      {post.content_file_url && <Caption text={post.caption} />}
+      {post.content_file_url && (
+        <Caption text={post.caption} caption={caption} />
+      )}
 
       {/* render total comments */}
       {post.total_comments != 0 && !showComment && (

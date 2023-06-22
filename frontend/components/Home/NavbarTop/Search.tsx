@@ -56,6 +56,7 @@ const Search: React.FunctionComponent<ISearchProps> = (props) => {
           <TabList>
             <Tab>User</Tab>
             <Tab>Post</Tab>
+            <Tab>Q&A</Tab>
           </TabList>
 
           <TabPanels
@@ -66,7 +67,24 @@ const Search: React.FunctionComponent<ISearchProps> = (props) => {
               <UserList search={search} closeDropDown={closeDropDown} />
             </TabPanel>
             <TabPanel px={{ sm: 1, xl: 3 }}>
-              {search && <Feed caption={search} />}
+              {search && (
+                <Feed
+                  caption={search}
+                  isSearchMode={true}
+                  customCallback={closeDropDown}
+                />
+              )}
+            </TabPanel>
+            <TabPanel px={{ sm: 1, xl: 3 }}>
+              {search && (
+                <Feed
+                  caption={search}
+                  isSearchMode={true}
+                  customCallback={closeDropDown}
+                  post_category="question"
+                  showRecipient={true}
+                />
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>

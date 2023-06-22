@@ -19,6 +19,8 @@ interface IFeedProps {
   not_answered?: boolean;
   popular?: boolean;
   showRecipient?: boolean;
+  isSearchMode?: boolean;
+  customCallback?: () => void;
 }
 
 const Feed: React.FunctionComponent<IFeedProps> = ({
@@ -30,6 +32,8 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
   not_answered,
   popular,
   showRecipient,
+  isSearchMode,
+  customCallback,
 }) => {
   // Fetch posts
   const {
@@ -85,7 +89,7 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
       direction="column"
       gap={2}
       zIndex={0}
-      className="  h-full z-0"
+      className="  h-full z-0 mb-20"
     >
       <InfiniteScroll
         className="flex flex-col gap-4 !overflow-visible"
@@ -104,10 +108,19 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
               <Question
                 key={post.id}
                 post={post}
+                customCallback={customCallback}
+                caption={caption ? caption : ''}
+                isSearchMode={isSearchMode ? isSearchMode : false}
                 showRecipient={showRecipient ? showRecipient : false}
               />
             ) : (
-              <Post key={post.id} post={post} />
+              <Post
+                customCallback={customCallback}
+                caption={caption}
+                isSearchMode={isSearchMode ? isSearchMode : false}
+                key={post.id}
+                post={post}
+              />
             )
           );
         })}
@@ -119,7 +132,9 @@ const Feed: React.FunctionComponent<IFeedProps> = ({
               leftIcon={<AiOutlineWarning />}
               colorScheme="yellow"
             >
-              Post Not Found
+              {post_category === 'question'
+                ? 'Question Not Found'
+                : 'Post Not Found'}
             </Button>
           </Flex>
         )}

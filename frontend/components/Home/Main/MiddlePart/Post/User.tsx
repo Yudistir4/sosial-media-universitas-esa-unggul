@@ -12,7 +12,7 @@ const User: React.FunctionComponent<IUserProps> = ({ post }) => {
   return (
     <Flex gap={2} className="">
       <Link href={`/?user_id=${post.user.id}`}>
-        <Avatar src={post.user.profile_pic_url} />
+        <Avatar bg="gray.400" src={post.user.profile_pic_url} />
       </Link>
       <Flex className="flex-col justify-center">
         <Link href={`/?user_id=${post.user.id}`}>

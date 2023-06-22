@@ -3,7 +3,7 @@ import * as React from 'react';
 
 interface IUserProps {
   post: PostDoc;
-  showRecipient: boolean;
+  showRecipient?: boolean;
 }
 
 import { PostDoc } from '@/typing';
@@ -14,12 +14,12 @@ const User: React.FunctionComponent<IUserProps> = ({ post, showRecipient }) => {
     <Flex gap={2} className="items-center">
       {showRecipient ? (
         <AvatarGroup size="sm" max={2}>
-          <Avatar src={post.user.profile_pic_url} />
-          <Avatar src={post.to_user.profile_pic_url} />
+          <Avatar bg="gray.400" src={post.user.profile_pic_url} />
+          <Avatar bg="gray.400" src={post.to_user.profile_pic_url} />
         </AvatarGroup>
       ) : (
         <Link href={`/?user_id=${post.user.id}`}>
-          <Avatar size="sm" src={post.user.profile_pic_url} />
+          <Avatar bg="gray.400" size="sm" src={post.user.profile_pic_url} />
         </Link>
       )}
       <Flex className="flex-col justify-center">

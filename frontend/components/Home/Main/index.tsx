@@ -9,7 +9,7 @@ const Main: React.FunctionComponent<IMainProps> = (props) => {
   return (
     <Flex
       gap={4}
-      className="max-w-[1280px] m-auto pt-4"
+      className="max-w-[1280px] min-h-[200vh] m-auto pt-4"
       mt={{ sm: '96px', xl: '57px' }}
     >
       <SidebarLeft />
