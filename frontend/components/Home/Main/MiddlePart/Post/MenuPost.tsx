@@ -1,7 +1,7 @@
 import { api } from '@/config';
 import { client } from '@/services';
 import { useEditPostModal } from '@/store/editPostModal';
-import { PostDoc } from '@/typing';
+import { PostDoc, QueryParams } from '@/typing';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -20,6 +20,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { MdOutlineDelete, MdOutlineModeEditOutline } from 'react-icons/md';
 import { SlOptionsVertical } from 'react-icons/sl';
@@ -29,6 +30,8 @@ interface IMenuPostProps {
 
 const MenuPost: React.FunctionComponent<IMenuPostProps> = ({ post }) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { post_id } = router.query as unknown as QueryParams;
   const toast = useToast();
   const editPost = useEditPostModal((state) => state.onOpen);
   const { mutate: deletePost, isLoading } = useMutation({
@@ -39,6 +42,7 @@ const MenuPost: React.FunctionComponent<IMenuPostProps> = ({ post }) => {
     onSuccess: () => {
       toast({ title: 'Delete post success', colorScheme: 'green' });
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      post_id && router.push('/');
       onClose();
     },
   });

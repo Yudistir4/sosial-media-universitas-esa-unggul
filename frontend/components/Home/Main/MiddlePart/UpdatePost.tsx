@@ -88,6 +88,7 @@ const UpdatePost: React.FunctionComponent<IUpdatePostProps> = ({}) => {
     onError: (err: AxiosError<ErrorResponse>) => {},
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['post', post?.id] });
       toast({
         title: 'Update post success',
         status: 'success',
