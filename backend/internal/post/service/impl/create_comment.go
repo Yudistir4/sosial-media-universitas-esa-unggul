@@ -25,6 +25,7 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 	}
 
 	// Create Notification
+	// jika pembuat komen bukan pemilik post -> kirim notif ke pemilik post
 	if req.UserID != post.UserID {
 		createNotif := dto.CreateNotificationReq{
 			FromUserID: req.UserID,
@@ -36,7 +37,23 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 			tx.Rollback()
 			return dto.CommentResponse{}, err
 		}
-	} else if req.UserID == post.UserID && post.PostCategory == "question"{
+
+		// jika post==question -> kirim notif ke user tujuan
+		if post.PostCategory == "question" {
+			createNotif := dto.CreateNotificationReq{
+				FromUserID: req.UserID,
+				ToUserID:   *post.ToUserID,
+				PostID:     req.PostID,
+				CommentID:  &comment.ID,
+			}
+			if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {
+				tx.Rollback()
+				return dto.CommentResponse{}, err
+			}
+		}
+
+		// jika pembuat komen adalah pemilik post dan jenispost == question-> kirim notif ke user tujuan post
+	} else if req.UserID == post.UserID && post.PostCategory == "question" {
 		createNotif := dto.CreateNotificationReq{
 			FromUserID: req.UserID,
 			ToUserID:   *post.ToUserID,
