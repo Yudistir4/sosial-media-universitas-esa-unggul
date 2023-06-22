@@ -9,7 +9,6 @@ import {
   FormErrorMessage,
   Input,
   Text,
-  useToast,
 } from '@chakra-ui/react';
 
 import { api } from '@/config';
@@ -93,7 +92,7 @@ const ChangePasswordForm: React.FunctionComponent<IChangePasswordProps> = ({
             </Flex>
           </Alert>
 
-          <Link href="/" className="hover:text-blue-500 transition-all">
+          <Link href="/" className="text-blue-500 transition-all">
             Back to login page
           </Link>
         </div>
@@ -145,6 +144,9 @@ const ChangePasswordForm: React.FunctionComponent<IChangePasswordProps> = ({
           >
             Submit
           </Button>
+          <Link href="/" className="text-blue-500 transition-all">
+            Back to login page
+          </Link>
         </form>
       )}
     </div>
