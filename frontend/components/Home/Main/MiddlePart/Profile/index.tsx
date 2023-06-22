@@ -30,6 +30,8 @@ import StudyProgram from './StudyProgram';
 import Students from './Students';
 import Lecturers from './Lecturers';
 import Questions from './Questions';
+import { AiOutlineWarning } from 'react-icons/ai';
+import { AxiosError } from 'axios';
 
 interface IProfileProps {}
 
@@ -38,7 +40,10 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
   const { user_id } = router.query as unknown as QueryParams;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data, isLoading, isFetching } = useQuery<Response<User>>({
+  const { data, isLoading, isFetching, error } = useQuery<
+    Response<User>,
+    AxiosError<Response>
+  >({
     queryFn: async () => {
       const res = await client.get(api.users + '/' + user_id);
       return res.data;
@@ -189,6 +194,18 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
       )}
       {isOpen && user && (
         <UpdateProfile isOpen={isOpen} onClose={onClose} user={user} />
+      )}
+      {error && error?.response?.status === 404 && (
+        <Flex className="justify-center h-[80vh] items-center">
+          <Button
+            size="md"
+            borderRadius="full"
+            leftIcon={<AiOutlineWarning />}
+            colorScheme="yellow"
+          >
+            User Not Found
+          </Button>
+        </Flex>
       )}
     </Flex>
   );
