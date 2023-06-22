@@ -24,9 +24,14 @@ func (s *notificationService) GetNotifications(req dto.GetNotificationsReq) ([]d
 			message = "like your post about"
 
 		} else if notification.Activity == "comment" && notification.Post.PostCategory == "question" {
+			// jika pemilik post == pemilik comment -> response...
 			if notification.Post.UserID == notification.Comment.UserID {
 				message = fmt.Sprintf("response \"%s\" in question about", notification.Comment.Comment)
-			} else {
+				// jika user req != pemilik post ->
+			} else if req.UserID != notification.Post.UserID {
+				message = fmt.Sprintf("answer \"%s\" in question about", notification.Comment.Comment)
+				// jika user req = pemilik post ->
+			} else if req.UserID == notification.Post.UserID {
 				message = fmt.Sprintf("answer \"%s\" in your question about", notification.Comment.Comment)
 			}
 
