@@ -32,6 +32,7 @@ const Notifications: React.FunctionComponent<INotificationsProps> = (props) => {
     fetchNextPage,
     hasNextPage,
     isLoading,
+    refetch,
   } = useInfiniteQuery<Response<[NotificationDoc]>, AxiosError<Response>>({
     queryKey: ['notifications'],
     queryFn: async ({ pageParam = 1 }) => {
@@ -74,7 +75,10 @@ const Notifications: React.FunctionComponent<INotificationsProps> = (props) => {
       const res = await client.patch(`${api.notifications}/read`);
       return res.data;
     },
-    onSuccess: () => setTotalNotif(undefined),
+    onSuccess: () => {
+      setTotalNotif(undefined);
+      refetch();
+    },
   });
   let itemLength = 0;
   notifications?.pages.map((page) => {

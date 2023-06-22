@@ -6,6 +6,9 @@ interface QueryParams {
   post_id: string;
   post_category: string;
   saved: boolean;
+  email: string;
+  code: string;
+  reset_password: boolean;
 }
 type UserType =
   | 'student'
@@ -122,7 +125,6 @@ export interface NotificationDoc {
   post: NotifPost;
   comment: NotifComment;
   message: string;
-
 }
 
 interface NotifPost {
