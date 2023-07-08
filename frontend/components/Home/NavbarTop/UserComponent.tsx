@@ -20,7 +20,13 @@ const UserComponent: React.FunctionComponent<IUserProps> = ({ user }) => {
                 variant="solid"
                 borderRadius="full"
                 px={3}
-                colorScheme={user.user_type === 'student' ? 'blue' : 'gray'}
+                colorScheme={
+                  user.user_type === 'student'
+                    ? 'blue'
+                    : user.user_type === 'alumni'
+                    ? 'green'
+                    : 'gray'
+                }
               >
                 {user?.user_type}
               </Badge>

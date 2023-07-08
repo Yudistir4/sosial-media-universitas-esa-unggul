@@ -45,6 +45,7 @@ type CreateUserReq struct {
 	NIDN           string `json:"nidn"`
 	FacultyID      string `json:"faculty_id"`
 	StudyProgramID string `json:"study_program_id"`
+	IsGraduated    bool   `json:"is_graduated"`
 }
 type UpdateUserReq struct {
 	ID             uuid.UUID `param:"id" validate:"required"`
@@ -54,6 +55,7 @@ type UpdateUserReq struct {
 	NIM            string    `json:"nim"`
 	BatchYear      int       `json:"year"`
 	NIDN           string    `json:"nidn"`
+	IsGraduated    bool      `json:"is_graduated"`
 	FacultyID      uuid.UUID `json:"faculty_id"`
 	StudyProgramID uuid.UUID `json:"study_program_id"`
 }
@@ -62,12 +64,14 @@ type CreateUserStudentReq struct {
 	BatchYear      int    `json:"year" validate:"required"`
 	FacultyID      string `json:"faculty_id" validate:"required"`
 	StudyProgramID string `json:"study_program_id" validate:"required"`
+	IsGraduated    bool   `json:"is_graduated"`
 }
 type UpdateUserStudentReq struct {
 	NIM            string    `json:"nim" validate:"required"`
 	BatchYear      int       `json:"year" validate:"required"`
 	FacultyID      uuid.UUID `json:"faculty_id" validate:"required"`
 	StudyProgramID uuid.UUID `json:"study_program_id" validate:"required"`
+	IsGraduated    bool      `json:"is_graduated"`
 }
 type CreateUserLecturerReq struct {
 	NIDN           string `json:"nidn" validate:"required"`
@@ -137,6 +141,9 @@ type GetUsersReq struct {
 }
 
 func ConvertUserToUserResponse(user User) (userResponse UserResponse) {
+	if user.UserTypeName == "student" && user.Student.IsGraduated {
+		user.UserTypeName = "alumni"
+	}
 	userResponse.ID = user.ID
 	userResponse.CreatedAt = user.CreatedAt
 	userResponse.UpdatedAt = user.UpdatedAt
@@ -150,9 +157,10 @@ func ConvertUserToUserResponse(user User) (userResponse UserResponse) {
 	userResponse.Whatsapp = user.Whatsapp
 	userResponse.UserTypeName = user.UserTypeName
 	userResponse.Student = StudentResponse{
-		ID:        user.Student.ID,
-		NIM:       user.Student.NIM,
-		BatchYear: user.Student.BatchYear,
+		ID:          user.Student.ID,
+		NIM:         user.Student.NIM,
+		BatchYear:   user.Student.BatchYear,
+		IsGraduated: user.Student.IsGraduated,
 		Faculty: FacultyResponse{
 			ID:        user.Student.Faculty.ID,
 			CreatedAt: user.Student.Faculty.CreatedAt,

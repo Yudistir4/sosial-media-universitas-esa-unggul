@@ -12,22 +12,15 @@ import {
   Select,
   Spinner,
   Text,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 // import Worker from './worker.js';
 import { api } from '@/config';
 import { client, convertToQueryStr } from '@/services';
-import {
-  Filter,
-  Response,
-  UserLittle2
-} from '@/typing';
+import { Filter, Response, UserLittle2 } from '@/typing';
 
 import { useAuth } from '@/store/user';
-import {
-  useInfiniteQuery,
-  useQuery
-} from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import * as React from 'react';
 import { AiOutlineWarning } from 'react-icons/ai';
@@ -341,7 +334,7 @@ const SelectVoters: React.FunctionComponent<ISelectVotersProps> = ({
                               <Text noOfLines={1} className="font-semibold">
                                 {user.name}
                               </Text>
-                              {['student', 'lecturer'].includes(
+                              {['student', 'lecturer', 'alumni'].includes(
                                 user.user_type
                               ) && (
                                 <Badge
@@ -351,6 +344,8 @@ const SelectVoters: React.FunctionComponent<ISelectVotersProps> = ({
                                   colorScheme={
                                     user.user_type === 'student'
                                       ? 'blue'
+                                      : user.user_type === 'alumni'
+                                      ? 'green'
                                       : 'gray'
                                   }
                                 >

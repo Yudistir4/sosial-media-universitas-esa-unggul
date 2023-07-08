@@ -13,6 +13,7 @@ interface QueryParams {
   reset_password: boolean;
 }
 type UserType =
+  | 'alumni'
   | 'student'
   | 'lecturer'
   | 'university'
@@ -64,6 +65,7 @@ export interface Student {
   id: string;
   nim: string;
   year: number;
+  is_graduated: boolean;
   faculty: Faculty;
   study_program: StudyProgram;
 }

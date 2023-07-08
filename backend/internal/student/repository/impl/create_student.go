@@ -32,6 +32,7 @@ func (r *studentRepository) CreateStudent(req dto.CreateUserReq, tx *gorm.DB) (d
 		StudyProgramID: studyProgramID,
 		NIM:            req.NIM,
 		BatchYear:      req.BatchYear,
+		IsGraduated:    req.IsGraduated,
 	}
 	result := tx.Create(&student)
 	if result.Error != nil {

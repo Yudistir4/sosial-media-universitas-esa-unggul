@@ -24,7 +24,8 @@ func (h *userHandler) CreateUser(service service.UserService) echo.HandlerFunc {
 
 		if err != nil {
 			return httputils.ErrorResponse(c, httputils.ErrorResponseParams{
-				Err: customerrors.ErrBadRequest,
+				Err:    customerrors.ErrBadRequest,
+				Detail: "Error Binding",
 			})
 		}
 		err = h.validator.StructCtx(c.Request().Context(), req)
@@ -41,6 +42,7 @@ func (h *userHandler) CreateUser(service service.UserService) echo.HandlerFunc {
 				BatchYear:      req.BatchYear,
 				FacultyID:      req.FacultyID,
 				StudyProgramID: req.StudyProgramID,
+				IsGraduated:    req.IsGraduated,
 			}
 			err = h.validator.StructCtx(c.Request().Context(), student)
 

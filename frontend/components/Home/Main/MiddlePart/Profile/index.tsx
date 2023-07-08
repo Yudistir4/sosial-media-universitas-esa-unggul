@@ -77,12 +77,18 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
             )}
             <Avatar src={user?.profile_pic_url} size="2xl" />
             <Flex className=" flex-col justify-center items-center">
-              {['student', 'lecturer'].includes(user.user_type) && (
+              {['student', 'lecturer', 'alumni'].includes(user.user_type) && (
                 <Badge
                   variant="solid"
                   borderRadius="full"
                   px={3}
-                  colorScheme={user.user_type === 'student' ? 'blue' : 'gray'}
+                  colorScheme={
+                    user.user_type === 'student'
+                      ? 'blue'
+                      : user.user_type === 'alumni'
+                      ? 'green'
+                      : 'gray'
+                  }
                 >
                   {user.user_type}
                 </Badge>

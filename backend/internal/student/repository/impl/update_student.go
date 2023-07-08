@@ -37,6 +37,7 @@ func (r *studentRepository) UpdateStudent(req *dto.UpdateUserReq, tx *gorm.DB) e
 	student.BatchYear = req.BatchYear
 	student.FacultyID = req.FacultyID
 	student.StudyProgramID = req.StudyProgramID
+	student.IsGraduated = req.IsGraduated
 
 	result := tx.Save(student)
 	if result.Error != nil {
@@ -46,7 +47,7 @@ func (r *studentRepository) UpdateStudent(req *dto.UpdateUserReq, tx *gorm.DB) e
 
 	// if old BatchYear !exist anymore in students -> delete
 	if req.BatchYear != oldBatchYear {
-		ok, err = r.IsBatchExistInOthersStudents(oldBatchYear,student.ID)
+		ok, err = r.IsBatchExistInOthersStudents(oldBatchYear, student.ID)
 		if err != nil {
 			return err
 		}

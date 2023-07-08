@@ -199,8 +199,8 @@ const UpdateUser: React.FunctionComponent<IUpdateUserProps> = ({
                 <FormErrorMessage>{errors.nidn?.message}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.faculty_id}>
-                <FormLabel>Fakultas</FormLabel>
-                <Select {...register('faculty_id')} placeholder="Fakultas">
+                <FormLabel>Faculty</FormLabel>
+                <Select {...register('faculty_id')} placeholder="Faculty">
                   {facultys?.data?.map((faculty) => (
                     <option key={faculty.id} value={faculty.id}>
                       {faculty.name}

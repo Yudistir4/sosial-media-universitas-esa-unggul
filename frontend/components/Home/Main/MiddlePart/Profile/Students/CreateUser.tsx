@@ -48,6 +48,7 @@ interface CreateStudentForm {
   user_type: string;
   nim: string;
   year: number | undefined;
+  is_graduated: boolean;
   faculty_id: string;
   study_program_id: string;
 }
@@ -56,7 +57,11 @@ const validationSchema = yup.object().shape({
   email: yup.string().trim().email().required(),
   user_type: yup.string().required(),
   nim: yup.string().trim().required(),
-  year: yup.number().required().typeError('year must be a number'),
+  is_graduated: yup.boolean(),
+  year: yup
+    .number()
+    .required('Batch is required field')
+    .typeError('batch must be a number'),
   faculty_id: yup.string().required('faculty is a required field'),
   study_program_id: yup.string().required('study program is a required field'),
 });
@@ -86,6 +91,7 @@ const CreateUserStudentForm: React.FunctionComponent<
       user_type: 'student',
       nim: '',
       year: undefined,
+      is_graduated: false,
       faculty_id: '',
       study_program_id: '',
     },
@@ -96,6 +102,9 @@ const CreateUserStudentForm: React.FunctionComponent<
     isLoading: isLoadingCreate,
   } = useMutation({
     mutationFn: async (data: CreateStudentForm) => {
+      // if (data.is_graduated == 'true') {
+      //   data.is_graduated = true;
+      // }
       const res = await client.post(api.users, data);
       return res.data;
     },
@@ -190,18 +199,32 @@ const CreateUserStudentForm: React.FunctionComponent<
                 )}
               </FormControl>
               <FormControl isInvalid={!!errors.nim}>
-                <FormLabel>Nim</FormLabel>
-                <Input {...register('nim')} placeholder="Nim" />
+                <FormLabel>NIM</FormLabel>
+                <Input {...register('nim')} placeholder="NIM" />
                 <FormErrorMessage>{errors.nim?.message}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.year}>
-                <FormLabel>Angkatan</FormLabel>
-                <Input {...register('year')} placeholder="Angkatan" />
+                <FormLabel>Batch</FormLabel>
+                <Input {...register('year')} placeholder="Batch" />
                 <FormErrorMessage>{errors.year?.message}</FormErrorMessage>
               </FormControl>
+              <FormControl isInvalid={!!errors.is_graduated}>
+                <FormLabel>Is Graduated</FormLabel>
+                <Select
+                  {...register('is_graduated')}
+
+                  // placeholder="Is Graduated"
+                >
+                  <option value={'false'}>No</option>
+                  <option value={'true'}>Yes</option>
+                </Select>
+                <FormErrorMessage>
+                  {errors.is_graduated?.message}
+                </FormErrorMessage>
+              </FormControl>
               <FormControl isInvalid={!!errors.faculty_id}>
-                <FormLabel>Fakultas</FormLabel>
-                <Select {...register('faculty_id')} placeholder="Fakultas">
+                <FormLabel>Faculty</FormLabel>
+                <Select {...register('faculty_id')} placeholder="Faculty">
                   {facultys?.data?.map((faculty) => (
                     <option key={faculty.id} value={faculty.id}>
                       {faculty.name}
