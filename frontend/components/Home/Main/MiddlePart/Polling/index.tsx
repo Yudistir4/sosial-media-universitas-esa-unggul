@@ -34,8 +34,6 @@ const Polling: React.FunctionComponent<IPollingProps> = ({
       : true
   );
 
-  console.log({ disabled, polling });
-
   let totalAllVoters = polling.options.reduce(
     (acc, obj) => acc + obj.total_voters,
     0

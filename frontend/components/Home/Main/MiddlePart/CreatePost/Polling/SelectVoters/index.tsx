@@ -1,76 +1,39 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Avatar,
   Badge,
   Button,
   Checkbox,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  IconButton,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftAddon,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Text,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Textarea,
-  useDisclosure,
-  useToast,
-  PopoverHeader,
   Select,
   Spinner,
+  Text,
+  useDisclosure
 } from '@chakra-ui/react';
-import AutoSizer from 'react-virtualized-auto-sizer';
 // import Worker from './worker.js';
 import { api } from '@/config';
 import { client, convertToQueryStr } from '@/services';
 import {
-  ErrorResponse,
-  FacultySelect,
-  Response,
-  StudentSelect,
-  User,
-  BatchSelect,
   Filter,
-  UserLittle2,
+  Response,
+  UserLittle2
 } from '@/typing';
 
 import { useAuth } from '@/store/user';
-import { yupResolver } from '@hookform/resolvers/yup';
 import {
   useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
+  useQuery
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
-import { AiFillCaretRight, AiOutlineWarning } from 'react-icons/ai';
-import { BsFillCameraFill, BsFillPeopleFill } from 'react-icons/bs';
+import { AiOutlineWarning } from 'react-icons/ai';
 import { GoTriangleDown } from 'react-icons/go';
-import * as yup from 'yup';
-import { MdOutlineDelete } from 'react-icons/md';
-import { IoIosArrowDown, IoIosArrowUp, IoMdAdd } from 'react-icons/io';
-import { PiStudentBold } from 'react-icons/pi';
-import { GiTeacher } from 'react-icons/gi';
-import { LuSettings2 } from 'react-icons/lu';
-import moment from 'moment';
-import SelectedUsers from './SelectedUsers';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import SelectedUsers from './SelectedUsers';
 interface ISelectVotersProps {
   everyone: boolean;
   setEveryone: React.Dispatch<React.SetStateAction<boolean>>;
