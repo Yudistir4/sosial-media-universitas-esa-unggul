@@ -13,6 +13,8 @@ import { useCreatePostModal } from '@/store/createPostModal';
 import * as React from 'react';
 import PostForm from './PostForm';
 import QuestionForm from './QuestionForm';
+import Polling from './Polling';
+import { useSelectVoters } from '@/store/selectVoters';
 
 interface ICreatePostProps {}
 
@@ -25,10 +27,15 @@ const CreatePost: React.FunctionComponent<ICreatePostProps> = (props) => {
   const [fileExist, setFileExist] = React.useState(false);
 
   const [tabIndex, setTabIndex] = React.useState(0);
+  const removeVoters = useSelectVoters((state) => state.removeVoters);
+  const closeModal = () => {
+    removeVoters();
+    onClose();
+  };
   return (
     <>
       <Modal
-        onClose={onClose}
+        onClose={closeModal}
         isOpen={isOpen}
         isCentered
         size={tabIndex === 1 ? 'md' : fileExist ? '3xl' : 'md'}
@@ -42,16 +49,20 @@ const CreatePost: React.FunctionComponent<ICreatePostProps> = (props) => {
             defaultIndex={to_user ? 1 : 0}
           >
             <TabList>
-              <Tab>Create Post</Tab>
-              <Tab>Create Question</Tab>
+              <Tab>Add Post</Tab>
+              <Tab>Add Question</Tab>
+              <Tab>Add Polling</Tab>
             </TabList>
 
             <TabPanels>
               <TabPanel>
-                <PostForm onClose={onClose} setFileExist={setFileExist} />
+                <PostForm onClose={closeModal} setFileExist={setFileExist} />
               </TabPanel>
               <TabPanel>
-                <QuestionForm onClose={onClose} to_user={to_user} />
+                <QuestionForm onClose={closeModal} to_user={to_user} />
+              </TabPanel>
+              <TabPanel>
+                <Polling onClose={closeModal} />
               </TabPanel>
             </TabPanels>
           </Tabs>

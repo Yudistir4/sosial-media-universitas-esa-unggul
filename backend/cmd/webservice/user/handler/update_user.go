@@ -38,7 +38,7 @@ func (h *userHandler) UpdateUser(service service.UserService) echo.HandlerFunc {
 		if req.UserType == "student" {
 			student := dto.UpdateUserStudentReq{
 				NIM:            req.NIM,
-				Angkatan:       req.Angkatan,
+				BatchYear:      req.BatchYear,
 				FacultyID:      req.FacultyID,
 				StudyProgramID: req.StudyProgramID,
 			}

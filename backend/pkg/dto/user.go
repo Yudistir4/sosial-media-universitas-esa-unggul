@@ -29,6 +29,11 @@ type User struct {
 	UserTypeName string
 	UserType     UserType `gorm:"ForeignKey:UserTypeName"`
 }
+type UserLittleResponse struct {
+	ID            uuid.UUID `json:"id"`
+	Name          string    `json:"name"`
+	ProfilePicURL string    `json:"profile_pic_url"`
+}
 
 type CreateUserReq struct {
 	Password       string
@@ -36,7 +41,7 @@ type CreateUserReq struct {
 	Email          string `json:"email" validate:"required"`
 	UserType       string `json:"user_type" validate:"required"`
 	NIM            string `json:"nim"`
-	Angkatan       int    `json:"angkatan"`
+	BatchYear      int    `json:"year"`
 	NIDN           string `json:"nidn"`
 	FacultyID      string `json:"faculty_id"`
 	StudyProgramID string `json:"study_program_id"`
@@ -47,20 +52,20 @@ type UpdateUserReq struct {
 	Name           string    `json:"name" validate:"required"`
 	Email          string    `json:"email" validate:"required"`
 	NIM            string    `json:"nim"`
-	Angkatan       int       `json:"angkatan"`
+	BatchYear      int       `json:"year"`
 	NIDN           string    `json:"nidn"`
 	FacultyID      uuid.UUID `json:"faculty_id"`
 	StudyProgramID uuid.UUID `json:"study_program_id"`
 }
 type CreateUserStudentReq struct {
 	NIM            string `json:"nim" validate:"required"`
-	Angkatan       int    `json:"angkatan" validate:"required"`
+	BatchYear      int    `json:"year" validate:"required"`
 	FacultyID      string `json:"faculty_id" validate:"required"`
 	StudyProgramID string `json:"study_program_id" validate:"required"`
 }
 type UpdateUserStudentReq struct {
 	NIM            string    `json:"nim" validate:"required"`
-	Angkatan       int       `json:"angkatan" validate:"required"`
+	BatchYear      int       `json:"year" validate:"required"`
 	FacultyID      uuid.UUID `json:"faculty_id" validate:"required"`
 	StudyProgramID uuid.UUID `json:"study_program_id" validate:"required"`
 }
@@ -124,6 +129,7 @@ type GetUsersReq struct {
 	Name           string    `query:"name"`
 	Limit          int       `query:"limit"`
 	Page           int       `query:"page"`
+	Year           int       `query:"year"`
 	UserType       string    `query:"user_type"`
 	FacultyID      uuid.UUID `query:"faculty_id"`
 	StudyProgramID uuid.UUID `query:"study_program_id"`
@@ -144,9 +150,9 @@ func ConvertUserToUserResponse(user User) (userResponse UserResponse) {
 	userResponse.Whatsapp = user.Whatsapp
 	userResponse.UserTypeName = user.UserTypeName
 	userResponse.Student = StudentResponse{
-		ID:       user.Student.ID,
-		NIM:      user.Student.NIM,
-		Angkatan: user.Student.Angkatan,
+		ID:        user.Student.ID,
+		NIM:       user.Student.NIM,
+		BatchYear: user.Student.BatchYear,
 		Faculty: FacultyResponse{
 			ID:        user.Student.Faculty.ID,
 			CreatedAt: user.Student.Faculty.CreatedAt,

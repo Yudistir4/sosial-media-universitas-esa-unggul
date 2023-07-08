@@ -32,12 +32,18 @@ func (r *userRepository) GetUsers(req dto.GetUsersReq) ([]dto.User, error) {
 		query = query.Where("users.name LIKE ? OR Student.nim LIKE ? OR Lecturer.nidn LIKE ?", "%"+req.Query+"%", "%"+req.Query+"%", "%"+req.Query+"%")
 	} else if req.UserType != "" && req.Name != "" && req.FacultyID != uuid.Nil {
 		query = query.Where("users.user_type_name = ? AND users.name LIKE ? AND (Student.faculty_id = ? OR Lecturer.faculty_id = ?)", req.UserType, "%"+req.Name+"%", req.FacultyID, req.FacultyID)
+	} else if req.UserType == "student" && req.Year != 0 && req.FacultyID != uuid.Nil && req.StudyProgramID != uuid.Nil {
+		query = query.Where("users.user_type_name = ? AND (Student.faculty_id = ? AND Student.study_program_id = ? AND Student.batch_year = ?)", req.UserType, req.FacultyID, req.StudyProgramID, req.Year)
+	} else if req.UserType != "" && req.FacultyID != uuid.Nil && req.StudyProgramID != uuid.Nil {
+		query = query.Where("users.user_type_name = ? AND ((Student.faculty_id = ? AND Student.study_program_id = ?) OR (Lecturer.faculty_id = ? AND Lecturer.study_program_id = ?))", req.UserType, req.FacultyID, req.StudyProgramID, req.FacultyID, req.StudyProgramID)
 	} else if req.UserType != "" && req.FacultyID != uuid.Nil {
 		query = query.Where("users.user_type_name = ? AND (Student.faculty_id = ? OR Lecturer.faculty_id = ?)", req.UserType, req.FacultyID, req.FacultyID)
 	} else if req.UserType != "" && req.Name != "" {
 		query = query.Where("users.user_type_name = ? AND users.name LIKE ?", req.UserType, "%"+req.Name+"%")
 	} else if req.UserType != "" {
 		query = query.Where("users.user_type_name = ? ", req.UserType)
+	} else if req.FacultyID != uuid.Nil && req.StudyProgramID != uuid.Nil {
+		query = query.Where("(Student.faculty_id = ? AND Student.study_program_id = ?) OR (Lecturer.faculty_id = ? AND Lecturer.study_program_id = ?)", req.FacultyID, req.StudyProgramID, req.FacultyID, req.StudyProgramID)
 	} else if req.FacultyID != uuid.Nil {
 		query = query.Where("Student.faculty_id = ? OR Lecturer.faculty_id = ?", req.FacultyID, req.FacultyID)
 	} else if req.StudyProgramID != uuid.Nil {

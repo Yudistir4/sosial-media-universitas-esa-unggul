@@ -16,7 +16,7 @@ func (h *userHandler) UpdateUserProfilePic(service service.UserService) echo.Han
 		var req dto.UpdateProfilePicReq
 		err := c.Bind(&req)
 		req.ProfilePic, err = c.FormFile("profile_pic")
-		ok := httputils.CheckProfilePicFileType(req.ProfilePic)
+		ok := httputils.CheckImageFileType(req.ProfilePic)
 		if !ok {
 			return httputils.ErrorResponse(c, httputils.ErrorResponseParams{
 				Err: customerrors.ErrBadRequestFileType,

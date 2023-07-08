@@ -33,6 +33,7 @@ var (
 	ErrBadRequestFileType                     = errors.New("Invalid file type")
 	ErrRecordNotFound                         = errors.New("record not found")
 	ErrPostNotFound                           = errors.New("Post not found")
+	ErrPollingNotFound                        = errors.New("Polling not found")
 	ErrPostHasBeenDeleted                     = errors.New("The post has already been deleted.")
 	ErrCommentHasBeenDeleted                  = errors.New("The comment has already been deleted.")
 	ErrAccountNotFound                        = errors.New("The entered account does not exist")
@@ -74,6 +75,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrEmailNotFound:                          {HTTPErrorCode: http.StatusNotFound, Message: ErrEmailNotFound.Error()},
 	ErrNotFound:                               {HTTPErrorCode: http.StatusNotFound, Message: ErrNotFound.Error()},
 	ErrPostNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrPostNotFound.Error()},
+	ErrPollingNotFound:                        {HTTPErrorCode: http.StatusNotFound, Message: ErrPollingNotFound.Error()},
 	ErrPostHasBeenDeleted:                     {HTTPErrorCode: http.StatusNotFound, Message: ErrPostHasBeenDeleted.Error()},
 	ErrCommentHasBeenDeleted:                  {HTTPErrorCode: http.StatusNotFound, Message: ErrCommentHasBeenDeleted.Error()},
 	ErrUserNotFound:                           {HTTPErrorCode: http.StatusNotFound, Message: ErrUserNotFound.Error()},

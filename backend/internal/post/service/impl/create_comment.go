@@ -30,7 +30,7 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 		createNotif := dto.CreateNotificationReq{
 			FromUserID: req.UserID,
 			ToUserID:   post.UserID,
-			PostID:     req.PostID,
+			PostID:     &req.PostID,
 			CommentID:  &comment.ID,
 		}
 		if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {
@@ -43,7 +43,7 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 			createNotif := dto.CreateNotificationReq{
 				FromUserID: req.UserID,
 				ToUserID:   *post.ToUserID,
-				PostID:     req.PostID,
+				PostID:     &req.PostID,
 				CommentID:  &comment.ID,
 			}
 			if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {
@@ -57,7 +57,7 @@ func (s *postService) CreateComment(req dto.CreateCommentReq) (dto.CommentRespon
 		createNotif := dto.CreateNotificationReq{
 			FromUserID: req.UserID,
 			ToUserID:   *post.ToUserID,
-			PostID:     req.PostID,
+			PostID:     &req.PostID,
 			CommentID:  &comment.ID,
 		}
 		if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {

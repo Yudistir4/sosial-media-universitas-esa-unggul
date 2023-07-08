@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	notificationrouter "backend/cmd/webservice/notification/router"
+	pollingrouter "backend/cmd/webservice/polling/router"
 	postrouter "backend/cmd/webservice/post/router"
 	studyprogramrouter "backend/cmd/webservice/studyprogram/router"
 	authrepository "backend/internal/auth/repository/impl"
@@ -15,11 +16,15 @@ import (
 	lecturerrepository "backend/internal/lecturer/repository/impl"
 	likerepository "backend/internal/like/repository/impl"
 	notificationrepository "backend/internal/notification/repository/impl"
+	optionrepository "backend/internal/option/repository/impl"
+	pollingrepository "backend/internal/polling/repository/impl"
+	pollingservice "backend/internal/polling/service/impl"
 	postrepository "backend/internal/post/repository/impl"
 	saverepository "backend/internal/save/repository/impl"
 	studentrepository "backend/internal/student/repository/impl"
 	studyprogramrepository "backend/internal/studyprogram/repository/impl"
 	studyprogramservice "backend/internal/studyprogram/service/impl"
+	voterrepository "backend/internal/voter/repository/impl"
 
 	authservice "backend/internal/auth/service/impl"
 	notificationservice "backend/internal/notification/service/impl"
@@ -289,6 +294,54 @@ func InitWebservice(params *WebserviceParams) error {
 		Validator: validator,
 		Log: params.Log.WithFields(logrus.Fields{
 			"domain": "post",
+			"layer":  "handler",
+		}),
+		Middleware: middleware,
+	})
+	// Voter
+	voterRepository := voterrepository.NewVoterRepository(&voterrepository.VoterRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "voter",
+			"layer":  "repository",
+		}),
+	})
+	// Option
+	optionRepository := optionrepository.NewOptionRepository(&optionrepository.OptionRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "option",
+			"layer":  "repository",
+		}),
+	})
+	// Polling
+	pollingRepository := pollingrepository.NewPollingRepository(&pollingrepository.PollingRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "polling",
+			"layer":  "repository",
+		}),
+	})
+
+	pollingService := pollingservice.NewPollingService(&pollingservice.PollingServiceParams{
+		Repo:             pollingRepository,
+		RepoOption:       optionRepository,
+		RepoVoter:        voterRepository,
+		RepoNotification: notificationRepository,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "polling",
+			"layer":  "service",
+		}),
+		Config:     params.Config,
+		Claudinary: cloudinary,
+		DB:         db,
+	})
+	pollingrouter.InitPollingRouter(pollingrouter.RouterParams{
+		E:         e,
+		Service:   pollingService,
+		Validator: validator,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "polling",
 			"layer":  "handler",
 		}),
 		Middleware: middleware,

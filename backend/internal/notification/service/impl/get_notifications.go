@@ -41,6 +41,12 @@ func (s *notificationService) GetNotifications(req dto.GetNotificationsReq) ([]d
 		}
 		message = fmt.Sprintf("%s \"%s\"", message, notification.Post.Caption)
 
+		if notification.Activity == "polling" {
+			message = fmt.Sprintf(" has invited you to participate in a poll about \"%s\"", notification.Polling.Title)
+		} else if notification.Activity == "vote" {
+			message = fmt.Sprintf(" has already voted for  \"%s\"", notification.Option.Text)
+		}
+
 		notificationResponse := dto.NotificationResponse{
 			ID:        notification.ID,
 			Activity:  notification.Activity,
@@ -63,7 +69,8 @@ func (s *notificationService) GetNotifications(req dto.GetNotificationsReq) ([]d
 				ID:      notification.Comment.ID,
 				Comment: notification.Comment.Comment,
 			},
-			Message: message,
+			Message:   message,
+			PollingID: notification.PollingID,
 		}
 
 		notificationsResponse = append(notificationsResponse, notificationResponse)

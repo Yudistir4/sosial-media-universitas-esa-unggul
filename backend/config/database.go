@@ -34,8 +34,9 @@ func initDatabase(params *Database) error {
 	if err != nil {
 		return err
 	}
+	db = db.Debug()
 
-	db.AutoMigrate(&dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{}, &dto.Post{}, &dto.Like{}, &dto.Save{}, &dto.Comment{}, &dto.Notification{})
+	db.AutoMigrate(&dto.Batch{}, &dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{}, &dto.Post{}, &dto.Like{}, &dto.Save{}, &dto.Comment{}, &dto.Notification{}, &dto.Polling{}, &dto.Option{}, &dto.Voter{})
 
 	err = InitDefaultData(db)
 	if err != nil {
@@ -63,7 +64,7 @@ func InitDefaultData(db *gorm.DB) error {
 	var count int64
 	db.Model(&dto.UserType{}).Count(&count)
 	if count == 0 {
-		userTypes := []dto.UserType{{Name: "student"}, {Name: "lecturer"}, {Name: "faculty"}, {Name: "university"},{Name: "organization"}}
+		userTypes := []dto.UserType{{Name: "student"}, {Name: "lecturer"}, {Name: "faculty"}, {Name: "university"}, {Name: "organization"}}
 		result := db.Create(&userTypes)
 		if result.Error != nil {
 			fmt.Println("[Error] add userTypes:", result.Error)

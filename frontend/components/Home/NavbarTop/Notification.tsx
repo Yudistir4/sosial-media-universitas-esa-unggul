@@ -11,6 +11,9 @@ interface INotificationProps {
 const Notification: React.FunctionComponent<INotificationProps> = ({
   notification: notif,
 }) => {
+  const link = ['polling', 'vote'].includes(notif.activity)
+    ? `/?polling_id=${notif.polling_id}`
+    : `/?post_id=${notif.post.id}`;
   return (
     <Flex className="relative">
       <Link href={`/?user_id=${notif.from_user.id}`}>
@@ -32,7 +35,7 @@ const Notification: React.FunctionComponent<INotificationProps> = ({
           {notif.from_user.name}
         </Text>
       </Link>
-      <Link href={`/?post_id=${notif.post.id}`}>
+      <Link href={link}>
         <Flex
           className={`${
             notif.is_read ? '' : 'bg-gray-100'

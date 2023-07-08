@@ -10,4 +10,5 @@ export const api = {
   notifications: '/notifications',
   comments: '/comments',
   studyprograms: '/studyprograms',
+  pollings: '/pollings',
 };

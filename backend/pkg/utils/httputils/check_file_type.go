@@ -21,7 +21,7 @@ func checkFileType(file *multipart.FileHeader, allowFileType []string) bool {
 	return false
 }
 
-func CheckProfilePicFileType(file *multipart.FileHeader) bool {
+func CheckImageFileType(file *multipart.FileHeader) bool {
 	return checkFileType(file, allowedImageFileType)
 }
 func CheckPostFileType(file *multipart.FileHeader) bool {

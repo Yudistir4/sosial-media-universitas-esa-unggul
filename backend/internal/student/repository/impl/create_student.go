@@ -14,6 +14,16 @@ func (r *studentRepository) CreateStudent(req dto.CreateUserReq, tx *gorm.DB) (d
 	if tx == nil {
 		return dto.Student{}, errors.New("transaction not started")
 	}
+	ok, err := r.IsBatchExist(req.BatchYear)
+	if err != nil {
+		return dto.Student{}, err
+	}
+	if !ok {
+		if err = r.CreateBatch(req.BatchYear, tx); err != nil {
+			return dto.Student{}, err
+		}
+	}
+
 	facultyID, _ := uuid.Parse(req.FacultyID)
 	studyProgramID, _ := uuid.Parse(req.StudyProgramID)
 	student := dto.Student{
@@ -21,7 +31,7 @@ func (r *studentRepository) CreateStudent(req dto.CreateUserReq, tx *gorm.DB) (d
 		FacultyID:      facultyID,
 		StudyProgramID: studyProgramID,
 		NIM:            req.NIM,
-		Angkatan:       req.Angkatan,
+		BatchYear:      req.BatchYear,
 	}
 	result := tx.Create(&student)
 	if result.Error != nil {

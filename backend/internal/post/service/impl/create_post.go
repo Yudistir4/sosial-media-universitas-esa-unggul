@@ -29,7 +29,7 @@ func (s *postService) CreatePost(req dto.CreatePostReq) (dto.PostResponse, error
 		createNotif := dto.CreateNotificationReq{
 			FromUserID: req.UserID,
 			ToUserID:   req.ToUserID,
-			PostID:     post.ID,
+			PostID:     &post.ID,
 			Activity:   "ask",
 		}
 		if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {

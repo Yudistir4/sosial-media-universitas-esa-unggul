@@ -27,7 +27,7 @@ func (s *postService) LikePost(req dto.PostAction) error {
 		createNotif := dto.CreateNotificationReq{
 			FromUserID: req.UserID,
 			ToUserID:   post.UserID,
-			PostID:     req.PostID,
+			PostID:     &req.PostID,
 			LikeID:  &like.ID,
 		}
 		if err = s.repoNotification.CreateNotification(createNotif, tx); err != nil {

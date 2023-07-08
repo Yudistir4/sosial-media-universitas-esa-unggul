@@ -10,7 +10,7 @@ import (
 type UserRepository interface {
 	GetUsers(req dto.GetUsersReq) ([]dto.User, error)
 	GetUserByID(ID uuid.UUID) (dto.User, error)
-	GetUserByName(Name  string,UserType string) (dto.User, error)
+	GetUserByName(Name string, UserType string) (dto.User, error)
 	CreateUserFaculty(req dto.CreateUserReq, CustomID uuid.UUID, tx *gorm.DB) (dto.User, error)
 	CreateUserStudent(req dto.CreateUserReq, studentID uuid.UUID, tx *gorm.DB) (dto.User, error)
 	CreateUserLecturer(req dto.CreateUserReq, lecturerID uuid.UUID, tx *gorm.DB) (dto.User, error)

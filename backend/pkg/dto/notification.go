@@ -8,7 +8,7 @@ import (
 
 type Notification struct {
 	ID         uuid.UUID `gorm:"type:char(36);primary_key"`
-	Activity   string    `gorm:"type:varchar(10);enum('like', 'comment','ask')"`
+	Activity   string    `gorm:"type:varchar(10);enum('like', 'comment','ask','polling','vote')"`
 	IsRead     bool
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
@@ -16,20 +16,26 @@ type Notification struct {
 	FromUser   User `gorm:"ForeignKey:FromUserID"`
 	ToUserID   uuid.UUID
 	ToUser     User `gorm:"ForeignKey:ToUserID"`
-	PostID     uuid.UUID
+	PostID     *uuid.UUID
 	Post       Post `gorm:"ForeignKey:PostID"`
 	CommentID  *uuid.UUID
 	Comment    Comment `gorm:"ForeignKey:CommentID"`
 	LikeID     *uuid.UUID
 	Like       Like `gorm:"ForeignKey:LikeID"`
+	PollingID  *uuid.UUID
+	Polling    Polling `gorm:"ForeignKey:PollingID"`
+	OptionID   *uuid.UUID
+	Option     Option `gorm:"ForeignKey:OptionID"`
 }
 type CreateNotificationReq struct {
 	FromUserID uuid.UUID
 	ToUserID   uuid.UUID
-	PostID     uuid.UUID
+	PostID     *uuid.UUID
+	PollingID  *uuid.UUID
 	Activity   string
 	CommentID  *uuid.UUID
 	LikeID     *uuid.UUID
+	OptionID   *uuid.UUID
 }
 
 type DeleteNotificationReq struct {
@@ -57,6 +63,7 @@ type NotificationResponse struct {
 	Post      NotificationPostResponse    `json:"post"`      // id,postPic,
 	Comment   NotificationCommentResponse `json:"comment"`
 	Message   string                      `json:"message"`
+	PollingID *uuid.UUID                  `json:"polling_id"`
 }
 
 type GetNotificationsReq struct {
@@ -64,11 +71,3 @@ type GetNotificationsReq struct {
 	Page   int       `query:"page"`
 	Limit  int       `query:"limit"`
 }
-
-// if post pic exist
-// Ririf like your post
-// Ririf commenting: Hai ..
-
-// if post pic not exist
-// Ririf like your post: Hari ini gua seenng banget...
-// Ririf commenting:"Keren banget gilss..." in yout post: Hai sekarang gua keren kan gacor kan...

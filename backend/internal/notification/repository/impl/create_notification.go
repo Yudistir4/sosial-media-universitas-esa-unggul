@@ -26,9 +26,11 @@ func (r *notificationRepository) CreateNotification(req dto.CreateNotificationRe
 		IsRead:     false,
 		FromUserID: req.FromUserID,
 		ToUserID:   req.ToUserID,
+		PollingID:  req.PollingID,
 		PostID:     req.PostID,
 		CommentID:  req.CommentID,
 		LikeID:     req.LikeID,
+		OptionID:   req.OptionID,
 	}
 
 	if err := tx.Create(&notification).Error; err != nil {

@@ -30,6 +30,7 @@ import StudyProgram from './StudyProgram';
 import Students from './Students';
 import Lecturers from './Lecturers';
 import Questions from './Questions';
+import Pollings from './Pollings';
 import { AiOutlineWarning } from 'react-icons/ai';
 import { AxiosError } from 'axios';
 
@@ -130,6 +131,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
             <TabList className="font-[600]  w-full">
               <Tab>Post</Tab>
               <Tab>Q&A</Tab>
+              <Tab>Polling</Tab>
               {['university', 'faculty'].includes(user.user_type) && (
                 <>
                   <Tab>Students</Tab>
@@ -154,6 +156,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
             <TabPanel px={2}>
               {user && <Questions user_id={user_id} user={user} />}
             </TabPanel>
+            <TabPanel>{<Pollings user_id={user_id} />}</TabPanel>
             {['university', 'faculty'].includes(user.user_type) && (
               <TabPanel>
                 <Students

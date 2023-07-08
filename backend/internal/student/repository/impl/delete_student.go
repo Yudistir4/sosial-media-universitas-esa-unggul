@@ -25,5 +25,17 @@ func (r *studentRepository) DeleteStudentByID(ID uuid.UUID, tx *gorm.DB) error {
 		return customerrors.GetErrorType(result.Error)
 	}
 
+	// if old BatchYear !exist anymore in students -> delete
+	ok, err := r.IsBatchExistInOthersStudents(student.BatchYear, student.ID)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		err = r.DeleteBatch(student.BatchYear, tx)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

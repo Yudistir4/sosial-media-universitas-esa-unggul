@@ -49,7 +49,7 @@ interface UpdateStudentForm {
   email: string;
   user_type: string;
   nim: string;
-  angkatan: number | undefined;
+  year: number | undefined;
   faculty_id: string;
   study_program_id: string;
 }
@@ -58,7 +58,7 @@ const validationSchema = yup.object().shape({
   email: yup.string().trim().email().required(),
   user_type: yup.string().required(),
   nim: yup.string().trim().required(),
-  angkatan: yup.number().required().typeError('angkatan must be a number'),
+  year: yup.number().required().typeError('year must be a number'),
   faculty_id: yup.string().required('faculty is a required field'),
   study_program_id: yup.string().required('study program is a required field'),
 });
@@ -91,7 +91,7 @@ const UpdateUser: React.FunctionComponent<IUpdateUserProps> = ({
       email: user.email,
       user_type: 'student',
       nim: user.student.nim,
-      angkatan: user.student.angkatan,
+      year: user.student.year,
       faculty_id: user.student.faculty.id,
       study_program_id: user.student.study_program.id,
     },
@@ -201,10 +201,10 @@ const UpdateUser: React.FunctionComponent<IUpdateUserProps> = ({
                 <Input {...register('nim')} placeholder="Nim" />
                 <FormErrorMessage>{errors.nim?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!errors.angkatan}>
+              <FormControl isInvalid={!!errors.year}>
                 <FormLabel>Angkatan</FormLabel>
-                <Input {...register('angkatan')} placeholder="Angkatan" />
-                <FormErrorMessage>{errors.angkatan?.message}</FormErrorMessage>
+                <Input {...register('year')} placeholder="Angkatan" />
+                <FormErrorMessage>{errors.year?.message}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.faculty_id}>
                 <FormLabel>Fakultas</FormLabel>

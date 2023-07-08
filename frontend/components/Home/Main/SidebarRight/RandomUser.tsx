@@ -22,7 +22,7 @@ const RandomUser: React.FunctionComponent<IRandomUserProps> = (props) => {
     },
     refetchInterval: 120000,
   });
-   
+
   return (
     <Flex className="flex-col gap-2">
       <Heading size="sm">Suggested User</Heading>
@@ -36,7 +36,9 @@ const RandomUser: React.FunctionComponent<IRandomUserProps> = (props) => {
             <Avatar src={user.profile_pic_url} />
             <Flex className="flex-col justify-center">
               <Flex className="items-center gap-2">
-                <Text as="b">{user.name}</Text>
+                <Text as="b" noOfLines={1}>
+                  {user.name}
+                </Text>
                 {['student', 'lecturer'].includes(
                   user?.user_type as string
                 ) && (
