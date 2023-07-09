@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/mailgun/mailgun-go/v4"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/gomail.v2"
 )
 
 type authService struct {
@@ -15,6 +16,7 @@ type authService struct {
 	redis   *redis.Client
 	mailgun *mailgun.MailgunImpl
 	config  *config.Config
+	gmail   *gomail.Dialer
 }
 
 type AuthServiceParams struct {
@@ -22,6 +24,7 @@ type AuthServiceParams struct {
 	Log     *logrus.Entry
 	Redis   *redis.Client
 	Mailgun *mailgun.MailgunImpl
+	Gmail   *gomail.Dialer
 	Config  *config.Config
 }
 
@@ -32,5 +35,6 @@ func NewAuthService(params *AuthServiceParams) *authService {
 		redis:   params.Redis,
 		mailgun: params.Mailgun,
 		config:  params.Config,
+		gmail:   params.Gmail,
 	}
 }

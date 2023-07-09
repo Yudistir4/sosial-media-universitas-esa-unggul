@@ -11,6 +11,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/mailgun/mailgun-go/v4"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/gomail.v2"
 	"gorm.io/gorm"
 )
 
@@ -22,6 +23,7 @@ type userService struct {
 	log          *logrus.Entry
 	redis        *redis.Client
 	mailgun      *mailgun.MailgunImpl
+	gmail        *gomail.Dialer
 	config       *config.Config
 	claudinary   *cloudinary.Cloudinary
 	db           *gorm.DB
@@ -34,6 +36,7 @@ type UserServiceParams struct {
 	Log          *logrus.Entry
 	Redis        *redis.Client
 	Mailgun      *mailgun.MailgunImpl
+	Gmail        *gomail.Dialer
 	Config       *config.Config
 	Claudinary   *cloudinary.Cloudinary
 	DB           *gorm.DB
@@ -50,6 +53,7 @@ func NewUserService(params *UserServiceParams) *userService {
 		mailgun:      params.Mailgun,
 		config:       params.Config,
 		claudinary:   params.Claudinary,
-		db: params.DB,
+		db:           params.DB,
+		gmail:        params.Gmail,
 	}
 }

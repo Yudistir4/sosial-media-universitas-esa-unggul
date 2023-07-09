@@ -72,7 +72,7 @@ func (s *userService) CreateUser(req dto.CreateUserReq) (userResponse dto.UserRe
 
 	// Send Email
 	if s.config.Server.Environment != "dev" {
-		err = s.SendPasswordToUserEmail(password, req.Email)
+		err = s.SendPasswordToUserEmailByGmail(password, req.Email)
 		if err != nil {
 			tx.Rollback()
 			return dto.UserResponse{}, err

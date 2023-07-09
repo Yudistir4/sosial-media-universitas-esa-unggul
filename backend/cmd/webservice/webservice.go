@@ -101,6 +101,7 @@ func InitWebservice(params *WebserviceParams) error {
 		return err
 	}
 	mailgunClient := config.InitMailgun(&params.Config.Mailgun)
+	gmailClient := config.InitGmail(&params.Config.Gmail)
 
 	cloudinary, err := config.GetCloudinaryConn(&params.Config.Cloudinary)
 	if err != nil {
@@ -135,6 +136,7 @@ func InitWebservice(params *WebserviceParams) error {
 			"layer":  "service",
 		}),
 		Mailgun: mailgunClient,
+		Gmail:   gmailClient,
 		Config:  params.Config,
 		// Claudinary: cloudinary,
 		// DB:         db,
@@ -367,6 +369,7 @@ func InitWebservice(params *WebserviceParams) error {
 			"layer":  "service",
 		}),
 		Mailgun:    mailgunClient,
+		Gmail:      gmailClient,
 		Config:     params.Config,
 		Claudinary: cloudinary,
 		DB:         db,

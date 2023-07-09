@@ -16,6 +16,7 @@ type Config struct {
 	Cloudinary
 	RedisConfig
 	Mailgun
+	Gmail
 	// CustomerToken
 	FrontEndURL              string `validate:"required,url"`
 	DefaultProfilePictureURL string `validate:"required,url"`
@@ -39,8 +40,19 @@ func initConfig(path string) error {
 		log.Println("[ERROR] While convert Expired Secret Key ")
 		return err
 	}
+	smtpPort, err := strconv.Atoi(os.Getenv("GMAIL_SMTP_PORT"))
+	if err != nil {
+		log.Println("[ERROR] While convert smtp port ")
+		return err
+	}
 
 	config = &Config{
+		Gmail: Gmail{
+			GmailAuthPassword: os.Getenv("GMAIL_AUTH_PASSWORD"),
+			SenderEmail:       os.Getenv("GMAIL_SENDER_EMAIL"),
+			SMTPHost:          os.Getenv("GMAIL_SMTP_HOST"),
+			SMTPPort:          smtpPort,
+		},
 		Database: Database{
 			Username:                     os.Getenv("DB_USERNAME"),
 			Password:                     os.Getenv("DB_PASSWORD"),
