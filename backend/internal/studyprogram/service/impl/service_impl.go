@@ -2,7 +2,7 @@ package impl
 
 import (
 	"backend/config"
-	"backend/internal/studyProgram/repository"
+	"backend/internal/studyprogram/repository"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/sirupsen/logrus"
