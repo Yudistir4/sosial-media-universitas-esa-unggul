@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/google/uuid"
+	"gorm.io/driver/postgres"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -29,8 +30,13 @@ func initDatabase(params *Database) error {
 		return err
 	}
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", params.Username, params.Password, params.Hostname, port, params.DatabaseName)
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if params.RelationalDatabaseDriverName == "mysql" {
+		dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", params.Username, params.Password, params.Hostname, port, params.DatabaseName)
+		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	} else if params.RelationalDatabaseDriverName == "postgres" {
+		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=require", params.Hostname, params.Username, params.Password, params.DatabaseName, port)
+		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	}
 	if err != nil {
 		return err
 	}
