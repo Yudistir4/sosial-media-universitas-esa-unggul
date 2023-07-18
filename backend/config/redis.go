@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"crypto/tls"
 	"log"
 	"time"
 
@@ -20,6 +21,9 @@ func InitRedis(param *RedisConfig) (client *redis.Client, err error) {
 			Addr:     param.Address,
 			Username: param.Username,
 			Password: param.Password,
+			TLSConfig: &tls.Config{
+				InsecureSkipVerify: true, // Skip TLS verification (only for development/testing)
+			},
 		})
 
 		_, err = client.Ping(context.Background()).Result()
