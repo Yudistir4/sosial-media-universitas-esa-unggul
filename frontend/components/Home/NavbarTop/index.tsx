@@ -21,7 +21,7 @@ import { FiLogOut } from 'react-icons/fi';
 import { GrAdd } from 'react-icons/gr';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { RxHamburgerMenu } from 'react-icons/rx';
-import NavLink from '../../Navlink';
+import NavLink from '../../NavLink';
 import Notifications from './Notifications';
 import Search from './Search';
 

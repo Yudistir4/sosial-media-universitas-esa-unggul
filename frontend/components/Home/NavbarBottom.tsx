@@ -6,7 +6,7 @@ import * as React from 'react';
 import { AiFillHome } from 'react-icons/ai';
 import { BsFillBookmarkFill } from 'react-icons/bs';
 import { GrAdd } from 'react-icons/gr';
-import NavLink from '../Navlink';
+import NavLink from '../NavLink';
 
 interface INavbarBottomProps {}
 
