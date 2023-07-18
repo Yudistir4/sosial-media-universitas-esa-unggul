@@ -1,4 +1,4 @@
-import NavLink from '@/components/Navlink';
+import NavLink from '@/components/NavLink';
 import { useChangeEmailModal } from '@/store/changeEmailModal';
 import { useChangePasswordModal } from '@/store/changePasswordModal';
 import { useAuth } from '@/store/user';
