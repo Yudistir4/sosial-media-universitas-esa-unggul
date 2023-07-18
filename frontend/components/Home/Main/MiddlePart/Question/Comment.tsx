@@ -178,7 +178,7 @@ const Comments: React.FunctionComponent<ICommentProps> = ({ post }) => {
               <IconButton
                 onClick={() => {
                   onOpen();
-                  setCommentID(comment.id);
+                  comment && setCommentID(comment.id);
                 }}
                 size="sm"
                 className="mr-2"
