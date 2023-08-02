@@ -15,7 +15,9 @@ const UserComponent: React.FunctionComponent<IUserProps> = ({ user }) => {
         <Flex className="flex-col justify-center">
           <Flex className="items-center gap-2">
             <Text as="b">{user.name}</Text>
-            {['student', 'lecturer'].includes(user?.user_type as string) && (
+            {['student', 'lecturer', 'alumni'].includes(
+              user?.user_type as string
+            ) && (
               <Badge
                 variant="solid"
                 borderRadius="full"

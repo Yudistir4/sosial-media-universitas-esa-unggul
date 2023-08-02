@@ -46,6 +46,7 @@ type CreateUserReq struct {
 	FacultyID      string `json:"faculty_id"`
 	StudyProgramID string `json:"study_program_id"`
 	IsGraduated    bool   `json:"is_graduated"`
+	CampusLocation string `json:"campus_location"`
 }
 type UpdateUserReq struct {
 	ID             uuid.UUID `param:"id" validate:"required"`
@@ -58,6 +59,7 @@ type UpdateUserReq struct {
 	IsGraduated    bool      `json:"is_graduated"`
 	FacultyID      uuid.UUID `json:"faculty_id"`
 	StudyProgramID uuid.UUID `json:"study_program_id"`
+	CampusLocation string    `json:"campus_location"`
 }
 type CreateUserStudentReq struct {
 	NIM            string `json:"nim" validate:"required"`
@@ -65,6 +67,7 @@ type CreateUserStudentReq struct {
 	FacultyID      string `json:"faculty_id" validate:"required"`
 	StudyProgramID string `json:"study_program_id" validate:"required"`
 	IsGraduated    bool   `json:"is_graduated"`
+	CampusLocation string `json:"campus_location"`
 }
 type UpdateUserStudentReq struct {
 	NIM            string    `json:"nim" validate:"required"`
@@ -72,6 +75,7 @@ type UpdateUserStudentReq struct {
 	FacultyID      uuid.UUID `json:"faculty_id" validate:"required"`
 	StudyProgramID uuid.UUID `json:"study_program_id" validate:"required"`
 	IsGraduated    bool      `json:"is_graduated"`
+	CampusLocation string    `json:"campus_location"`
 }
 type CreateUserLecturerReq struct {
 	NIDN           string `json:"nidn" validate:"required"`
@@ -157,10 +161,11 @@ func ConvertUserToUserResponse(user User) (userResponse UserResponse) {
 	userResponse.Whatsapp = user.Whatsapp
 	userResponse.UserTypeName = user.UserTypeName
 	userResponse.Student = StudentResponse{
-		ID:          user.Student.ID,
-		NIM:         user.Student.NIM,
-		BatchYear:   user.Student.BatchYear,
-		IsGraduated: user.Student.IsGraduated,
+		ID:             user.Student.ID,
+		NIM:            user.Student.NIM,
+		BatchYear:      user.Student.BatchYear,
+		IsGraduated:    user.Student.IsGraduated,
+		CampusLocation: user.Student.CampusLocation,
 		Faculty: FacultyResponse{
 			ID:        user.Student.Faculty.ID,
 			CreatedAt: user.Student.Faculty.CreatedAt,

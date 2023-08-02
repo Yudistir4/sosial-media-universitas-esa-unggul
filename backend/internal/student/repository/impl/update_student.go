@@ -38,6 +38,7 @@ func (r *studentRepository) UpdateStudent(req *dto.UpdateUserReq, tx *gorm.DB) e
 	student.FacultyID = req.FacultyID
 	student.StudyProgramID = req.StudyProgramID
 	student.IsGraduated = req.IsGraduated
+	student.CampusLocation = req.CampusLocation
 
 	result := tx.Save(student)
 	if result.Error != nil {

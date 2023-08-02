@@ -5,6 +5,7 @@ import "github.com/google/uuid"
 type Student struct {
 	ID             uuid.UUID `gorm:"type:char(36);primary_key"`
 	NIM            string    `gorm:"unique" validate:"required"`
+	CampusLocation string    `gorm:"type:varchar(20)"`
 	IsGraduated    bool
 	BatchYear      int
 	Batch          Batch `gorm:"foreignKey:BatchYear"`
@@ -17,6 +18,7 @@ type Student struct {
 type CreateStudentReq struct {
 	Nim            string
 	IsGraduated    bool
+	CampusLocation string
 	FacultyID      uuid.UUID
 	StudyProgramID uuid.UUID
 }
@@ -26,11 +28,11 @@ type Batch struct {
 }
 
 type StudentResponse struct {
-	ID          uuid.UUID `json:"id"`
-	NIM         string    `json:"nim"`
-	IsGraduated bool      `json:"is_graduated"`
-	BatchYear   int       `json:"year"`
-
-	Faculty      FacultyResponse      `json:"faculty"`
-	StudyProgram StudyProgramResponse `json:"study_program"`
+	ID             uuid.UUID            `json:"id"`
+	NIM            string               `json:"nim"`
+	IsGraduated    bool                 `json:"is_graduated"`
+	BatchYear      int                  `json:"year"`
+	CampusLocation string               `json:"campus_location"`
+	Faculty        FacultyResponse      `json:"faculty"`
+	StudyProgram   StudyProgramResponse `json:"study_program"`
 }

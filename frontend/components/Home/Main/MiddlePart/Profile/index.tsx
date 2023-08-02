@@ -13,6 +13,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
@@ -97,7 +98,9 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
                 {user.name}
               </Text>
               {data &&
-                ['student', 'lecturer'].includes(data.data.user_type) && (
+                ['student', 'lecturer', 'alumni'].includes(
+                  data.data.user_type
+                ) && (
                   <>
                     <Link
                       href={`/?user_id=${
@@ -107,21 +110,33 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
                       }`}
                     >
                       <Text className="text-sm font-light hover:text-blue-500 transition-all">
-                        {user.user_type === 'student'
+                        {['student', 'alumni'].includes(user.user_type)
                           ? user.student.faculty.name
                           : user.lecturer.faculty.name}
                       </Text>
                     </Link>
+                    <Tooltip hasArrow label={'Program Studi'}>
+                      <Text className="text-sm font-light">
+                        {['student', 'alumni'].includes(user.user_type)
+                          ? user.student.study_program.name
+                          : user.lecturer.study_program.name}
+                      </Text>
+                    </Tooltip>
                     <Text className="text-sm font-light">
-                      {user.user_type === 'student'
-                        ? user.student.study_program.name
-                        : user.lecturer.study_program.name}
-                    </Text>
-                    <Text className="text-sm font-light">
-                      {user.user_type === 'student'
+                      {['student', 'alumni'].includes(user.user_type)
                         ? user.student.nim
                         : user.lecturer.nidn}
                     </Text>
+                    {['student', 'alumni'].includes(user.user_type) && (
+                      <Tooltip hasArrow label="Campus Location">
+                        <Text className="text-sm font-light">
+                          {user.student.campus_location.replace(
+                            /\b\w/g,
+                            (char) => char.toUpperCase()
+                          )}
+                        </Text>
+                      </Tooltip>
+                    )}
                   </>
                 )}
             </Flex>

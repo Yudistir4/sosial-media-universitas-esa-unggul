@@ -43,6 +43,7 @@ func (h *userHandler) CreateUser(service service.UserService) echo.HandlerFunc {
 				FacultyID:      req.FacultyID,
 				StudyProgramID: req.StudyProgramID,
 				IsGraduated:    req.IsGraduated,
+				CampusLocation: req.CampusLocation,
 			}
 			err = h.validator.StructCtx(c.Request().Context(), student)
 

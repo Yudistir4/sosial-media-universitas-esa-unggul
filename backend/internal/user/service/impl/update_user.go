@@ -16,7 +16,6 @@ func (s *userService) UpdateUser(req dto.UpdateUserReq) (userResponse dto.UserRe
 	if tx.Error != nil {
 		return dto.UserResponse{}, tx.Error
 	}
-	 
 
 	if user.UserTypeName == "student" {
 		//  Update Student

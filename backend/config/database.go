@@ -8,8 +8,8 @@ import (
 	"strconv"
 
 	"github.com/google/uuid"
-	"gorm.io/driver/postgres"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -90,7 +90,7 @@ func InitDefaultData(db *gorm.DB) error {
 		ID:           uuid.New(),
 		Name:         "Universitas Esa Unggul",
 		Email:        email,
-		Password:     passwordutils.HashPassword("123456"),
+		Password:     passwordutils.HashPassword("12345678"),
 		UserTypeName: "university",
 	}
 	result := db.Create(&user)

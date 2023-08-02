@@ -51,6 +51,7 @@ interface CreateStudentForm {
   is_graduated: boolean;
   faculty_id: string;
   study_program_id: string;
+  campus_location: string;
 }
 const validationSchema = yup.object().shape({
   name: yup.string().trim().required(),
@@ -64,6 +65,7 @@ const validationSchema = yup.object().shape({
     .typeError('batch must be a number'),
   faculty_id: yup.string().required('faculty is a required field'),
   study_program_id: yup.string().required('study program is a required field'),
+  campus_location: yup.string().required('campus location is a required field'),
 });
 const CreateUserStudentForm: React.FunctionComponent<
   ICreateUserStudentFormProps
@@ -94,6 +96,7 @@ const CreateUserStudentForm: React.FunctionComponent<
       is_graduated: false,
       faculty_id: '',
       study_program_id: '',
+      campus_location: 'jakarta',
     },
   });
   const {
@@ -250,6 +253,24 @@ const CreateUserStudentForm: React.FunctionComponent<
                 </Select>
                 <FormErrorMessage>
                   {errors.study_program_id?.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={!!errors.campus_location}>
+                <FormLabel>Campus Location</FormLabel>
+                <Select
+                  {...register('campus_location')}
+                  placeholder="Campus Location"
+                >
+                  {['jakarta', 'bekasi', 'tangerang'].map(
+                    (location: string) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    )
+                  )}
+                </Select>
+                <FormErrorMessage>
+                  {errors.campus_location?.message}
                 </FormErrorMessage>
               </FormControl>
               <Button

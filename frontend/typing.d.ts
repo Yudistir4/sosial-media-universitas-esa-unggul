@@ -68,6 +68,7 @@ export interface Student {
   is_graduated: boolean;
   faculty: Faculty;
   study_program: StudyProgram;
+  campus_location: string;
 }
 export interface Lecturer {
   id: string;

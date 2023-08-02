@@ -53,6 +53,7 @@ interface UpdateStudentForm {
   year: number | undefined;
   faculty_id: string;
   study_program_id: string;
+  campus_location: string;
 }
 const validationSchema = yup.object().shape({
   name: yup.string().trim().required(),
@@ -63,6 +64,7 @@ const validationSchema = yup.object().shape({
   year: yup.number().required().typeError('batch must be a number'),
   faculty_id: yup.string().required('faculty is a required field'),
   study_program_id: yup.string().required('study program is a required field'),
+  campus_location: yup.string().required('campus location is a required field'),
 });
 const UpdateUser: React.FunctionComponent<IUpdateUserProps> = ({
   isOpen,
@@ -97,6 +99,7 @@ const UpdateUser: React.FunctionComponent<IUpdateUserProps> = ({
       is_graduated: user.student.is_graduated,
       faculty_id: user.student.faculty.id,
       study_program_id: user.student.study_program.id,
+      campus_location: user.student.campus_location,
     },
   });
   const {
@@ -247,6 +250,24 @@ const UpdateUser: React.FunctionComponent<IUpdateUserProps> = ({
                 </Select>
                 <FormErrorMessage>
                   {errors.study_program_id?.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={!!errors.campus_location}>
+                <FormLabel>Campus Location</FormLabel>
+                <Select
+                  {...register('campus_location')}
+                  placeholder="Campus Location"
+                >
+                  {['jakarta', 'bekasi', 'tangerang'].map(
+                    (location: string) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    )
+                  )}
+                </Select>
+                <FormErrorMessage>
+                  {errors.campus_location?.message}
                 </FormErrorMessage>
               </FormControl>
               <Button

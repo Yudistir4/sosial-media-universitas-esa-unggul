@@ -42,6 +42,7 @@ func (h *userHandler) UpdateUser(service service.UserService) echo.HandlerFunc {
 				FacultyID:      req.FacultyID,
 				StudyProgramID: req.StudyProgramID,
 				IsGraduated:    req.IsGraduated,
+				CampusLocation: req.CampusLocation,
 			}
 			err = h.validator.StructCtx(c.Request().Context(), student)
 
