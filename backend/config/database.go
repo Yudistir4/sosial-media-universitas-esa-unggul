@@ -5,6 +5,7 @@ import (
 	"backend/pkg/utils/passwordutils"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -40,7 +41,10 @@ func initDatabase(params *Database) error {
 	if err != nil {
 		return err
 	}
-	db = db.Debug()
+
+	if os.Getenv("APP_ENVIRONMENT") == "dev" {
+		db = db.Debug()
+	}
 
 	db.AutoMigrate(&dto.Batch{}, &dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{}, &dto.Post{}, &dto.Like{}, &dto.Save{}, &dto.Comment{}, &dto.Notification{}, &dto.Polling{}, &dto.Option{}, &dto.Voter{})
 
