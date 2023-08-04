@@ -68,7 +68,7 @@ const Questions: React.FunctionComponent<IQuestionsProps> = ({
         </InputRightElement>
       </InputGroup>
       <div className={search ? 'block' : 'hidden'}>
-        <Feed to_user_id={user_id} post_category="question" caption={search} />
+        <Feed to_user_id={user_id} post_category="question" caption={search}  isSearchMode={true}/>
       </div>
 
       <div className={search ? 'hidden' : 'block'}>

@@ -102,6 +102,14 @@ const Organization: React.FunctionComponent<IOrganizationProps> = ({
           <IoCloseOutline className="text-xl" />
         </InputRightElement>
       </InputGroup>
+
+      {isLoading ? (
+        <div
+          className={`w-full flex items-center justify-center min-h-[50vh] `}
+        >
+          <Spinner size={'xl'} />
+        </div>
+      ) : (
       <InfiniteScroll
         className="flex flex-col gap-5 !overflow-visible"
         dataLength={itemLength} //This is important field to render the next data
@@ -119,18 +127,18 @@ const Organization: React.FunctionComponent<IOrganizationProps> = ({
           ));
         })}
         {itemLength === 0 && !isLoading && search && (
-          <Flex className="justify-center">
+          <Flex className="justify-center mt-10">
             <Button
               size="sm"
               borderRadius="full"
               leftIcon={<AiOutlineWarning />}
               colorScheme="yellow"
             >
-              Data Not Found
+              Organization Not Found
             </Button>
           </Flex>
         )}
-      </InfiniteScroll>
+      </InfiniteScroll>)}
       <CreateUser isOpen={isOpen} onClose={onClose} />
     </Flex>
   );

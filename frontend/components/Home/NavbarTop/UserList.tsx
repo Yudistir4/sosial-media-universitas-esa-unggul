@@ -1,8 +1,4 @@
-import {
-    Button,
-    Flex,
-    Spinner
-} from '@chakra-ui/react';
+import { Button, Flex, Spinner } from '@chakra-ui/react';
 import * as React from 'react';
 import { api } from '@/config';
 import { client, convertToQueryStr } from '@/services';

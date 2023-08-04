@@ -117,6 +117,7 @@ const Comments: React.FunctionComponent<ICommentProps> = ({ post }) => {
     onSuccess: () => {
       toast({ title: 'Delete answer success', status: 'success' });
       queryClient.invalidateQueries({ queryKey: ['comments', post.id] });
+      queryClient.invalidateQueries({ queryKey: ['posts', 'question'] });
       onClose();
     },
   });
@@ -212,6 +213,37 @@ const Comments: React.FunctionComponent<ICommentProps> = ({ post }) => {
             </Button>
           </Flex>
         </div>
+
+        <AlertDialog
+          motionPreset="slideInBottom"
+          leastDestructiveRef={cancelRef}
+          onClose={isLoading ? () => {} : onClose}
+          isOpen={isOpen}
+          isCentered
+        >
+          <AlertDialogOverlay />
+
+          <AlertDialogContent>
+            <AlertDialogHeader>Delete Answer</AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              Are you sure you want to delete this answer?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                No
+              </Button>
+              <Button
+                onClick={() => deleteComment(commentID)}
+                isLoading={isLoading}
+                colorScheme="red"
+                ml={3}
+              >
+                Yes
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </Flex>
     );
   return (
@@ -289,7 +321,7 @@ const Comments: React.FunctionComponent<ICommentProps> = ({ post }) => {
                     <Flex className="flex-col w-full">
                       <Flex className="gap-2 items-center">
                         <Link href={`/?user_id=${comment.user.id}`}>
-                          <Text className="font-semibold">
+                          <Text className="font-semibold" noOfLines={1}>
                             {comment.user.name}
                           </Text>
                         </Link>
@@ -302,7 +334,7 @@ const Comments: React.FunctionComponent<ICommentProps> = ({ post }) => {
                             answerer
                           </Badge>
                         )}
-                        <Text className="text-sm font-light">
+                        <Text className="text-sm font-light" noOfLines={1}>
                           {moment(comment.created_at).fromNow(true)}
                         </Text>
                       </Flex>

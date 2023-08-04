@@ -47,7 +47,13 @@ const Feed: React.FunctionComponent<IFeedProps> = ({ user_id }) => {
     }
   });
 
-  isLoading && <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className={`w-full flex items-center justify-center min-h-[80vh] `}>
+        <Spinner size={'xl'} />
+      </div>
+    );
+
   return (
     <Flex
       paddingX={{ sm: 2, xl: 0 }}
@@ -74,13 +80,8 @@ const Feed: React.FunctionComponent<IFeedProps> = ({ user_id }) => {
         })}
         {itemLength === 0 && !isLoading && (
           <Flex className="justify-center min-h-[200px] items-center">
-            <Button
-              size="sm"
-              borderRadius="full"
-              leftIcon={<AiOutlineWarning />}
-              colorScheme="yellow"
-            >
-              Polling Not Found
+            <Button size="sm" borderRadius="full" colorScheme="gray">
+              Polling Empty
             </Button>
           </Flex>
         )}

@@ -99,35 +99,44 @@ const Lecturers: React.FunctionComponent<ILecturersProps> = ({
           <IoCloseOutline className="text-xl" />
         </InputRightElement>
       </InputGroup>
-      <InfiniteScroll
-        className="flex flex-col gap-5 !overflow-visible"
-        dataLength={itemLength} //This is important field to render the next data
-        next={fetchNextPage}
-        hasMore={!!hasNextPage}
-        loader={
-          <div className="flex justify-center">
-            <Spinner size="md" />
-          </div>
-        }
-      >
-        {data?.pages.map((page) => {
-          return page.data?.map((user) => (
-            <UserComponent key={user.id} user={user} />
-          ));
-        })}
-        {itemLength === 0 && !isLoading && search && (
-          <Flex className="justify-center">
-            <Button
-              size="sm"
-              borderRadius="full"
-              leftIcon={<AiOutlineWarning />}
-              colorScheme="yellow"
-            >
-              Data Not Found
-            </Button>
-          </Flex>
-        )}
-      </InfiniteScroll>
+
+      {isLoading ? (
+        <div
+          className={`w-full flex items-center justify-center min-h-[50vh] `}
+        >
+          <Spinner size={'xl'} />
+        </div>
+      ) : (
+        <InfiniteScroll
+          className="flex flex-col gap-5 !overflow-visible"
+          dataLength={itemLength} //This is important field to render the next data
+          next={fetchNextPage}
+          hasMore={!!hasNextPage}
+          loader={
+            <div className="flex justify-center">
+              <Spinner size="md" />
+            </div>
+          }
+        >
+          {data?.pages.map((page) => {
+            return page.data?.map((user) => (
+              <UserComponent key={user.id} user={user} />
+            ));
+          })}
+          {itemLength === 0 && !isLoading && search && (
+            <Flex className="justify-center mt-10">
+              <Button
+                size="sm"
+                borderRadius="full"
+                leftIcon={<AiOutlineWarning />}
+                colorScheme="yellow"
+              >
+                Lecturer Not Found
+              </Button>
+            </Flex>
+          )}
+        </InfiniteScroll>
+      )}
       <CreateUser isOpen={isOpen} onClose={onClose} />
     </Flex>
   );

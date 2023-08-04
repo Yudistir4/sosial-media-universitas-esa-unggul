@@ -25,13 +25,15 @@ const User: React.FunctionComponent<IUserProps> = ({ post, showRecipient }) => {
       <Flex className="flex-col justify-center">
         <Flex className="items-center gap-2">
           <Link href={`/?user_id=${post.user.id}`}>
-            <Text className="font-semibold text-sm">{post.user.name}</Text>
+            <Text className="font-semibold text-sm" noOfLines={1}>
+              {post.user.name}
+            </Text>
           </Link>
           {showRecipient && (
             <>
               <Text>asked</Text>
               <Link href={`/?user_id=${post.to_user.id}`}>
-                <Text className="font-semibold text-sm">
+                <Text className="font-semibold text-sm" noOfLines={1}>
                   {post.to_user.name}
                 </Text>
               </Link>
