@@ -1,23 +1,153 @@
 package impl
 
-import "github.com/google/uuid"
+import (
+	"backend/pkg/dto"
+	customerrors "backend/pkg/errors"
+	"context"
+
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
+
+	"github.com/google/uuid"
+)
 
 func (s *userService) DeleteUser(ID uuid.UUID) (err error) {
+	var FilePublicIds []string
 	user, err := s.repo.GetUserByID(ID)
 	if err != nil {
 		return err
+	}
+	if user.ProfilePicPublicID != "" {
+		FilePublicIds = append(FilePublicIds, user.ProfilePicPublicID)
 	}
 
 	tx := s.db.Begin()
 	if tx.Error != nil {
 		return tx.Error
 	}
-	// var user dto.User
 
-	// TODO get all post
-	// TODO get all post image/video link
-	// TODO Delete all post
+	// Delete all likes,comment and saves
+	err = s.repoNotification.DeleteNotificationsRelatedToUser(ID, tx)
+	if err != nil {
+		s.log.Errorln("[ERROR] when delete all notifications: ", err.Error())
+		tx.Rollback()
+		return err
+	}
+	err = s.repoLike.DeleteLikesRelatedToUser(ID, tx)
+	if err != nil {
+		s.log.Errorln("[ERROR] when delete all likes: ", err.Error())
+		tx.Rollback()
+		return err
+	}
+	err = s.repoComment.DeleteCommentsRelatedToUser(ID, tx)
+	if err != nil {
+		s.log.Errorln("[ERROR] when delete all comments: ", err.Error())
+		tx.Rollback()
+		return err
+	}
+	err = s.repoSave.DeleteSavesRelatedToUser(ID, tx)
+	if err != nil {
+		s.log.Errorln("[ERROR] when delete all saves: ", err.Error())
+		tx.Rollback()
+		return err
+	}
 
+	// get all post
+	posts, err := s.repoPost.GetPostsRelatedToUser(ID)
+	if err != nil {
+		s.log.Errorln("[ERROR] when get all posts: ", err.Error())
+		tx.Rollback()
+		return err
+	}
+	s.log.Infoln("[INFO] total post: ", len(posts))
+
+	for _, post := range posts {
+		// store public id
+		if post.ContentFilePublicID != "" {
+			FilePublicIds = append(FilePublicIds, post.ContentFilePublicID)
+		}
+		// Delete all notif related to post
+		s.log.Infoln("[INFO] start delete notif related to post: ", post.ID)
+		err = s.repoNotification.DeleteNotifications(post.ID, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete all notification related to post: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+		//  Delete all likes related to post
+		s.log.Infoln("[INFO] start delete likes related to post: ", post.ID)
+		err = s.repoLike.DeleteLikes(post.ID, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete all like related to post: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+		//  Delete all saves related to post
+		s.log.Infoln("[INFO] start delete saves related to post: ", post.ID)
+		err = s.repoSave.DeleteSaves(post.ID, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete all save related to post: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+		//  Delete all comments related to post
+		s.log.Infoln("[INFO] start delete comments related to post: ", post.ID)
+		err = s.repoComment.DeleteComments(post.ID, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete all comment related to post: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+		//  END Looping
+
+	}
+
+	//  Delete all post
+	err = s.repoPost.DeletePostsRelatedToUser(ID, tx)
+	if err != nil {
+		s.log.Errorln("[ERROR] when delete all posts: ", err.Error())
+		tx.Rollback()
+		return err
+	}
+
+	// get all polling
+	pollings, err := s.repoPolling.GetPollings(dto.GetPollingsReq{LoggedInUserID: ID, Page: 1, Limit: 99999999999})
+
+	for _, polling := range pollings {
+		//  if useImage => store public ID
+		if polling.UseImage {
+			for _, option := range polling.Options {
+				FilePublicIds = append(FilePublicIds, option.ImagePublicID)
+			}
+		}
+		//  Delete Notifications
+		if err = s.repoNotification.DeleteNotificationsByPolling(polling.ID, tx); err != nil {
+			s.log.Errorln("[ERROR] when delete all notification related to post: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+
+		//  Delete Voters
+		if err = s.repoVoter.DeleteVoters(polling.ID, tx); err != nil {
+			s.log.Errorln("[ERROR] when delete all voter related to post: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+
+		//  Delete Options
+		if err = s.repoOption.DeleteOptions(polling.ID, tx); err != nil {
+			s.log.Errorln("[ERROR] when delete all option related to post: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+	}
+
+	// Delete all polling
+	if err = s.repoPolling.DeletePollingsRelatedToUser(ID, tx); err != nil {
+		s.log.Errorln("[ERROR] when delete all polling: ", err.Error())
+		tx.Rollback()
+		return err
+
+	}
 	// Delete User
 	err = s.repo.DeleteUser(&user, tx)
 	// if error, rollback
@@ -33,21 +163,56 @@ func (s *userService) DeleteUser(ID uuid.UUID) (err error) {
 		err = s.repoLecturer.DeleteLecturerByID(ID, tx)
 	} else if user.UserTypeName == "faculty" {
 
-		// TODO Check IF StudyProgram still related, return err
+		// Check IF student  or lecturer still related to faculty, return err
+		totalStudents, err := s.repo.GetTotalUsers(dto.GetUsersReq{UserType: "student", FacultyID: ID})
+		if err != nil {
+			return err
+		}
+		totalLecturers, err := s.repo.GetTotalUsers(dto.GetUsersReq{UserType: "lecturer", FacultyID: ID})
+		if err != nil {
+			return err
+		}
+		s.log.Infoln("[INFO] total students : ", totalStudents)
+		s.log.Infoln("[INFO] total lecturers: ", totalLecturers)
+
+		if totalStudents > 0 || totalLecturers > 0 {
+			return customerrors.ErrStudentAndLecturerStillRelatedToThisFaculty
+		}
+
+		// Delete StudyPrograms
+		if err = s.repoStudyProgram.DeleteStudyProgramsRelatedToUser(ID, tx); err != nil {
+			s.log.Errorln("[ERROR] when delete all studyprograms: ", err.Error())
+			tx.Rollback()
+			return err
+		}
 		// Delete Faculty
-		err = s.repoFaculty.DeleteFacultyByID(ID, tx)
+		if err = s.repoFaculty.DeleteFacultyByID(ID, tx); err != nil {
+			s.log.Errorln("[ERROR] when delete faculty: ", err.Error())
+			tx.Rollback()
+			return err
+		}
 	}
 
 	// if error, rollback
 	if err != nil {
+		s.log.Errorln("[ERROR] when delete user :", err.Error())
 		tx.Rollback()
 		return err
 	}
 
-	tx.Commit()
+	s.log.Infoln("[INFO] total files: ", len(FilePublicIds))
 
-	// TODO Delete all image/video
-	// TODO if err, rollback
+	// Delete profile pic,image/video etc
+	for _, publicID := range FilePublicIds {
+		_, err := s.claudinary.Upload.Destroy(context.Background(), uploader.DestroyParams{PublicID: publicID})
+		if err != nil {
+			tx.Rollback()
+			s.log.Errorln("[ERROR] while delete image file]")
+			return err
+		}
+	}
+
+	tx.Commit()
 
 	return nil
 }

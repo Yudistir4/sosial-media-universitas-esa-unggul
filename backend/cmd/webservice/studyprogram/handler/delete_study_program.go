@@ -24,7 +24,7 @@ func (h *studyProgramHandler) DeleteStudyProgram(service service.StudyProgramSer
 		err := service.DeleteStudyProgram(req.ID)
 		if err != nil {
 			return httputils.ErrorResponse(c, httputils.ErrorResponseParams{
-				Err: customerrors.ErrRecordNotFound,
+				Err: err,
 			})
 		}
 		return httputils.SuccessResponse(c, httputils.SuccessResponseParams{

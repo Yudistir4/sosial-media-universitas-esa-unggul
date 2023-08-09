@@ -8,6 +8,7 @@ import (
 )
 
 type UserRepository interface {
+	GetTotalUsers(req dto.GetUsersReq) (int64, error)
 	GetUsers(req dto.GetUsersReq) ([]dto.User, error)
 	GetUserByID(ID uuid.UUID) (dto.User, error)
 	GetUserByName(Name string, UserType string) (dto.User, error)

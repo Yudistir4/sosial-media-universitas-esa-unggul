@@ -1,5 +1,6 @@
 import { api } from '@/config';
 import { client } from '@/services';
+import { ErrorResponse } from '@/typing';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -12,6 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import * as React from 'react';
 
 interface IDeleteStudyProgramProps {
@@ -39,6 +41,14 @@ const DeleteStudyProgram: React.FunctionComponent<IDeleteStudyProgramProps> = ({
       toast({ title: 'Delete study program success', colorScheme: 'green' });
       queryClient.invalidateQueries({ queryKey: ['studyprograms', facultyID] });
       onClose();
+    },
+    onError: (res: AxiosError<ErrorResponse>) => {
+      console.log(res.response?.data.error.message);
+      toast({
+        title: 'Delete study program failed',
+        description: res.response?.data.error.message,
+        colorScheme: 'red',
+      });
     },
   });
   return (

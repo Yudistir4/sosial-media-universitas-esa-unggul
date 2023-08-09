@@ -1,6 +1,6 @@
 import { api } from '@/config';
 import { client } from '@/services';
-import { User } from '@/typing';
+import { ErrorResponse, User } from '@/typing';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,6 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import * as React from 'react';
 
 interface IDeleteUserProps {
@@ -35,9 +36,17 @@ const DeleteUser: React.FunctionComponent<IDeleteUserProps> = ({
       res.data;
     },
     onSuccess: () => {
-      toast({ title: 'Delete user success', colorScheme: 'green' });
+      toast({ title: 'Delete user faculty success', colorScheme: 'green' });
       queryClient.invalidateQueries({ queryKey: ['users', 'faculty'] });
       onClose();
+    },
+    onError: (res: AxiosError<ErrorResponse>) => {
+      console.log(res.response?.data.error.message);
+      toast({
+        title: 'Delete user faculty failed',
+        description: res.response?.data.error.message,
+        colorScheme: 'red',
+      });
     },
   });
   return (

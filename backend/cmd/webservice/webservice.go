@@ -5,7 +5,6 @@ import (
 	pingrouter "backend/cmd/webservice/ping/router"
 	userrouter "backend/cmd/webservice/user/router"
 	"backend/config"
-	"fmt"
 
 	notificationrouter "backend/cmd/webservice/notification/router"
 	pollingrouter "backend/cmd/webservice/polling/router"
@@ -168,36 +167,6 @@ func InitWebservice(params *WebserviceParams) error {
 		}),
 	})
 
-	// StudyProgram
-	studyProgramRepository := studyprogramrepository.NewStudyProgramRepository(&studyprogramrepository.StudyProgramRepositoryParams{
-		DB: db,
-		Log: params.Log.WithFields(logrus.Fields{
-			"domain": "studyProgram",
-			"layer":  "repository",
-		}),
-	})
-
-	studyProgramService := studyprogramservice.NewStudyProgramService(&studyprogramservice.StudyProgramServiceParams{
-		Repo:   studyProgramRepository,
-		Config: params.Config,
-		Log: params.Log.WithFields(logrus.Fields{
-			"domain": "studyProgram",
-			"layer":  "service",
-		}),
-		Claudinary: cloudinary,
-	})
-	fmt.Println(studyProgramService)
-	studyprogramrouter.InitStudyProgramRouter(studyprogramrouter.RouterParams{
-		E:         e,
-		Service:   studyProgramService,
-		Validator: validator,
-		Log: params.Log.WithFields(logrus.Fields{
-			"domain": "studyProgram",
-			"layer":  "handler",
-		}),
-		Middleware: middleware,
-	})
-
 	// Student
 	studentRepository := studentrepository.NewStudentRepository(&studentrepository.StudentRepositoryParams{
 		DB: db,
@@ -349,6 +318,15 @@ func InitWebservice(params *WebserviceParams) error {
 		Middleware: middleware,
 	})
 
+	// StudyProgramRepository
+	studyProgramRepository := studyprogramrepository.NewStudyProgramRepository(&studyprogramrepository.StudyProgramRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "studyProgram",
+			"layer":  "repository",
+		}),
+	})
+
 	// User
 	userRepository := userrepository.NewUserRepository(&userrepository.UserRepositoryParams{
 		DB: db,
@@ -359,11 +337,21 @@ func InitWebservice(params *WebserviceParams) error {
 	})
 
 	userService := userservice.NewUserService(&userservice.UserServiceParams{
-		Repo:         userRepository,
-		RepoFaculty:  facultyRepository,
-		RepoStudent:  studentRepository,
-		RepoLecturer: lecturerRepository,
-		Redis:        redis,
+		Repo:             userRepository,
+		RepoFaculty:      facultyRepository,
+		RepoStudent:      studentRepository,
+		RepoLecturer:     lecturerRepository,
+		RepoPost:         postRepository,
+		RepoPolling:      pollingRepository,
+		RepoLike:         likeRepository,
+		RepoComment:      commentRepository,
+		RepoSave:         saveRepository,
+		RepoNotification: notificationRepository,
+		RepoVoter:        voterRepository,
+		RepoOption:       optionRepository,
+		RepoStudyProgram: studyProgramRepository,
+
+		Redis: redis,
 		Log: params.Log.WithFields(logrus.Fields{
 			"domain": "user",
 			"layer":  "service",
@@ -380,6 +368,29 @@ func InitWebservice(params *WebserviceParams) error {
 		Validator: validator,
 		Log: params.Log.WithFields(logrus.Fields{
 			"domain": "user",
+			"layer":  "handler",
+		}),
+		Middleware: middleware,
+	})
+	// Studyprogram Service and router
+
+	studyProgramService := studyprogramservice.NewStudyProgramService(&studyprogramservice.StudyProgramServiceParams{
+		Repo:     studyProgramRepository,
+		Config:   params.Config,
+		RepoUser: userRepository,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "studyProgram",
+			"layer":  "service",
+		}),
+		Claudinary: cloudinary,
+	})
+
+	studyprogramrouter.InitStudyProgramRouter(studyprogramrouter.RouterParams{
+		E:         e,
+		Service:   studyProgramService,
+		Validator: validator,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "studyProgram",
 			"layer":  "handler",
 		}),
 		Middleware: middleware,

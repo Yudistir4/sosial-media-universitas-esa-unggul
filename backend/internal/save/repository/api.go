@@ -13,4 +13,5 @@ type SaveRepository interface {
 	CreateSave(req dto.PostAction) error
 	DeleteSave(req dto.PostAction) error
 	DeleteSaves(PostID uuid.UUID, tx *gorm.DB) error
+	DeleteSavesRelatedToUser(UserID uuid.UUID, tx *gorm.DB) error
 }
