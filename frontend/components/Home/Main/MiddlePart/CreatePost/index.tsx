@@ -29,6 +29,7 @@ const CreatePost: React.FunctionComponent<ICreatePostProps> = (props) => {
   const [tabIndex, setTabIndex] = React.useState(0);
   const removeVoters = useSelectVoters((state) => state.removeVoters);
   const closeModal = () => {
+    setFileExist(false);
     removeVoters();
     onClose();
   };
