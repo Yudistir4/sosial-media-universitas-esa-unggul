@@ -32,6 +32,9 @@ func (r *postRepository) GetPosts(req dto.GetPostsReq) ([]dto.Post, error) {
 		if req.Random == true {
 			var count int64
 			r.db.Model(&dto.Post{}).Not("content_file_url", "").Count(&count)
+			if count == 0 {
+				return []dto.Post{},nil
+			}
 			offset = rand.Intn(int(count))
 			if offset > 3 {
 				offset -= 3
