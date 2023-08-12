@@ -46,7 +46,7 @@ func initDatabase(params *Database) error {
 		db = db.Debug()
 	}
 
-	db.AutoMigrate(&dto.Batch{}, &dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{}, &dto.Post{}, &dto.Like{}, &dto.Save{}, &dto.Comment{}, &dto.Notification{}, &dto.Polling{}, &dto.Option{}, &dto.Voter{})
+	db.AutoMigrate(&dto.Batch{}, &dto.Faculty{}, &dto.StudyProgram{}, &dto.Student{}, &dto.Lecturer{}, &dto.UserType{}, &dto.User{}, &dto.Post{}, &dto.Like{}, &dto.Save{}, &dto.Comment{}, &dto.Notification{}, &dto.Polling{}, &dto.Option{}, &dto.Voter{}, &dto.Participant{}, &dto.Message{}, &dto.Conversation{})
 
 	err = InitDefaultData(db)
 	if err != nil {

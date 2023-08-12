@@ -6,14 +6,17 @@ import (
 	userrouter "backend/cmd/webservice/user/router"
 	"backend/config"
 
+	conversationrouter "backend/cmd/webservice/conversation/router"
 	notificationrouter "backend/cmd/webservice/notification/router"
 	pollingrouter "backend/cmd/webservice/polling/router"
 	postrouter "backend/cmd/webservice/post/router"
 	studyprogramrouter "backend/cmd/webservice/studyprogram/router"
 	authrepository "backend/internal/auth/repository/impl"
 	commentrepository "backend/internal/comment/repository/impl"
+	conversationrepository "backend/internal/conversation/repository/impl"
 	lecturerrepository "backend/internal/lecturer/repository/impl"
 	likerepository "backend/internal/like/repository/impl"
+	messagerepository "backend/internal/message/repository/impl"
 	notificationrepository "backend/internal/notification/repository/impl"
 	optionrepository "backend/internal/option/repository/impl"
 	pollingrepository "backend/internal/polling/repository/impl"
@@ -28,6 +31,7 @@ import (
 	authservice "backend/internal/auth/service/impl"
 	notificationservice "backend/internal/notification/service/impl"
 
+	conversationservice "backend/internal/conversation/service/impl"
 	facultyrepository "backend/internal/faculty/repository/impl"
 	pingservice "backend/internal/ping/service/impl"
 	postservice "backend/internal/post/service/impl"
@@ -313,6 +317,47 @@ func InitWebservice(params *WebserviceParams) error {
 		Validator: validator,
 		Log: params.Log.WithFields(logrus.Fields{
 			"domain": "polling",
+			"layer":  "handler",
+		}),
+		Middleware: middleware,
+	})
+	// Message
+	messageRepository := messagerepository.NewMessageRepository(&messagerepository.MessageRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "message",
+			"layer":  "repository",
+		}),
+	})
+	// Conversation
+	conversationRepository := conversationrepository.NewConversationRepository(&conversationrepository.ConversationRepositoryParams{
+		DB: db,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "conversation",
+			"layer":  "repository",
+		}),
+	})
+
+	conversationService := conversationservice.NewConversationService(&conversationservice.ConversationServiceParams{
+		Repo:        conversationRepository,
+		RepoMessage: messageRepository,
+		// RepoOption:       optionRepository,
+		// RepoVoter:        voterRepository,
+		// RepoNotification: notificationRepository,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "conversation",
+			"layer":  "service",
+		}),
+		Config:     params.Config,
+		Claudinary: cloudinary,
+		DB:         db,
+	})
+	conversationrouter.InitConversationRouter(conversationrouter.RouterParams{
+		E:         e,
+		Service:   conversationService,
+		Validator: validator,
+		Log: params.Log.WithFields(logrus.Fields{
+			"domain": "conversation",
 			"layer":  "handler",
 		}),
 		Middleware: middleware,

@@ -16,6 +16,7 @@ var (
 	ErrDuplicatedStudyProgramName                       = errors.New("Study program name already exists")
 	ErrDuplicatedNIDN                                   = errors.New("NIDN already exists")
 	ErrDuplicatedEmail                                  = errors.New("Email already exists")
+	ErrDuplicatedConversation                           = errors.New("Conversation already exists")
 	ErrInternalServer                                   = errors.New("internal server error")
 	ErrBadRequest                                       = errors.New("bad request")
 	ErrPostHasBeenLiked                                 = errors.New("The post has already been liked.")
@@ -34,6 +35,7 @@ var (
 	ErrRecordNotFound                                   = errors.New("record not found")
 	ErrPostNotFound                                     = errors.New("Post not found")
 	ErrPollingNotFound                                  = errors.New("Polling not found")
+	ErrConversationNotFound                             = errors.New("Conversation not found")
 	ErrPostHasBeenDeleted                               = errors.New("The post has already been deleted.")
 	ErrCommentHasBeenDeleted                            = errors.New("The comment has already been deleted.")
 	ErrAccountNotFound                                  = errors.New("The entered account does not exist")
@@ -80,6 +82,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrNotFound:                                         {HTTPErrorCode: http.StatusNotFound, Message: ErrNotFound.Error()},
 	ErrPostNotFound:                                     {HTTPErrorCode: http.StatusNotFound, Message: ErrPostNotFound.Error()},
 	ErrPollingNotFound:                                  {HTTPErrorCode: http.StatusNotFound, Message: ErrPollingNotFound.Error()},
+	ErrConversationNotFound:                             {HTTPErrorCode: http.StatusNotFound, Message: ErrConversationNotFound.Error()},
 	ErrPostHasBeenDeleted:                               {HTTPErrorCode: http.StatusNotFound, Message: ErrPostHasBeenDeleted.Error()},
 	ErrCommentHasBeenDeleted:                            {HTTPErrorCode: http.StatusNotFound, Message: ErrCommentHasBeenDeleted.Error()},
 	ErrUserNotFound:                                     {HTTPErrorCode: http.StatusNotFound, Message: ErrUserNotFound.Error()},
@@ -92,6 +95,7 @@ var errMap map[error]dto.ErrorResponse = map[error]dto.ErrorResponse{
 	ErrUnauthorizedRole:                                 {HTTPErrorCode: http.StatusUnauthorized, Message: ErrUnauthorizedRole.Error()},
 	ErrInvalidAccessToken:                               {HTTPErrorCode: http.StatusUnauthorized, Message: ErrInvalidAccessToken.Error()},
 	ErrDuplicatedEmail:                                  {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedEmail.Error()},
+	ErrDuplicatedConversation:                           {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedConversation.Error()},
 	ErrDuplicatedNIM:                                    {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedNIM.Error()},
 	ErrDuplicatedFacultyName:                            {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedFacultyName.Error()},
 	ErrDuplicatedStudyProgramName:                       {HTTPErrorCode: http.StatusBadRequest, Message: ErrDuplicatedStudyProgramName.Error()},
