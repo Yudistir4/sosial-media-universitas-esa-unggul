@@ -13,6 +13,7 @@ type ConversationRepository interface {
 	CreateConversation(req dto.CreateConversationReq, tx *gorm.DB) (dto.Conversation, error)
 	GetConversations(req dto.GetConversationsReq) ([]dto.Conversation, error)
 	UpdateConversation(conversation dto.Conversation, tx *gorm.DB) error
+	UpdateLastMessage(LastMessageID uuid.UUID,ConversationID uuid.UUID, tx *gorm.DB) error
 	// DeleteConversation(ID uuid.UUID, tx *gorm.DB) error
 	// DeleteConversationsRelatedToUser(UserID uuid.UUID, tx *gorm.DB) error
 	// GetFacultysFilter() ([]dto.FacultyFilterResponse, error)

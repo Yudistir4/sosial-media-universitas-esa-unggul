@@ -19,11 +19,12 @@ type CreateConversationReq struct {
 	UserIDs []uuid.UUID `validate:"required" json:"user_ids"`
 }
 type ConversationResponse struct {
-	ID           uuid.UUID             `json:"id"`
-	Participants []*UserLittleResponse `json:"participants"`
-	LastMessage  MessageResponse       `json:"last_message"`
-	CreatedAt    time.Time             `json:"created_at"`
-	UpdatedAt    time.Time             `json:"updated_at"`
+	ID                 uuid.UUID             `json:"id"`
+	Participants       []*UserLittleResponse `json:"participants"`
+	LastMessage        MessageResponse       `json:"last_message"`
+	TotalUnreadMessage int64                 `json:"total_unread_message"`
+	CreatedAt          time.Time             `json:"created_at"`
+	UpdatedAt          time.Time             `json:"updated_at"`
 }
 type GetConversationsReq struct {
 	LoggedInUserID uuid.UUID

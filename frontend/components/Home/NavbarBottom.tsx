@@ -7,6 +7,7 @@ import { AiFillHome } from 'react-icons/ai';
 import { BsFillBookmarkFill } from 'react-icons/bs';
 import { GrAdd } from 'react-icons/gr';
 import NavLink from '../NavLink';
+import { IoChatbubbles } from 'react-icons/io5';
 
 interface INavbarBottomProps {}
 
@@ -21,6 +22,9 @@ const NavbarBottom: React.FunctionComponent<INavbarBottomProps> = (props) => {
     >
       <NavLink href="/" className="h-full p-3 ">
         <AiFillHome />
+      </NavLink>
+      <NavLink href="/?chat=true" className="h-full p-3 ">
+        <IoChatbubbles />
       </NavLink>
       <Link onClick={() => onOpen()} href="/" className="h-full p-3">
         <GrAdd />

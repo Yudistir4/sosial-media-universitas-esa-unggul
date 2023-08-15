@@ -24,6 +24,7 @@ import { RxHamburgerMenu } from 'react-icons/rx';
 import NavLink from '../../NavLink';
 import Notifications from './Notifications';
 import Search from './Search';
+import { IoChatbubbles } from 'react-icons/io5';
 
 interface INavbarTopProps {}
 
@@ -70,6 +71,16 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
                 aria-label="expand"
                 icon={<GrAdd className="text-xl" />}
               />
+              <NavLink href="/?chat=true">
+                {({ isActive }) => (
+                  <IconButton
+                    borderRadius="full"
+                    colorScheme={isActive ? 'blue' : 'gray'}
+                    aria-label="expand"
+                    icon={<IoChatbubbles className="text-xl" />}
+                  />
+                )}
+              </NavLink>
 
               <NavLink href="/?saved=true">
                 {({ isActive }) => (

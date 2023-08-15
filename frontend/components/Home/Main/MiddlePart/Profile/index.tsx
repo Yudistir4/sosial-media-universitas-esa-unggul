@@ -16,7 +16,7 @@ import {
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -34,6 +34,8 @@ import Questions from './Questions';
 import Pollings from './Pollings';
 import { AiOutlineWarning } from 'react-icons/ai';
 import { AxiosError } from 'axios';
+import { IoChatbubbles } from 'react-icons/io5';
+import useConversation from '@/store/conversation';
 
 interface IProfileProps {}
 
@@ -55,10 +57,27 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
   });
 
   const user = data?.data;
+  const setCurrentConversation = useConversation(
+    (state) => state.setCurrentConversation
+  );
+  const setIsNewConversation = useConversation(
+    (state) => state.setIsNewConversation
+  );
+  const {
+    mutate: mutateCreateConversation,
+    isLoading: isLoadingCreateConversation,
+  } = useMutation({
+    mutationFn: (user_ids: string[]) =>
+      client.post(api.conversations, { user_ids }),
+    onSuccess: (res) => {
+      setCurrentConversation(res.data.data);
+      setIsNewConversation(true);
+      router.push('/?chat=true');
+    },
+  });
 
   const loggedInUser = useAuth((state) => state.user);
   if (isLoading) return <Loading />;
-
   return (
     <Flex className="flex-col items-center bg-white gap-4 pt-4">
       {isFetching ? (
@@ -97,6 +116,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
               <Text className="font-semibold text-xl my-2 text-center mx-10">
                 {user.name}
               </Text>
+
               {data &&
                 ['student', 'lecturer', 'alumni'].includes(
                   data.data.user_type
@@ -140,7 +160,20 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
                   </>
                 )}
             </Flex>
-
+            {/* <Link href={`/?chat=true&chat_id=${user.id}`}> */}
+            {user.id !== loggedInUser?.id && (
+              <Button
+                onClick={() => mutateCreateConversation([user.id])}
+                leftIcon={<IoChatbubbles />}
+                isLoading={isLoadingCreateConversation}
+                size="sm"
+                borderRadius="full"
+                colorScheme="gray"
+              >
+                Send Message
+              </Button>
+            )}
+            {/* </Link> */}
             {user && <Contact user={user} />}
             <Text className="mx-4 max-w-md">{user?.bio}</Text>
           </>

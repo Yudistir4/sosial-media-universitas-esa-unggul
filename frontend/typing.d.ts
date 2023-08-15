@@ -8,6 +8,7 @@ interface QueryParams {
   polling_id: string;
   post_category: string;
   saved: boolean;
+  chat: boolean;
   email: string;
   code: string;
   reset_password: boolean;
@@ -272,4 +273,52 @@ export interface Filter {
 }
 export interface UserLittle2 extends UserLittle {
   user_type: string;
+}
+
+export interface ConversationDoc {
+  id: string;
+  participants: UserLittle[];
+  last_message: MessageDoc;
+  total_unread_message: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface UserSocket {
+  user_id: string;
+  socket_id: string;
+}
+export interface MessageDoc {
+  id: string;
+  sender_id: string;
+  text: string;
+  is_read: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface AsReadPayload {
+  conversation_id: string;
+  sender_id: string;
+}
+
+export interface MessageSocket {
+  id: string;
+  text: string;
+  conversation_id: string;
+  sender_id: string;
+  receiver_id: string;
+  created_at: Date;
+}
+
+export interface ServerToClientEvents {
+  getUsers: (users: UserSocket[]) => void;
+  receiveMessage: (message: MessageSocket) => void;
+  receiveAsReadStatus: (data: AsReadPayload) => void;
+}
+
+export interface ClientToServerEvents {
+  addUser: (userId: string) => void;
+  sendMessage: (message: MessageSocket) => void;
+  markAsRead: (data: AsReadPayload) => void;
 }

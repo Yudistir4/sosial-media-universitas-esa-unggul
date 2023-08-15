@@ -11,4 +11,5 @@ export const api = {
   comments: '/comments',
   studyprograms: '/studyprograms',
   pollings: '/pollings',
+  conversations: '/conversations',
 };

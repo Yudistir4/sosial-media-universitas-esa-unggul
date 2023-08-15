@@ -17,9 +17,7 @@ func (s *conversationService) CreateMessage(req dto.CreateMessageReq) (*dto.Mess
 		tx.Rollback()
 		return nil, err
 	}
-
-	conversation.LastMessageID = &message.ID
-	err = s.repo.UpdateConversation(conversation, tx)
+	err = s.repo.UpdateLastMessage(message.ID, conversation.ID, tx)
 	if err != nil {
 		tx.Rollback()
 		return nil, err

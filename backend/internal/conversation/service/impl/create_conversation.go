@@ -8,10 +8,10 @@ import (
 )
 
 func (s *conversationService) CreateConversation(req dto.CreateConversationReq) (*dto.ConversationResponse, error) {
-
 	conversation, err := s.repo.GetConversationByParticipants(req.UserIDs)
 	if conversation.ID != uuid.Nil {
-		return nil,customerrors.ErrDuplicatedConversation
+		conversationResponse := dto.ConvertConversationToConversationResponse(conversation)
+		return &conversationResponse, nil
 	}
 	if err != nil {
 		if err != customerrors.ErrConversationNotFound {
