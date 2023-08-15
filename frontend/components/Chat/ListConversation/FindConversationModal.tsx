@@ -52,9 +52,7 @@ const FindConversationModal: React.FunctionComponent<
   });
 
   // Create Conversation
-  const {
-    mutate: mutateCreateConversation,
-  } = useMutation({
+  const { mutate: mutateCreateConversation } = useMutation({
     mutationFn: (user_ids: string[]) =>
       client.post(api.conversations, { user_ids }),
     onSuccess: (res) => setCurrentConversation(res.data.data),
@@ -89,7 +87,7 @@ const FindConversationModal: React.FunctionComponent<
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Enter a query.."
+                  placeholder="Search name, NIM or NIDN"
                 />
               </form>
               {users?.data?.map((user: User) => (

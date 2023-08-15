@@ -9,7 +9,12 @@ import (
 )
 
 func (r *conversationRepository) UpdateLastMessage(LastMessageID uuid.UUID, ConversationID uuid.UUID, tx *gorm.DB) error {
-	result := tx.Model(&dto.Conversation{ID: ConversationID}).Update("last_message_id", LastMessageID)
+	var result *gorm.DB
+	if LastMessageID == uuid.Nil {
+		result = tx.Model(&dto.Conversation{ID: ConversationID}).Update("last_message_id", nil)
+	} else {
+		result = tx.Model(&dto.Conversation{ID: ConversationID}).Update("last_message_id", LastMessageID)
+	}
 	if result.Error != nil {
 		r.log.Errorln("[ERROR] Update Conversation Error:", result.Error)
 		return customerrors.GetErrorType(result.Error)

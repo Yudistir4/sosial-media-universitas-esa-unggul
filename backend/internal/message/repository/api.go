@@ -12,4 +12,5 @@ type MessageRepository interface {
 	GetMessages(ConversationID uuid.UUID) ([]dto.Message, error)
 	GetTotalUnreadMessage(ConversationID uuid.UUID, SenderID uuid.UUID) (int64, error)
 	MarkMessagesAsRead(req dto.MarkMessagesAsReadReq) error
+	DeleteMessages(ConversationID uuid.UUID, tx *gorm.DB) error
 }

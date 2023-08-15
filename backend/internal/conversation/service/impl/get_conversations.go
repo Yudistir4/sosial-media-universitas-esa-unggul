@@ -7,7 +7,7 @@ import (
 )
 
 func (s *conversationService) GetConversations(req dto.GetConversationsReq) (*[]dto.ConversationResponse, error) {
-
+	req.IsLastMessageMustExist = true
 	conversations, err := s.repo.GetConversations(req)
 	if err != nil {
 		return nil, err

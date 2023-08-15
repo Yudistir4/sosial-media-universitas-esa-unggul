@@ -25,6 +25,51 @@ func (s *userService) DeleteUser(ID uuid.UUID) (err error) {
 		return tx.Error
 	}
 
+	// Find all conversation
+	conversations, err := s.repoConversation.GetConversations(dto.GetConversationsReq{LoggedInUserID: ID})
+	if err != nil {
+		s.log.Errorln("[ERROR] when get all conversations: ", err.Error())
+		tx.Rollback()
+		return err
+	}
+
+	var conversationIDs []uuid.UUID
+
+	for _, conversation := range conversations {
+		conversationIDs = append(conversationIDs, conversation.ID)
+
+		// delete last message
+		err = s.repoConversation.UpdateLastMessage(uuid.Nil, conversation.ID, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete messages: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+		// delete all messages related to conversationID
+		err = s.repoMessage.DeleteMessages(conversation.ID, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete messages: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+		// delete all participants related to conversationID
+		err = s.repoConversation.DeleteParticipants(conversation.ID, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete participants: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+	}
+	// delete all conversation
+
+	if len(conversationIDs) > 0 {
+		err = s.repoConversation.DeleteConversations(conversationIDs, tx)
+		if err != nil {
+			s.log.Errorln("[ERROR] when delete conversations: ", err.Error())
+			tx.Rollback()
+			return err
+		}
+	}
 	// Delete all likes,comment and saves
 	err = s.repoNotification.DeleteNotificationsRelatedToUser(ID, tx)
 	if err != nil {
@@ -47,6 +92,14 @@ func (s *userService) DeleteUser(ID uuid.UUID) (err error) {
 	err = s.repoSave.DeleteSavesRelatedToUser(ID, tx)
 	if err != nil {
 		s.log.Errorln("[ERROR] when delete all saves: ", err.Error())
+		tx.Rollback()
+		return err
+	}
+
+	// delete all related voters
+	err = s.repoVoter.DeleteVotersRelatedToUser(ID, tx)
+	if err != nil {
+		s.log.Errorln("[ERROR] when delete voters related to user: ", err.Error())
 		tx.Rollback()
 		return err
 	}
@@ -110,7 +163,7 @@ func (s *userService) DeleteUser(ID uuid.UUID) (err error) {
 	}
 
 	// get all polling
-	pollings, err := s.repoPolling.GetPollings(dto.GetPollingsReq{LoggedInUserID: ID, Page: 1, Limit: 99999999999})
+	pollings, err := s.repoPolling.GetPollings(dto.GetPollingsReq{UserID: ID, Page: 1, Limit: 99999999999})
 
 	for _, polling := range pollings {
 		//  if useImage => store public ID

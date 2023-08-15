@@ -27,9 +27,10 @@ type ConversationResponse struct {
 	UpdatedAt          time.Time             `json:"updated_at"`
 }
 type GetConversationsReq struct {
-	LoggedInUserID uuid.UUID
-	Page           int `query:"page"`
-	Limit          int `query:"limit"`
+	LoggedInUserID         uuid.UUID
+	IsLastMessageMustExist bool
+	Page                   int `query:"page"`
+	Limit                  int `query:"limit"`
 }
 
 func ConvertConversationToConversationResponse(conversation Conversation) ConversationResponse {

@@ -12,6 +12,7 @@ type VoterRepository interface {
 	CreateVoters(voters []*dto.Voter, tx *gorm.DB) error
 	GetVoter(LoggedInUserID uuid.UUID, PollingID uuid.UUID) (dto.Voter, error)
 	DeleteVoters(PollingID uuid.UUID, tx *gorm.DB) error
+	DeleteVotersRelatedToUser(UserID uuid.UUID, tx *gorm.DB) error
 	IsVoter(LoggedInUserID uuid.UUID, PollingID uuid.UUID) (bool, error)
 	Vote(req dto.VoteReq, tx *gorm.DB) error
 }

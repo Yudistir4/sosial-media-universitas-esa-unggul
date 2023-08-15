@@ -3,16 +3,19 @@ package impl
 import (
 	"backend/config"
 	repoComment "backend/internal/comment/repository"
+	repoConversation "backend/internal/conversation/repository"
 	repoFaculty "backend/internal/faculty/repository"
 	repoLecturer "backend/internal/lecturer/repository"
 	repoLike "backend/internal/like/repository"
+	repoMessage "backend/internal/message/repository"
 	repoNotification "backend/internal/notification/repository"
+	repoOption "backend/internal/option/repository"
 	repoPolling "backend/internal/polling/repository"
 	repoPost "backend/internal/post/repository"
 	repoSave "backend/internal/save/repository"
 	repoStudent "backend/internal/student/repository"
 	repoVoter "backend/internal/voter/repository"
-	repoOption "backend/internal/option/repository"
+
 	repoStudyProgram "backend/internal/studyprogram/repository"
 	"backend/internal/user/repository"
 
@@ -35,8 +38,11 @@ type userService struct {
 	repoComment      repoComment.CommentRepository
 	repoSave         repoSave.SaveRepository
 	repoNotification repoNotification.NotificationRepository
-	repoVoter repoVoter.VoterRepository
-	repoOption repoOption.OptionRepository
+	repoVoter        repoVoter.VoterRepository
+	repoOption       repoOption.OptionRepository
+	repoConversation repoConversation.ConversationRepository
+	repoMessage      repoMessage.MessageRepository
+
 	repoStudyProgram repoStudyProgram.StudyProgramRepository
 	log              *logrus.Entry
 	redis            *redis.Client
@@ -57,8 +63,10 @@ type UserServiceParams struct {
 	RepoComment      repoComment.CommentRepository
 	RepoSave         repoSave.SaveRepository
 	RepoNotification repoNotification.NotificationRepository
-	RepoVoter repoVoter.VoterRepository
-	RepoOption repoOption.OptionRepository
+	RepoVoter        repoVoter.VoterRepository
+	RepoOption       repoOption.OptionRepository
+	RepoConversation repoConversation.ConversationRepository
+	RepoMessage      repoMessage.MessageRepository
 	RepoStudyProgram repoStudyProgram.StudyProgramRepository
 	Log              *logrus.Entry
 	Redis            *redis.Client
@@ -81,8 +89,10 @@ func NewUserService(params *UserServiceParams) *userService {
 		repoComment:      params.RepoComment,
 		repoSave:         params.RepoSave,
 		repoNotification: params.RepoNotification,
-		repoVoter: params.RepoVoter,
-		repoOption: params.RepoOption,
+		repoVoter:        params.RepoVoter,
+		repoOption:       params.RepoOption,
+		repoConversation: params.RepoConversation,
+		repoMessage:      params.RepoMessage,
 		repoStudyProgram: params.RepoStudyProgram,
 		log:              params.Log,
 		redis:            params.Redis,

@@ -395,8 +395,9 @@ func InitWebservice(params *WebserviceParams) error {
 		RepoVoter:        voterRepository,
 		RepoOption:       optionRepository,
 		RepoStudyProgram: studyProgramRepository,
-
-		Redis: redis,
+		RepoConversation: conversationRepository,
+		RepoMessage:      messageRepository,
+		Redis:            redis,
 		Log: params.Log.WithFields(logrus.Fields{
 			"domain": "user",
 			"layer":  "service",
