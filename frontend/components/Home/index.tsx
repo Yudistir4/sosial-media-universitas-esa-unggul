@@ -10,7 +10,12 @@ import ChangePassword from './ChangePassword';
 import ChangeEmail from './ChangeEmail';
 import Chat from '../Chat';
 import { useRouter } from 'next/router';
-import { ClientToServerEvents, QueryParams, ServerToClientEvents, UserSocket } from '@/typing';
+import {
+  ClientToServerEvents,
+  QueryParams,
+  ServerToClientEvents,
+  UserSocket,
+} from '@/typing';
 import { useAuth } from '@/store/user';
 import { Socket, io } from 'socket.io-client';
 import useConversation from '@/store/conversation';
@@ -24,7 +29,8 @@ const Home: React.FunctionComponent<IHomeProps> = (props) => {
   const { chat } = query as unknown as QueryParams;
 
   const loggedInUser = useAuth((state) => state.user);
-  const socket = React.useRef<Socket<ServerToClientEvents, ClientToServerEvents>>();
+  const socket =
+    React.useRef<Socket<ServerToClientEvents, ClientToServerEvents>>();
   const currentConversation = useConversation(
     (state) => state.currentConversation
   );
@@ -59,12 +65,11 @@ const Home: React.FunctionComponent<IHomeProps> = (props) => {
     setIsCurrentConversationUserOnline,
   ]);
 
-  
   return (
     <Box className="relative" m="auto">
-      <NavbarTop />
+      <NavbarTop socket={socket} />
 
-      {chat ? <Chat socket={socket} /> : <Main />}
+      {chat ? <Chat socket={socket} /> : <Main socket={socket} />}
       <NavbarBottom />
       <CreatePost />
       <UpdatePost />

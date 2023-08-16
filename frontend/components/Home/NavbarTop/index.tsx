@@ -25,10 +25,16 @@ import NavLink from '../../NavLink';
 import Notifications from './Notifications';
 import Search from './Search';
 import { IoChatbubbles } from 'react-icons/io5';
+import { Socket } from 'socket.io-client';
+import { ClientToServerEvents, ServerToClientEvents } from '@/typing';
 
-interface INavbarTopProps {}
+interface INavbarTopProps {
+  socket: React.RefObject<
+    Socket<ServerToClientEvents, ClientToServerEvents> | undefined
+  >;
+}
 
-const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
+const NavbarTop: React.FunctionComponent<INavbarTopProps> = ({ socket }) => {
   const onOpen = useCreatePostModal((state) => state.onOpen);
   const openChangePassword = useChangePasswordModal((state) => state.onOpen);
   const openChangeEmail = useChangeEmailModal((state) => state.onOpen);
@@ -115,7 +121,10 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = (props) => {
                   Change Email
                 </MenuItem>
                 <MenuItem
-                  onClick={logout}
+                  onClick={() => {
+                    socket.current?.disconnect()
+                    logout();
+                  }}
                   icon={<FiLogOut className="text-xl" />}
                 >
                   Logout

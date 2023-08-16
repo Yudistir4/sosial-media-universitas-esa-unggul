@@ -2,6 +2,7 @@ import NavLink from '@/components/NavLink';
 import { useChangeEmailModal } from '@/store/changeEmailModal';
 import { useChangePasswordModal } from '@/store/changePasswordModal';
 import { useAuth } from '@/store/user';
+import { ClientToServerEvents, ServerToClientEvents } from '@/typing';
 import {
   Box,
   Button,
@@ -19,8 +20,13 @@ import { GiAchievement } from 'react-icons/gi';
 import { GrWorkshop } from 'react-icons/gr';
 import { MdWork } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
+import { Socket } from 'socket.io-client';
 
-interface ISidebarLeftProps {}
+interface ISidebarLeftProps {
+  socket: React.RefObject<
+    Socket<ServerToClientEvents, ClientToServerEvents> | undefined
+  >;
+}
 const navLinksData = [
   { href: '/', icon: <AiFillHome className="text-xl mr-1" />, text: 'Home' },
   {
@@ -44,7 +50,9 @@ const navLinksData = [
     text: 'Internship',
   },
 ];
-const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
+const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = ({
+  socket,
+}) => {
   const logout = useAuth((state) => state.logout);
   const openChangePassword = useChangePasswordModal((state) => state.onOpen);
   const openChangeEmail = useChangeEmailModal((state) => state.onOpen);
@@ -100,7 +108,10 @@ const SidebarLeft: React.FunctionComponent<ISidebarLeftProps> = (props) => {
             </Menu>
             <Button
               bg="transparent"
-              onClick={logout}
+              onClick={() => {
+                socket.current?.disconnect();
+                logout();
+              }}
               leftIcon={<FiLogOut className="text-xl" />}
               justifyContent="start"
               className="w-full"
