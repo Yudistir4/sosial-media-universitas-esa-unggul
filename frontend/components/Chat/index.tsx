@@ -12,17 +12,7 @@ interface IChatProps {
   >;
 }
 const Chat: React.FunctionComponent<IChatProps> = ({ socket }) => {
-  const currentConversation = useConversation(
-    (state) => state.currentConversation
-  );
-  const isNewConversation = useConversation((state) => state.isNewConversation);
-  const setIsNewConversation = useConversation(
-    (state) => state.setIsNewConversation
-  );
-  const setCurrentConversation = useConversation(
-    (state) => state.setCurrentConversation
-  );
-    return (
+  return (
     <Flex
       height={{ sm: '85vh', lg: '90vh', xl: '94vh' }}
       overflowX="hidden"

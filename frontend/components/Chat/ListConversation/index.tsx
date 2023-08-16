@@ -123,7 +123,12 @@ const ListConversation: React.FunctionComponent<IListConversationProps> = ({
       const conversation = dataConversations.find(
         (item) => item.id === currentConversation.id
       );
-      onClickConversationItem(conversation as ConversationDoc);
+      if (!conversation) {
+        refetchConversations();
+      }
+      onClickConversationItem(
+        conversation ? conversation : currentConversation
+      );
     }
   }, [currentConversation, isLoading, dataConversations]);
   return (

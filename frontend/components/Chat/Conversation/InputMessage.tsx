@@ -29,7 +29,6 @@ const InputMessage: React.FunctionComponent<IInputMessageProps> = ({
   currentConversationUser,
   socket,
 }) => {
-  console.log('--input--');
   const [text, setText] = useState('');
   const { mutate: addMessageMutate } = useMutation({
     mutationFn: (message: {
@@ -75,24 +74,19 @@ const InputMessage: React.FunctionComponent<IInputMessageProps> = ({
 
     // add message to lastMessage conversation list
     queryClient.setQueryData(['conversations'], (old: any) => {
-      console.log({ old });
       const conversationIndex: number = old?.data.data.findIndex(
         (conversation: any) => conversation.id === currentConversation.id
       );
 
       const updateLastMessage = (old: any, last_message: any): any => {
-        console.log({ old });
-
         let conversations = JSON.parse(JSON.stringify(old.data.data));
         const itemToMove = conversations[conversationIndex];
         conversations.splice(conversationIndex, 1);
         conversations.unshift({ ...itemToMove, last_message });
-        console.log({ conversations });
         return conversations;
       };
 
       if (conversationIndex >= 0) {
-        console.log('Masuk1');
         return { data: { data: updateLastMessage(old, message) } };
       } else {
         return {
