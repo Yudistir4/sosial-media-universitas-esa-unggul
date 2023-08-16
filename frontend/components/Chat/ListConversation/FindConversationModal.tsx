@@ -55,11 +55,17 @@ const FindConversationModal: React.FunctionComponent<
   const { mutate: mutateCreateConversation } = useMutation({
     mutationFn: (user_ids: string[]) =>
       client.post(api.conversations, { user_ids }),
-    onSuccess: (res) => setCurrentConversation(res.data.data),
+    onSuccess: (res) => {
+      setIsNewConversation(true);
+      setCurrentConversation(res.data.data);
+    },
   });
 
   const setCurrentConversation = useConversation(
     (state) => state.setCurrentConversation
+  );
+  const setIsNewConversation = useConversation(
+    (state) => state.setIsNewConversation
   );
   if (!loggedInUser) return <></>;
 

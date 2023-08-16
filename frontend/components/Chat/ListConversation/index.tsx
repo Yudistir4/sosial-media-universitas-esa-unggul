@@ -43,7 +43,11 @@ const ListConversation: React.FunctionComponent<IListConversationProps> = ({
   const bg = useColorModeValue('blackAlpha.900', 'blackAlpha.300');
 
   // Get Conversation list
-  const { data: dataConversations, refetch: refetchConversations } = useQuery({
+  const {
+    data: dataConversations,
+    refetch: refetchConversations,
+    isLoading,
+  } = useQuery({
     queryKey: ['conversations'],
     refetchOnWindowFocus: false,
     queryFn: () => client.get<{ data: ConversationDoc[] }>(api.conversations),
@@ -113,6 +117,15 @@ const ListConversation: React.FunctionComponent<IListConversationProps> = ({
       return old;
     });
   };
+
+  React.useEffect(() => {
+    if (currentConversation && dataConversations && !isLoading) {
+      const conversation = dataConversations.find(
+        (item) => item.id === currentConversation.id
+      );
+      onClickConversationItem(conversation as ConversationDoc);
+    }
+  }, [currentConversation, isLoading, dataConversations]);
   return (
     <Box
       display={{ sm: currentConversation ? 'none' : 'block', md: 'block' }}

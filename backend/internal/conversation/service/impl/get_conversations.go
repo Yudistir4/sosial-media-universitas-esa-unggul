@@ -13,7 +13,7 @@ func (s *conversationService) GetConversations(req dto.GetConversationsReq) (*[]
 		return nil, err
 	}
 
-	var conversationsResponse []dto.ConversationResponse
+	conversationsResponse := []dto.ConversationResponse{}
 	for _, conversation := range conversations {
 		conversationResponse := dto.ConvertConversationToConversationResponse(conversation)
 

@@ -22,24 +22,7 @@ const Chat: React.FunctionComponent<IChatProps> = ({ socket }) => {
   const setCurrentConversation = useConversation(
     (state) => state.setCurrentConversation
   );
-
-  useEffect(() => {
-    return () => {
-      if (currentConversation && !isNewConversation) {
-        setCurrentConversation(null);
-        console.log('Clean up function---');
-      } else {
-        setIsNewConversation(false);
-      }
-    };
-  }, [
-    currentConversation,
-    setCurrentConversation,
-    isNewConversation,
-    setIsNewConversation,
-  ]);
-
-  return (
+    return (
     <Flex
       height={{ sm: '85vh', lg: '90vh', xl: '94vh' }}
       overflowX="hidden"
