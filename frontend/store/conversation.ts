@@ -52,18 +52,15 @@ const useConversation = create<ConversationState>((set, get) => ({
   getMessages: async (
     conversation_id: string
   ): Promise<(MessageDoc | string)[]> => {
-    console.log('get messages');
     let messages = get().messageList[conversation_id];
     if (messages) {
       return messages;
     } else {
-      console.log('fetching message');
       await get().fetchMessages(conversation_id);
       return get().messageList[conversation_id];
     }
   },
   onReceiveAsReadStatus({ conversation_id }) {
-    console.log('onReceiveAsReadStatus');
     set((state) => ({
       messageList: {
         ...state.messageList,
@@ -78,8 +75,6 @@ const useConversation = create<ConversationState>((set, get) => ({
     }));
   },
   updateLastMessageInConversations(message) {
-    console.log('updateLastMessageInConversations');
-
     const conversations = [...get().conversations];
     const currentConversation = get().currentConversation;
     if (!currentConversation) return;
@@ -88,8 +83,6 @@ const useConversation = create<ConversationState>((set, get) => ({
       (conversation: any) => conversation.id === currentConversation.id
     );
     const updateLastMessage = (old: any, last_message: any): any => {
-      console.log('updateLastMessage');
-
       let conversations = JSON.parse(JSON.stringify(old));
       const itemToMove = conversations[conversationIndex];
       conversations.splice(conversationIndex, 1);
@@ -119,8 +112,6 @@ const useConversation = create<ConversationState>((set, get) => ({
     }));
   },
   resetUnreadMessage(conversation_id) {
-    console.log('resetUnreadMessage');
-
     const conversations = [...get().conversations];
 
     const conversationIndex: number = conversations.findIndex(
@@ -130,8 +121,6 @@ const useConversation = create<ConversationState>((set, get) => ({
     set({ conversations });
   },
   receiveNewMessage: (message: MessageSocket) => {
-    console.log('receiveNewMessage');
-
     const conversations = get().conversations;
     const currentConversation = get().currentConversation;
 
@@ -197,7 +186,6 @@ const useConversation = create<ConversationState>((set, get) => ({
     }
   },
   fetchMessages: async (conversation_id) => {
-    console.log('fetchMessages');
     try {
       const response = await client.get<{ data: MessageDoc[] }>(
         `${api.conversations}/${conversation_id}/messages`
@@ -237,8 +225,6 @@ const useConversation = create<ConversationState>((set, get) => ({
     }
   },
   fetchConversations: async () => {
-    console.log('fetchConversations');
-
     try {
       set({ isLoading: true });
       const response = await client.get<{ data: ConversationDoc[] }>(
@@ -273,8 +259,6 @@ const useConversation = create<ConversationState>((set, get) => ({
   setIsCurrentConversationUserOnline: (status: boolean) =>
     set({ isCurrentConversationUserOnline: status }),
   setCurrentConversationAsync: async (conversation: ConversationDoc) => {
-    console.log('setCurrentConversationAsync');
-
     if (!get().messageList[conversation.id]) {
       await get().fetchMessages(conversation.id);
     }
