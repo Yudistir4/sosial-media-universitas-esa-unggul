@@ -24,6 +24,7 @@ type CreateMessageReq struct {
 type MessageResponse struct {
 	ID        uuid.UUID `json:"id"`
 	SenderID  uuid.UUID `json:"sender_id"`
+	ConversationID  uuid.UUID `json:"conversation_id"`
 	Text      string    `json:"text"`
 	IsRead    bool      `json:"is_read"`
 	CreatedAt time.Time `json:"created_at"`
@@ -48,6 +49,7 @@ func ConvertMessageToMessageResponse(message Message) MessageResponse {
 		CreatedAt: message.CreatedAt,
 		UpdatedAt: message.UpdatedAt,
 		IsRead:    message.IsRead,
+		ConversationID: message.ConversationID,
 	}
 
 }

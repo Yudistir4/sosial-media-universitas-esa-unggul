@@ -1,6 +1,10 @@
 import useConversation from '@/store/conversation';
-import { ClientToServerEvents, ServerToClientEvents } from '@/typing';
-import { Flex } from '@chakra-ui/react';
+import {
+  ClientToServerEvents,
+  ConversationDoc,
+  ServerToClientEvents,
+} from '@/typing';
+import { Center, Flex, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Socket } from 'socket.io-client';
 import Conversation from './Conversation';
@@ -12,6 +16,9 @@ interface IChatProps {
   >;
 }
 const Chat: React.FunctionComponent<IChatProps> = ({ socket }) => {
+  const currentConversation = useConversation(
+    (state) => state.currentConversation
+  );
   return (
     <Flex
       height={{ sm: '85vh', lg: '90vh', xl: '94vh' }}
@@ -21,7 +28,20 @@ const Chat: React.FunctionComponent<IChatProps> = ({ socket }) => {
       mt={{ sm: '96px', xl: '57px' }}
     >
       <ListConversation socket={socket} />
-      <Conversation socket={socket} />
+      {currentConversation ? (
+        <Conversation socket={socket} currentConversation={currentConversation} />
+      ) : (
+        <Center
+          display={{ sm: currentConversation ? 'flex' : 'none', md: 'flex' }}
+          width={{
+            sm: currentConversation ? '100%' : '0',
+            md: '50%',
+            lg: 'calc(100% - 400px)',
+          }}
+        >
+          <Text fontSize="3xl">Lets Start Conversation </Text>
+        </Center>
+      )}
     </Flex>
   );
 };

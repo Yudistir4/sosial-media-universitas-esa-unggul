@@ -1,28 +1,26 @@
 import { api } from '@/config';
 
+import { client } from '@/services';
 import useConversation from '@/store/conversation';
+import { useAuth } from '@/store/user';
 import { getConversationUser } from '@/utils';
 import {
   Box,
-  Button,
   Stack,
   Text,
   useColorModeValue,
-  useDisclosure,
+  useDisclosure
 } from '@chakra-ui/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import * as React from 'react';
 import { Socket } from 'socket.io-client';
 import {
   ClientToServerEvents,
   ConversationDoc,
-  MessageSocket,
-  ServerToClientEvents,
+  ServerToClientEvents
 } from '../../../typing';
 import ConversationItem from './ConversationItem';
 import FindConversationModal from './FindConversationModal';
-import { useAuth } from '@/store/user';
-import { client } from '@/services';
 
 interface IListConversationProps {
   socket: React.RefObject<
@@ -33,8 +31,10 @@ interface IListConversationProps {
 const ListConversation: React.FunctionComponent<IListConversationProps> = ({
   socket,
 }) => {
-  const queryClient = useQueryClient();
-
+  const conversations = useConversation((state) => state.conversations);
+  const resetUnreadMessage = useConversation(
+    (state) => state.resetUnreadMessage
+  );
   const loggedInUser = useAuth((state) => state.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const currentConversation = useConversation(
@@ -42,95 +42,25 @@ const ListConversation: React.FunctionComponent<IListConversationProps> = ({
   );
   const bg = useColorModeValue('blackAlpha.900', 'blackAlpha.300');
 
-  // Get Conversation list
-  const {
-    data: dataConversations,
-    refetch: refetchConversations,
-    isLoading,
-  } = useQuery({
-    queryKey: ['conversations'],
-    refetchOnWindowFocus: false,
-    queryFn: () => client.get<{ data: ConversationDoc[] }>(api.conversations),
-    select(res) {
-      return res.data.data.map((conversation) => {
-        return {
-          ...conversation,
-          participants: conversation.participants.filter(
-            (user) => user.id !== loggedInUser?.id
-          ),
-        };
-      }) as ConversationDoc[];
-    },
-  });
-
   // Mark as read all messages DB
   const { mutate: updateIsReadMessage } = useMutation({
     mutationFn: (data: { sender_id: string; conversation_id: string }) =>
       client.put(`${api.conversations}/${data.conversation_id}/messages`, data),
   });
 
-  React.useEffect(() => {
-    function onReceive(message: MessageSocket) {
-      console.log({ messageBg: message });
-      queryClient.setQueryData(['conversations'], (old: any) => {
-        const conversationIndex: number = old.data.data.findIndex(
-          (conversation: any) => conversation.id === message.conversation_id
-        );
-
-        if (conversationIndex >= 0) {
-          let conversations = JSON.parse(JSON.stringify(old.data.data));
-          const itemToMove = conversations[conversationIndex];
-          if (currentConversation?.id !== itemToMove.id) {
-            itemToMove.total_unread_message++;
-          }
-          conversations.splice(conversationIndex, 1);
-          conversations.unshift({ ...itemToMove, last_message: message });
-          return { data: { data: conversations } };
-        } else {
-          refetchConversations();
-        }
-      });
-    }
-    const mySocket = socket.current;
-    mySocket?.on('receiveMessage', onReceive);
-    return () => {
-      mySocket?.off('receiveMessage', onReceive);
-    };
-  }, [socket, currentConversation, queryClient, refetchConversations]);
-
   const onClickConversationItem = (conversation: ConversationDoc) => {
+    console.log({ conversation });
     if (!socket.current || conversation.total_unread_message === 0) return;
     const sender_id = getConversationUser(conversation, loggedInUser)
       ?.id as string;
     const conversation_id: string = conversation.id;
     updateIsReadMessage({ sender_id, conversation_id });
-    console.log('MarkSread');
     // emit mark as read message
     socket.current.emit('markAsRead', { sender_id, conversation_id });
-
     // update unReadMessage=0
-    queryClient.setQueryData(['conversations'], (old: any) => {
-      const conversationIndex: number = old.data.data.findIndex(
-        (conversation: any) => conversation.id === conversation_id
-      );
-      old.data.data[conversationIndex].total_unread_message = 0;
-      return old;
-    });
+    resetUnreadMessage(conversation_id);
   };
 
-  React.useEffect(() => {
-    if (currentConversation && dataConversations && !isLoading) {
-      const conversation = dataConversations.find(
-        (item) => item.id === currentConversation.id
-      );
-      if (!conversation) {
-        refetchConversations();
-      }
-      onClickConversationItem(
-        conversation ? conversation : currentConversation
-      );
-    }
-  }, [currentConversation, isLoading, dataConversations]);
   return (
     <Box
       display={{ sm: currentConversation ? 'none' : 'block', md: 'block' }}
@@ -154,8 +84,8 @@ const ListConversation: React.FunctionComponent<IListConversationProps> = ({
           </Text>
         </Box>
         <Stack flexGrow="1" overflowY="auto">
-          {dataConversations &&
-            dataConversations.map((conversation) => (
+          {conversations &&
+            conversations.map((conversation) => (
               <div
                 key={conversation.id}
                 onClick={() => onClickConversationItem(conversation)}

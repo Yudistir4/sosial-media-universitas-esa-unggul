@@ -3,6 +3,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 console.log();
+interface UserLittle {
+  id: string;
+  name: string;
+  profile_pic_url: string;
+}
 interface Data {
   id: string;
   text: string;
@@ -10,6 +15,7 @@ interface Data {
   sender_id: string;
   receiver_id: string;
   created_at: Date;
+  sender?:UserLittle
 }
 interface ServerToClientEvents {
   getUsers: (users: User[]) => void;

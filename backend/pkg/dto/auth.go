@@ -37,7 +37,7 @@ type RefreshTokenRes struct {
 	ExpiresIn   int    `json:"expires_in" validate:"required"`
 }
 type ChangeEmailReq struct {
-	ID    uuid.UUID `validate:"required"`
+	ID       uuid.UUID `validate:"required"`
 	NewEmail string    `json:"new_email" validate:"required"`
 }
 type VerifyEmailReq struct {

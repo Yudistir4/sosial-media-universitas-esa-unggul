@@ -27,6 +27,8 @@ import Search from './Search';
 import { IoChatbubbles } from 'react-icons/io5';
 import { Socket } from 'socket.io-client';
 import { ClientToServerEvents, ServerToClientEvents } from '@/typing';
+import useConversation from '@/store/conversation';
+import Chat from './Chat';
 
 interface INavbarTopProps {
   socket: React.RefObject<
@@ -38,6 +40,7 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = ({ socket }) => {
   const onOpen = useCreatePostModal((state) => state.onOpen);
   const openChangePassword = useChangePasswordModal((state) => state.onOpen);
   const openChangeEmail = useChangeEmailModal((state) => state.onOpen);
+  const conversations = useConversation(state => state.conversations)
   const user = useAuth((state) => state.user);
   const logout = useAuth((state) => state.logout);
   return (
@@ -77,16 +80,7 @@ const NavbarTop: React.FunctionComponent<INavbarTopProps> = ({ socket }) => {
                 aria-label="expand"
                 icon={<GrAdd className="text-xl" />}
               />
-              <NavLink href="/?chat=true">
-                {({ isActive }) => (
-                  <IconButton
-                    borderRadius="full"
-                    colorScheme={isActive ? 'blue' : 'gray'}
-                    aria-label="expand"
-                    icon={<IoChatbubbles className="text-xl" />}
-                  />
-                )}
-              </NavLink>
+             <Chat />
 
               <NavLink href="/?saved=true">
                 {({ isActive }) => (

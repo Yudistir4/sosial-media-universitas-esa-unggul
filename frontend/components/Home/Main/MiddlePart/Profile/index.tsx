@@ -57,21 +57,18 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
   });
 
   const user = data?.data;
-  const setCurrentConversation = useConversation(
-    (state) => state.setCurrentConversation
+  const setCurrentConversationAsync = useConversation(
+    (state) => state.setCurrentConversationAsync
   );
-  const setIsNewConversation = useConversation(
-    (state) => state.setIsNewConversation
-  );
+   
   const {
     mutate: mutateCreateConversation,
     isLoading: isLoadingCreateConversation,
   } = useMutation({
     mutationFn: (user_ids: string[]) =>
       client.post(api.conversations, { user_ids }),
-    onSuccess: (res) => {
-      setCurrentConversation(res.data.data);
-      setIsNewConversation(true);
+    onSuccess: async (res) => {
+      await setCurrentConversationAsync(res.data.data);
       router.push('/?chat=true');
     },
   });

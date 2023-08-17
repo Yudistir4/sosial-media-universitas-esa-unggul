@@ -13,7 +13,7 @@ func (s *conversationService) GetMessages(conversationID uuid.UUID) (*[]dto.Mess
 		return nil, err
 	}
 
-	var messagesResponse []dto.MessageResponse
+	messagesResponse := []dto.MessageResponse{}
 	for _, message := range messages {
 		messageResponse := dto.ConvertMessageToMessageResponse(message)
 		messagesResponse = append(messagesResponse, messageResponse)

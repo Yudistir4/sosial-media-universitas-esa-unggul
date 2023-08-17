@@ -8,12 +8,18 @@ import { BsFillBookmarkFill } from 'react-icons/bs';
 import { GrAdd } from 'react-icons/gr';
 import NavLink from '../NavLink';
 import { IoChatbubbles } from 'react-icons/io5';
+import useConversation from '@/store/conversation';
 
 interface INavbarBottomProps {}
 
 const NavbarBottom: React.FunctionComponent<INavbarBottomProps> = (props) => {
   const onOpen = useCreatePostModal((state) => state.onOpen);
   const user = useAuth((state) => state.user);
+  const conversations = useConversation((state) => state.conversations);
+  let totalUnreadMessages = 0;
+  conversations.forEach(
+    (item) => (totalUnreadMessages += item.total_unread_message)
+  );
   return (
     <Flex
       display={{ sm: 'flex', lg: 'none' }}
@@ -23,9 +29,15 @@ const NavbarBottom: React.FunctionComponent<INavbarBottomProps> = (props) => {
       <NavLink href="/" className="h-full p-3 ">
         <AiFillHome />
       </NavLink>
-      <NavLink href="/?chat=true" className="h-full p-3 ">
+      <NavLink href="/?chat=true" className="h-full p-3 relative">
         <IoChatbubbles />
+        {totalUnreadMessages > 0 && (
+          <div className="flex items-center font-semibold text-white justify-center text-xs absolute top-[2px] right-[2px] w-5 h-5 rounded-full bg-red-500">
+            {totalUnreadMessages}
+          </div>
+        )}
       </NavLink>
+
       <Link onClick={() => onOpen()} href="/" className="h-full p-3">
         <GrAdd />
       </Link>

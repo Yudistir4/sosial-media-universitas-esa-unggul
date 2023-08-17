@@ -55,18 +55,15 @@ const FindConversationModal: React.FunctionComponent<
   const { mutate: mutateCreateConversation } = useMutation({
     mutationFn: (user_ids: string[]) =>
       client.post(api.conversations, { user_ids }),
-    onSuccess: (res) => {
-      setIsNewConversation(true);
-      setCurrentConversation(res.data.data);
+    onSuccess: async (res) => {
+      await setCurrentConversationAsync(res.data.data);
     },
   });
 
-  const setCurrentConversation = useConversation(
-    (state) => state.setCurrentConversation
+  const setCurrentConversationAsync = useConversation(
+    (state) => state.setCurrentConversationAsync
   );
-  const setIsNewConversation = useConversation(
-    (state) => state.setIsNewConversation
-  );
+
   if (!loggedInUser) return <></>;
 
   const onClickUserItem = async (user: User) => {
@@ -96,13 +93,16 @@ const FindConversationModal: React.FunctionComponent<
                   placeholder="Search name, NIM or NIDN"
                 />
               </form>
-              {users?.data?.map((user: User) => (
-                <UserItem
-                  key={user.id}
-                  user={user}
-                  onClick={() => onClickUserItem(user)}
-                />
-              ))}
+              {users?.data?.map((user: User) => {
+                if (user.id === loggedInUser.id) return;
+                return (
+                  <UserItem
+                    key={user.id}
+                    user={user}
+                    onClick={() => onClickUserItem(user)}
+                  />
+                );
+              })}
             </Flex>
           </ModalBody>
 

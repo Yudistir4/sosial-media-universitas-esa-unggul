@@ -13,6 +13,7 @@ import {
   UserLittle,
 } from '../../../typing';
 import { client } from '@/services';
+import useConversation from '@/store/conversation';
 
 interface IInputMessageProps {
   loggedInUser: User | null;
@@ -30,6 +31,9 @@ const InputMessage: React.FunctionComponent<IInputMessageProps> = ({
   socket,
 }) => {
   const [text, setText] = useState('');
+  const updateLastMessageInConversations = useConversation(
+    (state) => state.updateLastMessageInConversations
+  );
   const { mutate: addMessageMutate } = useMutation({
     mutationFn: (message: {
       text: string;
@@ -42,8 +46,6 @@ const InputMessage: React.FunctionComponent<IInputMessageProps> = ({
       ),
   });
 
-  const queryClient = useQueryClient();
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!loggedInUser || !currentConversation || !text) return;
@@ -55,50 +57,26 @@ const InputMessage: React.FunctionComponent<IInputMessageProps> = ({
     });
 
     // add message
-    const message = {
+    const message: any = {
       id: uuidv4(),
       text,
       conversation_id: currentConversation.id,
       sender_id: loggedInUser.id,
       receiver_id: currentConversationUser?.id as string,
+      is_read: false,
+      updated_at: new Date(),
       created_at: new Date(),
+      sender: {
+        id: loggedInUser.id,
+        name: loggedInUser.name,
+        profile_pic_url: loggedInUser.profile_pic_url,
+      },
     };
 
     socket.current?.emit('sendMessage', message);
 
-    // Add message to message list
-    queryClient.setQueryData(
-      ['message', currentConversation.id],
-      (old: any) => ({ data: old?.data ? [...old.data, message] : [message] })
-    );
-
     // add message to lastMessage conversation list
-    queryClient.setQueryData(['conversations'], (old: any) => {
-      const conversationIndex: number = old?.data.data.findIndex(
-        (conversation: any) => conversation.id === currentConversation.id
-      );
-
-      const updateLastMessage = (old: any, last_message: any): any => {
-        let conversations = JSON.parse(JSON.stringify(old.data.data));
-        const itemToMove = conversations[conversationIndex];
-        conversations.splice(conversationIndex, 1);
-        conversations.unshift({ ...itemToMove, last_message });
-        return conversations;
-      };
-
-      if (conversationIndex >= 0) {
-        return { data: { data: updateLastMessage(old, message) } };
-      } else {
-        return {
-          data: {
-            data: [
-              { ...currentConversation, last_message: message },
-              ...old.data.data,
-            ],
-          },
-        };
-      }
-    });
+    updateLastMessageInConversations(message);
 
     setText('');
   };

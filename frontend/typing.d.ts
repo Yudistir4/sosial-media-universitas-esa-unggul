@@ -291,6 +291,7 @@ export interface UserSocket {
 export interface MessageDoc {
   id: string;
   sender_id: string;
+  conversation_id: string;
   text: string;
   is_read: boolean;
   created_at: Date;
@@ -309,6 +310,7 @@ export interface MessageSocket {
   sender_id: string;
   receiver_id: string;
   created_at: Date;
+  sender?: UserLittle;
 }
 
 export interface ServerToClientEvents {
