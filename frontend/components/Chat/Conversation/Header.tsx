@@ -34,7 +34,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       </Link>
       <Flex direction="column">
         <Link href={`/?user_id=${currentConversationUser?.id}`}>
-          <Text fontWeight={500}>{currentConversationUser?.name}</Text>
+          <Text className="font-semibold">{currentConversationUser?.name}</Text>
         </Link>
         {isCurrentConversationUserOnline && <Text>online</Text>}
       </Flex>

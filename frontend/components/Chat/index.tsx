@@ -21,15 +21,18 @@ const Chat: React.FunctionComponent<IChatProps> = ({ socket }) => {
   );
   return (
     <Flex
-      height={{ sm: '85vh', lg: '90vh', xl: '94vh' }}
+      height={{ sm: 'calc(100vh - 48px)', lg: '100vh', xl: '100vh' }}
       overflowX="hidden"
       // gap={4}
-      className="max-w-[1280px]   m-auto pt-4"
-      mt={{ sm: '96px', xl: '57px' }}
+      className="max-w-[1280px]   m-auto"
+      pt={{ sm: '106px', xl: '67px' }}
     >
       <ListConversation socket={socket} />
       {currentConversation ? (
-        <Conversation socket={socket} currentConversation={currentConversation} />
+        <Conversation
+          socket={socket}
+          currentConversation={currentConversation}
+        />
       ) : (
         <Center
           display={{ sm: currentConversation ? 'flex' : 'none', md: 'flex' }}

@@ -37,8 +37,12 @@ const ConversationItem: React.FunctionComponent<IConversationItemProps> = ({
         width="70%"
         // flexGrow="1"
       >
-        <Text isTruncated>{conversation.participants[0].name}</Text>
-        <Text isTruncated>{conversation.last_message.text}</Text>
+        <Text className="font-semibold" isTruncated>
+          {conversation.participants[0].name}
+        </Text>
+        <Text className="text-gray-600" isTruncated>
+          {conversation.last_message.text}
+        </Text>
       </Flex>
       {conversation.total_unread_message > 0 && (
         <Flex
