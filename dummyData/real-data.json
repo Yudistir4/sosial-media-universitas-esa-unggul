@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Fakultas Desain & Industri",
+    "email": "fdik@mail.com",
+    "user_type": "faculty",
+    "study_programs": [
+      "Desain Komunikasi Visual",
+      "Desain Produk",
+      "Desain Interior"
+    ]
+  },
+  {
+    "name": "Fakultas Ekonomi & Bisnis",
+    "email": "feb@mail.com",
+    "user_type": "faculty",
+    "study_programs": [
+      "Akuntansi Sektor Bisnis",
+      "Manajemen Bisnis",
+      "Magister Manajemen",
+      "Magister Akuntansi",
+      "Magister Administrasi Publik"
+    ]
+  },
+  {
+    "name": "Fakultas Fisioterapi",
+    "email": "fisioterapi@mail.com",
+    "user_type": "faculty",
+    "study_programs": ["Fisioterapi", "Profesi Fisioterapi"]
+  },
+  {
+    "name": "Fakultas Hukum",
+    "email": "fh@mail.com",
+    "user_type": "faculty",
+    "study_programs": ["Hukum", "Magister Ilmu Hukum"]
+  },
+  {
+    "name": "Fakultas Ilmu-Ilmu Kesehatan",
+    "email": "fiik@mail.com",
+    "user_type": "faculty",
+    "study_programs": [
+      "Kesehatan Masyarakat",
+      "Ilmu Gizi",
+      "Rekam Medis & Informasi Kesehatan",
+      "Keperawatan",
+      "Manajemen Informasi Kesehatan",
+      "Bioteknologi",
+      "Farmasi",
+      "Profesi Ners",
+      "Profesi Dietisien",
+      "Magister Administrasi Rumah Sakit"
+    ]
+  },
+  {
+    "name": "Fakultas Ilmu Komputer",
+    "email": "fasilkom@mail.com",
+    "user_type": "faculty",
+    "study_programs": [
+      "Sistem Informasi",
+      "Teknik Informatika",
+      "Magister Ilmu Komputer"
+    ]
+  },
+  {
+    "name": "Fakultas Ilmu Komunikasi",
+    "email": "fik@mail.com",
+    "user_type": "faculty",
+    "study_programs": [
+      "Marketing Communication",
+      "Jurnalistik",
+      "Humas",
+      "Broadcasting",
+      "Magister Komunikasi"
+    ]
+  },
+  {
+    "name": "Fakultas Keguruan & Ilmu Pendidikan",
+    "email": "fkip@mail.com",
+    "user_type": "faculty",
+    "study_programs": ["Pendidikan Guru SD", "Pendidikan Bahasa Inggris"]
+  },
+  {
+    "name": "Fakultas Psikologi",
+    "email": "fp@mail.com",
+    "user_type": "faculty",
+    "study_programs": ["Psikologi"]
+  },
+  {
+    "name": "Fakultas Teknik",
+    "email": "ft@mail.com",
+    "user_type": "faculty",
+    "study_programs": ["Teknik Industri", "Perencanaan Wilayah Dan Kota","Survei Dan Pemetaan","Rekayasa Sipil"]
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "email": "organization1@mail.com",
+    "name": "Majelis Permusyawaratan Mahasiswa"
+  },
+  {
+    "email": "organization2@mail.com",
+    "name": "Dewan Perwakilan Mahasiswa Universitas"
+  },
+  { "email": "organization3@mail.com", "name": "DPM  FE" },
+  { "email": "organization4@mail.com", "name": "DPM  FT" },
+  { "email": "organization5@mail.com", "name": "DPM  FIKES" },
+  { "email": "organization6@mail.com", "name": "DPM  FH" },
+  { "email": "organization7@mail.com", "name": "DPM FIKOM" },
+  { "email": "organization8@mail.com", "name": "DPM FFISIOTERAPI" },
+  { "email": "organization9@mail.com", "name": "DPM FPSIKOLOGI" },
+  { "email": "organization10@mail.com", "name": "DPM FASILKOM" },
+  { "email": "organization11@mail.com", "name": "DPM FDIK" },
+  { "email": "organization12@mail.com", "name": "DPM FKIP" },
+  { "email": "organization13@mail.com", "name": "Badan Eksekutif Mahasiswa" },
+  { "email": "organization14@mail.com", "name": "BEM FE" },
+  { "email": "organization15@mail.com", "name": "HMJ Manajemen" },
+  { "email": "organization16@mail.com", "name": "HMJ Akuntansi" },
+  { "email": "organization17@mail.com", "name": "BEM FT" },
+  { "email": "organization18@mail.com", "name": "HMJ Teknik Industri" },
+  {
+    "email": "organization19@mail.com",
+    "name": "HMJ Tata Perwilayahan Kota/Planologi"
+  },
+  { "email": "organization20@mail.com", "name": "BEM FIKES" },
+  { "email": "organization21@mail.com", "name": "HMJ Kesmas" },
+  { "email": "organization22@mail.com", "name": "HMJ Gizi" },
+  { "email": "organization23@mail.com", "name": "HMJ Keperawatan" },
+  { "email": "organization24@mail.com", "name": "HMJ MIK" },
+  { "email": "organization25@mail.com", "name": "BEM FH" },
+  { "email": "organization26@mail.com", "name": "BEM FIKOM" },
+  { "email": "organization27@mail.com", "name": "HMJ Jurnalistik" },
+  { "email": "organization28@mail.com", "name": "HMJ Public Relation" },
+  { "email": "organization29@mail.com", "name": "HMJ Advertaising" },
+  { "email": "organization30@mail.com", "name": "HMJ Broadcasting" },
+  { "email": "organization31@mail.com", "name": "BEM FFISIOTERAPI" },
+  { "email": "organization32@mail.com", "name": "BEM FPSIKOLOGI" },
+  { "email": "organization33@mail.com", "name": "BEM  FASILKOM" },
+  { "email": "organization34@mail.com", "name": "HMJ Teknik Informatika" },
+  { "email": "organization35@mail.com", "name": "HMJ Sistem Informasi" },
+  { "email": "organization36@mail.com", "name": "BEM FDIK" },
+  { "email": "organization37@mail.com", "name": "HMJ Desain Produk" },
+  {
+    "email": "organization38@mail.com",
+    "name": "HMJ Desain Komunikasi Visual"
+  },
+  { "email": "organization39@mail.com", "name": "BEM FKIP" },
+  {
+    "email": "organization40@mail.com",
+    "name": "Esa Unggul Executive Club (E2C)"
+  }
+]

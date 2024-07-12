@@ -1,0 +1,92 @@
+[
+  {
+    "name": "student1",
+    "email": "student121@mail.com",
+    "nim": "",
+    "year": 2019,
+    "is_graduated": true,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Budi Santoso",
+    "email": "budisantoso@example.com",
+    "nim": "123456789",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Siti Rahayu",
+    "email": "sitirahayu@example.com",
+    "nim": "987654321",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Joko Setiawan",
+    "email": "jokosetiawan@example.com",
+    "nim": "456789123",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Ahmad Abdullah",
+    "email": "ahmadabdullah@example.com",
+    "nim": "567890123",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Rina Novianti",
+    "email": "rinanovianti@example.com",
+    "nim": "901234567",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Agus Wijaya",
+    "email": "aguswijaya@example.com",
+    "nim": "345678901",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Dewi Ratnasari",
+    "email": "dewiratnasari@example.com",
+    "nim": "789012345",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  },
+  {
+    "name": "Rudi Hartono",
+    "email": "rudihartono@example.com",
+    "nim": "234567890",
+    "year": 2019,
+    "is_graduated": false,
+    "user_type": "student",
+    "faculty_id": "",
+    "study_program_id": ""
+  }
+]
